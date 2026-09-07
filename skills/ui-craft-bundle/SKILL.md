@@ -19,18 +19,24 @@ Turn a user's product task into a distinctive, usable screen whose controls work
 | Work | Read |
 | --- | --- |
 | New screen or visual redesign | [art-direction.md](references/art-direction.md) |
+| Reuse or update design decisions across screens | [design-memory.md](references/design-memory.md) |
+| Choose a task-appropriate layout or density | [pattern-selection.md](references/pattern-selection.md) |
 | Search, editing, selection, gestures, async actions | [interaction-design.md](references/interaction-design.md) |
+| Fix a specific input, navigation, or feedback defect | [interaction-recipes.md](references/interaction-recipes.md) |
 | Motion or feedback | [motion.md](references/motion.md) |
 | Web implementation | [web.md](references/web.md) |
 | Android, iOS, React Native, Flutter | [native.md](references/native.md) |
 | Critique, completion, regression checks | [verification.md](references/verification.md) |
 | Comparing or adding upstream skills | [sources.md](references/sources.md) |
+| Compare skill versions on real UI tasks | [behavior-evaluation.md](references/behavior-evaluation.md) |
 
 For a small fix, load only the relevant reference. For a substantial screen, work through direction, interaction, platform implementation, and verification. Do not load all references by default. Treat the repository's explicit design system and the user's choices as stronger context than generic aesthetic preferences from this or an optional upstream skill.
 
 ## Make decisions concrete
 
 For substantial work, record a compact design contract in existing project documentation or working notes. Use [design-contract.md](assets/design-contract.md) when a durable handoff helps. A minor fix needs no new document.
+
+Read the existing design record before choosing new values. Follow [design-memory.md](references/design-memory.md) to map semantic roles to actual code tokens, resolve document/code drift, and preserve justified page exceptions. Before applying a broad visual direction everywhere, inspect representative controls and states with [component-specimen.md](assets/component-specimen.md), preferably inside an existing preview surface.
 
 - Name the main job, content structure, visual hierarchy, density, and deliberate visual signature.
 - Choose a layout that supports the job: comparison table, editable list, timeline, workspace, reading surface, or another appropriate structure. Neither cards nor gradients are universally wrong; unexplained repetition is the problem.

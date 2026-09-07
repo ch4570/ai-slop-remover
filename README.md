@@ -16,6 +16,20 @@ A skill set for clear, calm, user-friendly product interfaces. Diagnose generic 
 
 Preserve the product's brand and stack. Remove friction and unnecessary decoration when they interfere with the task; do not ban colors, fonts, or cards by category. This is not an AI-authorship detector or a universal aesthetic preset.
 
+## What changes in 2.1
+
+The same seven skills now carry design decisions between screens: read the existing design record, connect semantic roles to real tokens/components, and keep page exceptions scoped. Task-based pattern guidance helps choose structure and density. Eight interaction recipes cover composition input, history, scroll/focus continuity, pending feedback, rapid input, retry, and paste/autofill. A component specimen checks shared changes before a broad rollout.
+
+The workflow adapts selected ideas from UI UX Pro Max, Vercel, and getdesign.md while retaining the product's own authority. It adds no required upstream tools or new npm dependencies. For example:
+
+```text
+$ai-slop-remover
+Add a detail page using our existing DESIGN.md and code tokens.
+Preserve any documented page exceptions. Keep search history, scroll position,
+Korean input, and save recovery predictable. Record reusable decisions and
+report actual checks separately from unverified behavior.
+```
+
 ## Install
 
 Use npm with Node.js 20+ and Python 3.9+:
@@ -85,5 +99,7 @@ npm pack --dry-run
 After intentional release-file edits, run `python3 scripts/update_manifest.py`, review the hashes, and rerun the checks. Export validates first and creates an offline ZIP containing manifest-listed release files.
 
 [Behavioral cases](evals/skill-cases.json) specify observable expectations for agent trials. Validating their structure is not an executed benchmark. See [verification scope](docs/verification.md).
+
+The source checkout also contains an intentionally flawed synthetic UI and external checks in `evals/`. Follow `evals/README.md` for baseline/candidate trials and `scripts/compare_evals.py` for evidence comparison. The optional `scripts/run_browser_checks.mjs` uses an already installed Chrome and Node 22+; it installs nothing. These maintainer tools are not included in the npm skill payload. One trial demonstrates only its observed outcomes, not general design improvement.
 
 Original instructions and code use [MIT](LICENSE). External resources are linked, not vendored. The [Agent Skills specification](https://agentskills.io/specification) informs the package format; specialist boundaries are this project's design choice.

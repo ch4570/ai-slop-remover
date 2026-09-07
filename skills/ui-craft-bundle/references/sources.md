@@ -14,6 +14,19 @@ Recommendation: use this bundle for the end-to-end product workflow. If a visual
 
 Respect user/project direction when upstream opinions conflict. Colors, fonts, cards, and animation durations are context-dependent; do not resolve differing advice by appending every prohibition.
 
+## Guidance integrated in this bundle
+
+The following pages were inspected on 2026-09-07 for this update. The bundle adapts selected ideas into its own workflow; it does not vendor source bodies, search databases, command implementations, or style presets. These are page observations at review time, not claims that the moving upstream versions remain unchanged.
+
+| Inspected source | Adopted idea and local home | Boundary |
+| --- | --- | --- |
+| [UI UX Pro Max skill instructions](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/blob/main/.claude/skills/ui-ux-pro-max/SKILL.md) | Common decisions plus scoped page overrides in [design-memory.md](design-memory.md); focused, fit-checked retrieval in [pattern-selection.md](pattern-selection.md) | Existing project authority takes priority. No mandatory search tooling, generated presets, or blanket rejection of immediate state changes; a failed search is not a verified match. |
+| [getdesign.md: Use DESIGN.md](https://starterkit.getdesign.md/docs/use-design-md) | Reusable design documentation connected to actual token definitions in [design-memory.md](design-memory.md) and [design-contract.md](../assets/design-contract.md) | Its root documents, CSS paths, automatic agent loading, and site-wide synchronization describe that starter kit. Discover this project's equivalents; no global instruction-file edits, automatic whole-site rewrite, or assumption that importing a design grants it authority. |
+| [Vercel Web Interface Guidelines](https://vercel.com/design/guidelines) | Focus visibility, return position, stable pending labels, and input assistance developed into [interaction-recipes.md](interaction-recipes.md) | Keep checks relevant to the product. Do not import brand-specific casing, fixed loading durations, URL persistence for private state, zoom suppression, or an unverified framework-specific timing guarantee. |
+| [MDN KeyboardEvent.isComposing](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/isComposing) | Composition-aware Enter handling in [interaction-recipes.md](interaction-recipes.md) | The API identifies events within a composition session. Real IME and browser event ordering still needs verification; synthetic events are limited evidence. |
+
+The task-pattern matrix, document/code conflict policy, component specimen, retry boundaries, and evidence labels are this bundle's synthesis. They are practical decision aids, not published measurements of design quality. Accessibility requirements retain their own official sources; upstream brand preferences do not replace them.
+
 ## Installation and source boundaries
 
 Impeccable's reviewed README documents `npx impeccable install`; its ecosystem may include hooks and downloaded tooling. This bundle does not run that command or install hooks. Follow upstream documentation only if the user requests that optional installation. Other upstream setup commands should be verified at use time.

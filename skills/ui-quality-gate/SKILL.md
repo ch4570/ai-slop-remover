@@ -24,6 +24,8 @@ Read [principles](reference/principles.md) first. Use the [KB index](reference/k
 - Check affected keyboard/touch access, names and focus, narrow-screen action access, and supported text scaling. Use native tooling for native claims. Check changed transitions with normal, interrupted/repeated input, and reduced-motion behavior.
 - Actually inspect captured images at representative relevant sizes and states. Check clipping, overlap, long Korean or other supported labels, hierarchy, alignment, focus/error treatments, and missing assets. A screenshot proves no interaction by itself.
 - Measure numerical claims such as contrast or performance if reporting them. Do not infer accessibility conformance, device coverage, or frame rates from appearance or one automated check.
+- For design-system changes, verify the [design record](../ui-craft-bundle/references/design-memory.md), code token mappings, and page exceptions agree. Inspect the [component specimen](../ui-craft-bundle/assets/component-specimen.md) when one was used; a token table alone does not prove rendered states work.
+- Select concrete checks from [interaction recipes](../ui-craft-bundle/references/interaction-recipes.md) for changed input, loading, or navigation: include supported-language composition, history/scroll restoration, and stable labels where relevant.
 
 Scale verification to the change. A spacing adjustment needs local rendering and nearby regression checks; it does not require unrelated end-to-end journeys. Follow the host's visual-verdict workflow where applicable and available, preserving its recorded evidence.
 
@@ -44,3 +46,5 @@ For each material finding provide **scenario → expected → observed → evide
 When a browser, emulator, device, SDK, or integration is absent, complete useful available checks and leave dependent claims unverified. State `incomplete` when that evidence is required. Never substitute a web mockup for native validation, fabricate screenshots, or report all-pass from source inspection alone.
 
 Report the verdict, covered scope, actual commands/evidence, findings, and limitations. A passing scoped UI review is not deployment authorization or a guarantee of all-platform quality.
+
+When evaluating a skill release, apply [behavior evaluation](../ui-craft-bundle/references/behavior-evaluation.md). Separate seeded-defect recovery, observed visual judgments, scope preservation, and missing evidence. Do not call a sample trial an A/B improvement unless its baseline and candidate conditions are comparable and both were executed.

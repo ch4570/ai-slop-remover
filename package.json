@@ -1,6 +1,6 @@
 {
   "name": "ai-slop-remover-skills",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A skill set for removing generic AI UI and creating clear, smooth, user-friendly product experiences.",
   "license": "MIT",
   "type": "module",
@@ -40,7 +40,16 @@
   "bugs": {
     "url": "https://github.com/ch4570/ai-slop-remover/issues"
   },
-  "keywords": ["agent-skills", "codex", "claude-code", "ui", "ux", "ai-slop", "design", "accessibility"],
+  "keywords": [
+    "agent-skills",
+    "codex",
+    "claude-code",
+    "ui",
+    "ux",
+    "ai-slop",
+    "design",
+    "accessibility"
+  ],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"

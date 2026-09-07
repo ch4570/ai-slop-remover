@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>하늘 메모</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main>
+    <header><h1>하늘 메모</h1><p>이 브라우저에 저장하는 연습용 메모입니다.</p></header>
+    <section class="workspace" aria-label="메모 작업 공간">
+      <aside>
+        <label for="query">메모 검색</label>
+        <input id="query" type="search" autocomplete="off">
+        <p id="count" aria-live="polite"></p>
+        <ul id="notes"></ul>
+      </aside>
+      <form id="editor">
+        <h2>메모 수정</h2>
+        <label for="title">제목</label>
+        <input id="title" required>
+        <label for="body">내용</label>
+        <textarea id="body" rows="5"></textarea>
+        <label class="failure"><input id="fail-save" type="checkbox"> 이번 저장 실패시키기 (연습용)</label>
+        <button id="save" type="submit">메모 저장</button>
+        <p id="status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

@@ -21,12 +21,15 @@ Read [principles](reference/principles.md) first. Use the [KB index](reference/k
 - **Action:** use a concrete verb and an object when needed. Keep repeated labels consistent with the same operation. Avoid vague “Continue” when the next effect needs explanation; keep it when the context makes the sequence clear.
 - **Field help:** explain the requirement or consequence where the user needs it. Do not use placeholder text as the only label.
 - **Pending:** describe work that is actually underway. Never add fake percentages, artificial wait time, or unsupported completion estimates.
+- Preserve the action's meaning while pending; keep its label or an equally clear accessible name and avoid a text change that causes unrelated layout to jump. A copy-only request may identify a loading-layout defect without authorizing a structural rewrite.
 - **Error:** say what could not be completed, preserve useful context, and name a real recovery action. Distinguish user-correctable input from service failure. Do not blame the user, expose secrets, or invent a cause from a generic error.
 - **Empty:** distinguish no existing data, no search matches, filtered results, lack of permission, and loading. Suggest only an available next action.
 - **Success:** describe the completed operation and its actual persistence boundary. Do not imply remote save, export, synchronization, or delivery from a local placeholder.
 - **Confirmation:** make the real consequence clear, especially for destructive actions. Preserve existing consent, disclosures, and necessary warnings. Avoid manipulative opt-outs, fake urgency, and promised undo that is not implemented.
 
 For Korean, use familiar product terms and natural verbs. Follow the existing polite tone; reduce repeated “해당”, unnecessary nominalization, and stiff translated phrases when meaning improves. Preserve established terminology. Keep useful recovery detail even when shortening text. Treat examples in the KB as generic patterns requiring product confirmation.
+
+Use the product's recorded voice and vocabulary when a design/product document exists. Reference-site wording is inspiration, not authority: do not import English Title Case, ampersands, or a brand's tone into every locale. For a new writing convention, update the existing record only within the authorized scope.
 
 ## Apply and verify
 

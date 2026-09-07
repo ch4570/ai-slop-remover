@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.1.0 — 2026-09-07
+
+- Connect all seven skills to persistent design decisions, real token/component mappings, scoped page exceptions, and documented conflict handling.
+- Add task-based pattern selection and a component specimen for broad visual changes.
+- Add eight scoped interaction recipes including Korean composition input, browser history, scroll/focus continuity, stable loading, and safe retries.
+- Attribute the selected UI UX Pro Max, Vercel, and getdesign.md ideas and document where product context overrides upstream preferences.
+- Add a synthetic UI with seeded defects, evaluator-owned browser assertions, evidence-record comparison, and negative comparator tests. Report actual trial scope separately from package checks.
+- Keep existing skill names, installation commands, and the dependency-free npm runtime wrapper.
+
 ## 2.0.0 — 2026-09-07
 
 - Publish as `ai-slop-remover-skills` with an `ai-slop-remover` executable for npx. The CLI reuses the bundled Python 3.9+ installer and adds no npm runtime dependencies or postinstall hooks.

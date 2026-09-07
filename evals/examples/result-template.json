@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "suite": "search-editor-v1",
+  "run_id": "example-candidate",
+  "variant": "candidate",
+  "fixture": {
+    "id": "search-editor",
+    "sha256": "REPLACE_WITH_INITIAL_FIXTURE_SHA256"
+  },
+  "task_sha256": "REPLACE_WITH_TASK_SHA256",
+  "model": "example-model-replace-with-actual",
+  "settings": {
+    "reasoning": "example-replace-with-actual"
+  },
+  "skill_revision": "example-replace-with-actual",
+  "cases": [
+    {
+      "id": "search-editor",
+      "checks": [
+        {
+          "id": "search-matches",
+          "kind": "behavior",
+          "status": "not-run",
+          "reason": "This is an unexecuted example template, not observation evidence."
+        },
+        {
+          "id": "query-history",
+          "kind": "behavior",
+          "status": "not-run",
+          "reason": "This is an unexecuted example template, not observation evidence."
+        },
+        {
+          "id": "failed-save-draft",
+          "kind": "behavior",
+          "status": "not-run",
+          "reason": "This is an unexecuted example template, not observation evidence."
+        },
+        {
+          "id": "failed-save-feedback",
+          "kind": "behavior",
+          "status": "not-run",
+          "reason": "This is an unexecuted example template, not observation evidence."
+        },
+        {
+          "id": "retry-persists",
+          "kind": "behavior",
+          "status": "not-run",
+          "reason": "This is an unexecuted example template, not observation evidence."
+        },
+        {
+          "id": "composition-enter",
+          "kind": "behavior",
+          "status": "not-run",
+          "reason": "This is an unexecuted example template, not observation evidence."
+        },
+        {
+          "id": "ordinary-save",
+          "kind": "behavior",
+          "status": "not-run",
+          "reason": "This is an unexecuted example template, not observation evidence."
+        },
+        {
+          "id": "brand-consistency",
+          "kind": "quality",
+          "status": "not-run",
+          "reason": "This is an unexecuted example template, not observation evidence."
+        },
+        {
+          "id": "narrow-keyboard-review",
+          "kind": "quality",
+          "status": "not-run",
+          "reason": "This is an unexecuted example template, not observation evidence."
+        },
+        {
+          "id": "ordinary-enter",
+          "kind": "behavior",
+          "status": "not-run",
+          "reason": "Template only; browser keyboard has not been exercised."
+        }
+      ]
+    }
+  ]
+}

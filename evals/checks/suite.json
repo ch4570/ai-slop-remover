@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "id": "search-editor-v1",
+  "fixture_id": "search-editor",
+  "cases": {
+    "search-editor": {
+      "search-matches": "behavior",
+      "query-history": "behavior",
+      "failed-save-draft": "behavior",
+      "failed-save-feedback": "behavior",
+      "retry-persists": "behavior",
+      "composition-enter": "behavior",
+      "ordinary-save": "behavior",
+      "ordinary-enter": "behavior",
+      "brand-consistency": "quality",
+      "narrow-keyboard-review": "quality"
+    }
+  }
+}
