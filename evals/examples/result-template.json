@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "suite": "search-editor-v2",
+  "suite": "search-editor-v3",
   "run_id": "example-candidate",
   "variant": "candidate",
   "fixture": {
@@ -85,6 +85,30 @@
         },
         {
           "id": "ordinary-enter-reload",
+          "kind": "behavior",
+          "status": "not-run",
+          "reason": "This is an unexecuted example template, not observation evidence."
+        },
+        {
+          "id": "history-back",
+          "kind": "behavior",
+          "status": "not-run",
+          "reason": "This is an unexecuted example template, not observation evidence."
+        },
+        {
+          "id": "history-forward",
+          "kind": "behavior",
+          "status": "not-run",
+          "reason": "This is an unexecuted example template, not observation evidence."
+        },
+        {
+          "id": "query-direct-entry",
+          "kind": "behavior",
+          "status": "not-run",
+          "reason": "This is an unexecuted example template, not observation evidence."
+        },
+        {
+          "id": "query-reload",
           "kind": "behavior",
           "status": "not-run",
           "reason": "This is an unexecuted example template, not observation evidence."
