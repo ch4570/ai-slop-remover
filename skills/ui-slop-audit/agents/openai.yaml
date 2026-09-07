@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI Slop Audit"
+  short_description: "화면을 수정하지 않고 사용자 작업을 방해하는 요소와 근거를 진단"
+  default_prompt: "$ui-slop-audit로 이 화면을 읽기 전용으로 진단하고, 근거와 작은 개선안을 우선순위로 정리해줘."

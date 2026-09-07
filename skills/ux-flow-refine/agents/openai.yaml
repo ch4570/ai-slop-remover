@@ -1,0 +1,4 @@
+interface:
+  display_name: "UX Flow Refine"
+  short_description: "실제 동작·피드백·실패 복구와 필요한 전환을 다듬어 예측 가능한 흐름 구현"
+  default_prompt: "$ux-flow-refine로 이 흐름의 반응과 실패 복구를 개선하고, 반복 입력과 움직임 줄이기 설정도 확인해줘."

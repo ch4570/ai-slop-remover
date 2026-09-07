@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI Quality Gate"
+  short_description: "구현 후 실제 화면·동작 증거와 미검증 범위를 구분하는 읽기 전용 검수"
+  default_prompt: "$ui-quality-gate로 변경한 UI의 실제 화면과 주요 동작을 검수하고, 확인한 근거와 남은 위험을 구분해줘."

@@ -1,6 +1,6 @@
 ---
 name: ui-craft-bundle
-description: Design or improve app and web interfaces that feel generic or AI-generated, implement meaningful interaction states, and verify visual and behavioral quality. Use for anti-slop UI redesign, interactive product screens, UI critique, or frontend polish, with web and native app guidance. Keep small UI fixes scoped; exclude backend-only work and standalone graphic design.
+description: Preserve the original UI Craft Bundle workflow and provide shared web/native design, interaction, motion, and verification references. Use when the user explicitly requests ui-craft-bundle or an existing workflow depends on its references. For a new broad AI-slop-removal request, prefer ai-slop-remover when installed; exclude backend-only work and standalone graphic design.
 ---
 
 # UI Craft Bundle
@@ -55,4 +55,4 @@ Report what changed, which interactions were exercised, actual verification evid
 
 ## Distribution and invocation
 
-Use `$ui-craft-bundle` with a product task; use the host's skill selector or a plain-language request if dollar invocation is unavailable. Read [bundle-guide.ko.md](assets/bundle-guide.ko.md) for Korean task prompts and portable installation. Maintainer source installations include `scripts/export_bundle.py`; use it only when asked to export a portable bundle. Portable copies omit packaging scripts and retain all design, interaction, platform, and verification instructions.
+Use `$ui-craft-bundle` with a product task; use the host's skill selector or a plain-language request if dollar invocation is unavailable. This original entrypoint remains independently usable. Read [bundle-guide.ko.md](assets/bundle-guide.ko.md) for Korean usage and installation boundaries. Packaging tools belong to the source repository, not an installed skill directory.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI Slop Remover"
+  short_description: "AI 티를 줄이고 명확하고 자연스러운 UI/UX로 개선"
+  default_prompt: "$ai-slop-remover로 현재 화면의 AI 티와 사용 중 불편을 줄여줘. 기존 브랜드와 기능을 존중하고 실제로 확인한 결과를 알려줘."

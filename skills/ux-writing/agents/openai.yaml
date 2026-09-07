@@ -1,0 +1,4 @@
+interface:
+  display_name: "UX Writing"
+  short_description: "버튼·오류·빈 상태 문구를 실제 기능에 맞는 자연스러운 한국어로 개선"
+  default_prompt: "$ux-writing으로 이 화면의 버튼과 상태 문구를 자연스럽게 다듬고, 실제 기능과 복구 방법을 정확히 표현해줘."
