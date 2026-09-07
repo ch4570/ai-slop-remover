@@ -1,0 +1,58 @@
+---
+name: ui-craft-bundle
+description: Design or improve app and web interfaces that feel generic or AI-generated, implement meaningful interaction states, and verify visual and behavioral quality. Use for anti-slop UI redesign, interactive product screens, UI critique, or frontend polish, with web and native app guidance. Keep small UI fixes scoped; exclude backend-only work and standalone graphic design.
+---
+
+# UI Craft Bundle
+
+Turn a user's product task into a distinctive, usable screen whose controls work. Optimize the usefulness and completeness of interaction, not its quantity. Load only the references needed for the current phase.
+
+## Start from the product
+
+- Inspect the current screen, nearby implementation, design tokens, navigation, data model, dependencies, and project instructions. Reuse existing conventions unless the user requests a redesign. Do not migrate a stack as a styling shortcut.
+- Identify the user, immediate job, main content object, and primary action. Determine whether this is a marketing page, working product screen, or native app. Avoid turning a working application into a landing page.
+- State a brief working direction and act. Infer reversible details; ask only when an unresolved choice would materially alter the product. Do not require approval of a mood board before ordinary implementation.
+- Actually inspect supplied references. Extract hierarchy, density, layout, and interaction ideas; distinguish observation from inference. If images or a running screen are inaccessible, disclose that and proceed from available evidence.
+
+## Route by requested work
+
+| Work | Read |
+| --- | --- |
+| New screen or visual redesign | [art-direction.md](references/art-direction.md) |
+| Search, editing, selection, gestures, async actions | [interaction-design.md](references/interaction-design.md) |
+| Motion or feedback | [motion.md](references/motion.md) |
+| Web implementation | [web.md](references/web.md) |
+| Android, iOS, React Native, Flutter | [native.md](references/native.md) |
+| Critique, completion, regression checks | [verification.md](references/verification.md) |
+| Comparing or adding upstream skills | [sources.md](references/sources.md) |
+
+For a small fix, load only the relevant reference. For a substantial screen, work through direction, interaction, platform implementation, and verification. Do not load all references by default. Treat the repository's explicit design system and the user's choices as stronger context than generic aesthetic preferences from this or an optional upstream skill.
+
+## Make decisions concrete
+
+For substantial work, record a compact design contract in existing project documentation or working notes. Use [design-contract.md](assets/design-contract.md) when a durable handoff helps. A minor fix needs no new document.
+
+- Name the main job, content structure, visual hierarchy, density, and deliberate visual signature.
+- Choose a layout that supports the job: comparison table, editable list, timeline, workspace, reading surface, or another appropriate structure. Neither cards nor gradients are universally wrong; unexplained repetition is the problem.
+- Use realistic domain content and edge cases. Label prototype data honestly. Do not invent customer logos, claims, prices, or integrations to make a screen look finished.
+- Define observable behavior for visible controls in scope: trigger, resulting state, feedback, recovery, and persistence. Never satisfy a functional action with a cosmetic toast alone.
+
+## Implement an end-to-end slice
+
+Build the primary journey first, including data changes and relevant non-happy states. Connect existing APIs when available; for a local prototype, implement local behavior and disclose its persistence boundary. Keep an unavailable integration clearly unavailable instead of simulating success.
+
+Use existing primitives and platform components. Add a dependency only when it solves a concrete behavior gap. Never install an animation framework just for button hover effects. Do not require Figma, paid services, an MCP server, or an upstream skill.
+
+Preserve focus, keyboard and touch access, input values, and recovery from errors. Drag interactions need appropriate click/tap alternatives plus keyboard support on applicable platforms. Motion should explain state and respect reduced-motion preferences.
+
+## Inspect the result
+
+Read [verification.md](references/verification.md). Run the screen when supported; exercise the primary journey and actually inspect rendered images. Use the environment's authorized preview/test mechanism. This skill does not authorize external-site interaction, login, deployment, or unrelated changes.
+
+Fix observed issues in order: broken task or inaccessible control, layout/hierarchy, then detail. Verify affected behavior after fixes. Stop when the scoped journey works and material limitations are documented; avoid endless cosmetic revisions or arbitrary score thresholds.
+
+Report what changed, which interactions were exercised, actual verification evidence, and what remains unverified. Separate implemented, visually inspected, and behavior-tested claims. A build passing is not visual QA; a screenshot is not proof of interaction.
+
+## Distribution and invocation
+
+Use `$ui-craft-bundle` with a product task; use the host's skill selector or a plain-language request if dollar invocation is unavailable. Read [bundle-guide.ko.md](assets/bundle-guide.ko.md) for Korean task prompts and portable installation. Maintainer source installations include `scripts/export_bundle.py`; use it only when asked to export a portable bundle. Portable copies omit packaging scripts and retain all design, interaction, platform, and verification instructions.

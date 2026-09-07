@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI Craft Bundle"
+  short_description: "앱·웹의 AI 티를 줄이고 실제 인터랙션과 화면 검수를 연결"
+  default_prompt: "$ui-craft-bundle로 이 앱의 디자인과 인터랙션을 개선하고 실제 화면에서 검증해줘."

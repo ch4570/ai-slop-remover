@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "name": "ui-craft-bundle",
+  "version": "1.0.0",
+  "files": {
+    "README.ko.md": "88b2fb8a48d87a7549c4fddcce52c0adaa678dd2aefe6ef6352fe89a145ccd21",
+    "install.py": "7dd22eb94a82e429ca60fae71b2ffcd920faccd392263d4c3d9de309e45b345a",
+    "skills/ui-craft-bundle/SKILL.md": "a66fb723bfdc26e4e995316e584359bad8303a98cfb2db4aafc79a28b693da41",
+    "skills/ui-craft-bundle/agents/openai.yaml": "6ee786f921f495298e4a955859fd6ea1e94252f6bdef8c054dc59c157dc2c173",
+    "skills/ui-craft-bundle/assets/LICENSE": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d",
+    "skills/ui-craft-bundle/assets/bundle-guide.ko.md": "88b2fb8a48d87a7549c4fddcce52c0adaa678dd2aefe6ef6352fe89a145ccd21",
+    "skills/ui-craft-bundle/assets/design-contract.md": "bd9a4499ce8bddb096017140170d3971b52a7282a70d10e355069a5330ea7b58",
+    "skills/ui-craft-bundle/assets/verification-note.md": "5671e40355566b80f70c960f35092c3bac1c240ff09cb20d64e1a7a724358d5a",
+    "skills/ui-craft-bundle/references/art-direction.md": "76b08d0c33b18a95900b2f15080a494518d5de6abbb2d8de43eac334305f9095",
+    "skills/ui-craft-bundle/references/interaction-design.md": "bd2193c4909870ca8c59e3fbaafbd3aef495dce8dd6b5b4d25dc798f9a462dc6",
+    "skills/ui-craft-bundle/references/motion.md": "4ed356ff69a887a0e27ee1a8ef934961da68cb378726399b852c23054fe1be2e",
+    "skills/ui-craft-bundle/references/native.md": "eedbdc48e70ea4aac1e1041a32d8d2d5871f5fd370906cee2442ad2e241f4a8a",
+    "skills/ui-craft-bundle/references/sources.md": "19be8f66b9f9ceb8c64181dfa8f9bb30adb0d8843164eced8889ad0197f9ae83",
+    "skills/ui-craft-bundle/references/verification.md": "7c20b76a9fb9bf8b916ee05f2a69edfda105470360f15c285ba6e11c35c67a11",
+    "skills/ui-craft-bundle/references/web.md": "df23b4a50b5cac674f8123ecfcf0da751e589ddf1d5cfc546194a2c209b828b6"
+  }
+}
