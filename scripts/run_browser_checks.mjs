@@ -84,27 +84,59 @@ try {
   };
   await page('Page.enable'); await page('Runtime.enable');
   await page('Emulation.setDeviceMetricsOverride', { width: 1280, height: 900, deviceScaleFactor: 1, mobile: false });
+  const waitForFixture = async (previousTimeOrigin = null) => {
+    for (let attempt = 0; attempt < 100; attempt += 1) {
+      try {
+        const ready = await evaluate(`location.origin === ${JSON.stringify(origin)} && performance.timeOrigin !== ${JSON.stringify(previousTimeOrigin)} && document.readyState === 'complete' && !!document.getElementById('save')`);
+        if (ready) return;
+      } catch { /* The old execution context can disappear during navigation. */ }
+      await pause(50);
+    }
+    throw new Error('Fixture did not finish loading');
+  };
+  const reloadFixture = async () => {
+    const previousTimeOrigin = await evaluate('performance.timeOrigin');
+    await page('Page.reload', { ignoreCache: true });
+    await waitForFixture(previousTimeOrigin);
+    await evaluate(source);
+  };
+  const resetFixture = async () => {
+    const snapshot = await evaluate('seedSearchEditor()');
+    await reloadFixture();
+    return snapshot;
+  };
+  const observeSavedReload = async (id, expected) => {
+    await reloadFixture();
+    return evaluate(`observeReload(${JSON.stringify(id)}, ${JSON.stringify(expected)})`);
+  };
   await page('Page.navigate', { url: origin });
-  let ready = false;
-  for (let attempt = 0; attempt < 100; attempt += 1) {
-    ready = await evaluate(`location.origin === ${JSON.stringify(origin)} && document.readyState === 'complete' && !!document.getElementById('save')`);
-    if (ready) break;
-    await pause(50);
-  }
-  if (!ready) throw new Error('Fixture did not load');
+  await waitForFixture();
+  await evaluate(source);
+  let snapshot = await resetFixture();
   await mkdir(output, { recursive: true });
   const screenshot = async name => {
     const result = await page('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true });
     await writeFile(path.join(output, name), Buffer.from(result.data, 'base64'));
   };
   await screenshot('wide.png');
-  await evaluate(source);
-  const checks = await evaluate('evaluateSearchEditor()');
-  await evaluate('prepareOrdinaryEnter()');
-  await page('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Enter', code: 'Enter', text: '\r', windowsVirtualKeyCode: 13 });
-  await page('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13 });
-  await pause(150);
-  checks.push(await evaluate('observeOrdinaryEnter()'));
+  const retry = await evaluate(`evaluateSearchEditor(${JSON.stringify(snapshot)})`);
+  // Keep observations outside the page so reloads cannot discard earlier failures.
+  const checks = [...retry.checks];
+  checks.push(await observeSavedReload('retry-reload', retry.expected));
+  snapshot = await resetFixture();
+  const ordinary = await evaluate(`evaluateOrdinarySave(${JSON.stringify(snapshot)})`);
+  checks.push(...ordinary.checks);
+  checks.push(await observeSavedReload('ordinary-reload', ordinary.expected));
+  snapshot = await resetFixture();
+  const enter = await evaluate(`prepareOrdinaryEnter(${JSON.stringify(snapshot)})`);
+  if (enter.selectionFound) {
+    await page('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Enter', code: 'Enter', text: '\r', windowsVirtualKeyCode: 13 });
+    await page('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13 });
+    await pause(150);
+  }
+  checks.push(await evaluate(`observeOrdinaryEnter(${JSON.stringify(enter)})`));
+  checks.push(await observeSavedReload('ordinary-enter-reload', enter.expected));
+  await resetFixture();
   await page('Emulation.setDeviceMetricsOverride', { width: 375, height: 844, deviceScaleFactor: 1, mobile: true });
   await page('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   const narrowState = await evaluate(`(async () => {

@@ -2,7 +2,7 @@
 
 `skill-cases.json` is a scenario catalog. Package validation confirms its structure
 and routes; it does **not** execute an agent or establish improved UI quality.
-The separate, runnable `search-editor-v1` suite exercises observable outcomes in a
+The separate, runnable `search-editor-v2` suite exercises observable outcomes in a
 small local UI. Neither suite assigns a beauty score.
 
 ## Controlled agent trial
@@ -21,15 +21,32 @@ small local UI. Neither suite assigns a beauty score.
    `python3 -m http.server 8765 --bind 127.0.0.1 --directory /tmp/baseline-fixture`.
    Use a second port for the candidate, fresh browser storage, and a new tab. Record
    the resulting artifact hashes separately from the **initial** fixture hash.
-5. In a real browser, inject `checks/search-editor.js`, then run
-   `await evaluateSearchEditor()`. Save the returned checks and console errors.
-   Then call `prepareOrdinaryEnter()`, press a real browser Enter key (or use the
-   browser automation keyboard API), wait for the local save to settle, and append
-   `observeOrdinaryEnter()` to the results. Do not use a synthetic DOM key event for
-   this positive control; it must exercise native form submission too.
-   Run once per fresh fixture origin: the checks edit and save synthetic notes and
-   alter search/history. A runner exception means the affected checks are `not-run`
-   with the error as the reason; it never means pass.
+5. Run the optional installed-Chrome driver below, or perform its sequence in a
+   real browser. Inject `checks/search-editor.js` into each newly loaded document.
+   Keep snapshots and observations **outside the page** so reloads cannot erase
+   them. `seedSearchEditor()` writes the three synthetic notes to localStorage and
+   returns their snapshot; reload and reinject the checker before editing them.
+   Never seed storage in a real product tab.
+
+   - Run `await evaluateSearchEditor(snapshot)` for search and id 1 failure/retry.
+     Save its `checks` and `expected`, reload and reinject, then append
+     `observeReload('retry-reload', expected)`.
+   - Seed, reload, and reinject again. Run `await evaluateOrdinarySave(snapshot)`
+     for composition and id 2 button saving. Save its `checks` and `expected`,
+     reload and reinject, then append `observeReload('ordinary-reload', expected)`.
+   - Seed, reload, and reinject again. Call `prepareOrdinaryEnter(snapshot)` and
+     retain the returned context. If `selectionFound` is true, press a real browser
+     Enter key (or use the automation keyboard API) and wait for saving to settle.
+     Append `observeOrdinaryEnter(context)`, reload and reinject, then append
+     `observeReload('ordinary-enter-reload', context.expected)`. A synthetic DOM
+     key event cannot replace this positive control for native form submission.
+
+   Each save mode starts from the same seeded snapshot to keep a prior failure
+   from masking later controls. Reload checks run **before** the next seed and
+   inspect both stored records and the title/body opened from every listed note.
+   Missing/duplicate note buttons yield failed observations. Preserve completed
+   observations and console errors; a runner exception makes unexecuted checks
+   `not-run` with the error as the reason, never pass.
 6. Independently inspect the rendered UI at desktop and 375px width. Record a
    screenshot and keyboard observations for the quality checks below. Read the
    actual screenshots. DOM dimensions, build success, or an implementation agent's
@@ -58,25 +75,32 @@ kinds. Missing a check from both runs still invalidates a comparison.
 | `query-history` | Three input events keep history length stable **and** synchronize URL query. |
 | `failed-save-draft` | Title/body survive injected failure; persisted storage remains unchanged. |
 | `failed-save-feedback` | Error feedback is truthful and saving is available again. |
-| `retry-persists` | Retrying the preserved draft writes its actual title/body to localStorage. |
+| `failed-save-storage` | Injected failure preserves the entire seeded storage snapshot, including every ID and title/body. |
+| `retry-persists` | Retrying id 1 changes only its title/body; all other records and unique IDs remain intact. |
+| `retry-reload` | After retry and a real reload, the complete expected storage and every note's editor values remain intact. |
 | `composition-enter` | Synthetic composition Enter causes no submit and no persistence mutation. |
-| `ordinary-save` | Ordinary save still writes the intended note. |
-| `ordinary-enter` | Real browser Enter on the title input still saves the intended note after composition has ended. |
+| `ordinary-save` | Selecting id 2 and saving by button changes only its title/body while preserving all records and unique IDs. |
+| `ordinary-reload` | After button saving and a real reload, the complete expected storage and every note's editor values remain intact. |
+| `ordinary-enter` | Selecting id 3 and pressing real browser Enter saves only its title/body while preserving all records and unique IDs. |
+| `ordinary-enter-reload` | After Enter saving and a real reload, the complete expected storage and every note's editor values remain intact. |
 | `brand-consistency` | A reviewer reads DESIGN.md and active tokens/components, then visually inspects the rendered result for preserved brand roles and justified exceptions. |
 | `narrow-keyboard-review` | A reviewer inspects a 375px rendered screenshot with long Korean input/error text and exercises keyboard access to search/editor/save with visible focus and readable feedback. |
 
-The first eight checks are executable browser observations. The last two are
+The first twelve checks are executable browser observations. The last two are
 read-only quality reviews of the agent's result: reviewers do not repair product
 code during scoring. Keep exact observed failures instead of averaging them away.
 The browser check uses a bounded 150ms wait for this fixture's 30ms local save;
 record slow/incomplete execution rather than inventing an observation. Synthetic
 composition events test application handlers, not actual OS/browser IME ordering.
+Storage comparisons check the full record count, unique numeric IDs, and all
+expected title/body values; record order is not significant. Expected snapshots
+come from evaluator-owned seed data and edits, not the candidate's saved output.
 Record real IME, assistive technology, and other platform gaps separately in the
 trial notes; do not upgrade the bounded checks to those broader claims.
 
 ## Result JSON contract (schema 1)
 
-- `schema`: integer `1`; `suite`: `search-editor-v1`.
+- `schema`: integer `1`; `suite`: `search-editor-v2`.
 - `run_id`: distinct lowercase identifier for each run; `variant`: `baseline` or
   `candidate` as appropriate to the comparator argument.
 - `fixture`: `{ "id": "search-editor", "sha256": "<initial-fixture-digest>" }`.
@@ -117,6 +141,9 @@ metadata. It is a writing template, **not execution evidence**; the comparator
 rejects it until real metadata and observations replace the placeholders. A valid
 schema does not prove that evidence is truthful. The independent reviewer remains
 responsible for checking artifacts, logs, and the stated observation scope.
+Version 1 records cannot establish a version 2 pass. Even if their suite name is
+updated, omitting any of the four new storage/reload checks invalidates the record;
+mark genuinely unexecuted checks `not-run` with a concrete reason instead.
 
 Exit codes: `0` = candidate passes all required checks with a complete baseline;
 `1` = candidate has observed failures; `2` = invalid/incomparable records; `3` =
@@ -136,9 +163,28 @@ node scripts/run_browser_checks.mjs /tmp/candidate-fixture /tmp/evidence/candida
 ```
 
 Set `AI_SLOP_CHROME` to the exact browser executable when detection does not apply.
-The driver creates a temporary browser profile and a loopback-only server, runs
-external checks, and records 1280px, 375px error-state, and keyboard-focus images.
+The driver creates a temporary browser profile and a loopback-only server, seeds
+synthetic notes, runs all twelve external checks with actual page reloads, and
+records 1280px, 375px error-state, and keyboard-focus images. It seeds again before
+collecting the narrow error-state images so a broken save cannot prevent that
+separate observation. Each check's evidence retains its expected/observed records.
 Read `browser.json` and actually inspect the images before writing the two quality
 verdicts. Exit zero means evidence collection finished, not that every check passed;
 use the comparator as the result gate. It installs no browser or packages and does
 not connect to the user's existing browser profile.
+
+To verify the checker itself, opt in to the dependency-free Chrome regression
+tests (ordinary Python discovery skips them):
+
+```bash
+AI_SLOP_BROWSER_TESTS=1 python3 -m unittest discover -s tests -p test_browser_checks.py -v
+```
+
+These tests copy the flawed fixture to temporary directories, repair only its
+intended defects for a passing control, and inject data loss, unrelated content
+changes, duplicate IDs, hard-coded id 1 updates, failed-save writes, and reload
+regressions. Assertions consume actual `browser.json` observations. The original
+fixture remains unchanged and must still expose its intended failures. Set
+`AI_SLOP_BROWSER_EVIDENCE` to a directory to retain each run's browser JSON and
+images; otherwise the temporary evidence is deleted. Passing these sensitivity
+tests establishes neither visual quality nor a model/skill comparison.

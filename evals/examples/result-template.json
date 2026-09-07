@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "suite": "search-editor-v1",
+  "suite": "search-editor-v2",
   "run_id": "example-candidate",
   "variant": "candidate",
   "fixture": {
@@ -42,7 +42,19 @@
           "reason": "This is an unexecuted example template, not observation evidence."
         },
         {
+          "id": "failed-save-storage",
+          "kind": "behavior",
+          "status": "not-run",
+          "reason": "This is an unexecuted example template, not observation evidence."
+        },
+        {
           "id": "retry-persists",
+          "kind": "behavior",
+          "status": "not-run",
+          "reason": "This is an unexecuted example template, not observation evidence."
+        },
+        {
+          "id": "retry-reload",
           "kind": "behavior",
           "status": "not-run",
           "reason": "This is an unexecuted example template, not observation evidence."
@@ -60,6 +72,24 @@
           "reason": "This is an unexecuted example template, not observation evidence."
         },
         {
+          "id": "ordinary-reload",
+          "kind": "behavior",
+          "status": "not-run",
+          "reason": "This is an unexecuted example template, not observation evidence."
+        },
+        {
+          "id": "ordinary-enter",
+          "kind": "behavior",
+          "status": "not-run",
+          "reason": "This is an unexecuted example template, not observation evidence."
+        },
+        {
+          "id": "ordinary-enter-reload",
+          "kind": "behavior",
+          "status": "not-run",
+          "reason": "This is an unexecuted example template, not observation evidence."
+        },
+        {
           "id": "brand-consistency",
           "kind": "quality",
           "status": "not-run",
@@ -70,12 +100,6 @@
           "kind": "quality",
           "status": "not-run",
           "reason": "This is an unexecuted example template, not observation evidence."
-        },
-        {
-          "id": "ordinary-enter",
-          "kind": "behavior",
-          "status": "not-run",
-          "reason": "Template only; browser keyboard has not been exercised."
         }
       ]
     }
