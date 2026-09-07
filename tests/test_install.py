@@ -4,6 +4,7 @@ import contextlib
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 import runpy
 import shutil
@@ -88,6 +89,94 @@ class InstallerTestCase(unittest.TestCase):
                 path = dest / name[len(prefix):]
                 self.assertTrue(path.is_file(), str(path))
                 self.assertEqual(digest(path.read_bytes()), expected_hash, name)
+
+
+@unittest.skipUnless(shutil.which("git"), "Git is required for checkout regression tests")
+class CheckoutInstallerTests(InstallerTestCase):
+    def run_git(self, *args):
+        result = subprocess.run(
+            ["git", "-c", "core.attributesFile=" + os.devnull, *map(str, args)],
+            cwd=self.workspace,
+            env=dict(os.environ, GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull),
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+        self.assert_success(result)
+        return result
+
+    def test_fresh_clones_preserve_release_bytes_and_install(self):
+        # Commit a disposable release snapshot so uncommitted checkout rules are
+        # exercised without changing the developer's index, config, or files.
+        self.manifest = json.loads((ROOT / "manifest.json").read_text(encoding="utf-8"))
+        names = set(self.manifest["files"]) | {"manifest.json", "scripts/update_manifest.py"}
+        if (ROOT / ".gitattributes").exists():
+            names.add(".gitattributes")
+        source_bytes = {name: (ROOT / name).read_bytes() for name in sorted(names)}
+        for name, data in source_bytes.items():
+            self.write_payload(name, data)
+        source = self.bundle
+        self.run_git("init", "--quiet", "--template=", source)
+        self.run_git("-C", source, "-c", "core.autocrlf=false", "add", "--", *sorted(names))
+        self.run_git(
+            "-C", source, "-c", "user.name=Checkout regression",
+            "-c", "user.email=checkout-test@example.invalid", "-c", "commit.gpgsign=false",
+            "commit", "--quiet", "-m", "Preserve release bytes for checkout regression tests",
+        )
+        source_before = snapshot(source)
+
+        for autocrlf in ("false", "true"):
+            with self.subTest(autocrlf=autocrlf):
+                self.bundle = self.workspace / ("checkout-" + autocrlf)
+                self.run_git(
+                    "-c", "core.autocrlf=" + autocrlf, "clone", "--quiet",
+                    "--no-hardlinks", source, self.bundle,
+                )
+                self.repo = self.workspace / ("project-" + autocrlf)
+                user_files = self.repo / "user-files"
+                user_files.mkdir(parents=True)
+                (user_files / "notes.txt").write_bytes(b"Keep user content\r\n")
+                user_before = snapshot(user_files)
+
+                before = snapshot(self.workspace)
+                listing = self.run_installer("--list")
+                self.assert_success(listing)
+                for skill in self.manifest["skills"]:
+                    self.assertIn(skill + " (dependencies:", listing.stdout)
+                check = subprocess.run(
+                    [sys.executable, str(self.bundle / "scripts/update_manifest.py"), "--check"],
+                    cwd=self.workspace, capture_output=True, text=True, timeout=15, check=False,
+                )
+                self.assert_success(check)
+                self.assertEqual(snapshot(self.workspace), before)
+                # This includes the banner PNG as well as every hashed text file.
+                for name, data in source_bytes.items():
+                    self.assertEqual((self.bundle / name).read_bytes(), data, name)
+
+                for agent, folder in (("codex", ".agents"), ("claude", ".claude")):
+                    with self.subTest(agent=agent):
+                        before = snapshot(self.workspace)
+                        self.assert_success(self.run_installer(
+                            "--repo", self.repo, "--agent", agent, "--dry-run",
+                        ))
+                        self.assertEqual(snapshot(self.workspace), before)
+                        self.assert_success(self.run_installer("--repo", self.repo, "--agent", agent))
+                        skill_root = self.repo / folder / "skills"
+                        self.assertEqual({path.name for path in skill_root.iterdir()}, set(self.manifest["skills"]))
+                        for skill in self.manifest["skills"]:
+                            self.assert_payload_installed(skill, skill_root / skill)
+                        for name, data in source_bytes.items():
+                            if name.startswith("skills/"):
+                                self.assertEqual((skill_root / name[len("skills/"):]).read_bytes(), data, name)
+                        self.assertEqual(snapshot(user_files), user_before)
+
+                changed = self.bundle / "README.ko.md"
+                changed.write_bytes(changed.read_bytes() + b"\nChanged after checkout\n")
+                for agent in ("codex", "claude"):
+                    result = self.assert_refused_without_changes("--repo", self.repo, "--agent", agent)
+                    self.assertIn("SHA-256 mismatch: README.ko.md", result.stderr)
+                self.assertEqual(snapshot(source), source_before)
 
 
 class LegacyInstallerTests(InstallerTestCase):
