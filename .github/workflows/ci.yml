@@ -68,7 +68,6 @@ jobs:
     env:
       PYTHONUTF8: '1'
       AI_SLOP_BROWSER_TESTS: '1'
-      AI_SLOP_BROWSER_EVIDENCE: ${{ runner.temp }}/browser-evidence
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -87,6 +86,8 @@ jobs:
           google-chrome --version
       - name: Run opt-in Chrome regressions on synthetic fixtures
         id: browser
+        env:
+          AI_SLOP_BROWSER_EVIDENCE: ${{ runner.temp }}/browser-evidence
         run: python -m unittest discover -s tests -p test_browser_checks.py -v
       - name: Preserve browser evidence, including failures
         if: ${{ always() && steps.browser.outcome != 'skipped' }}
