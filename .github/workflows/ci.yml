@@ -88,7 +88,9 @@ jobs:
         id: browser
         env:
           AI_SLOP_BROWSER_EVIDENCE: ${{ runner.temp }}/browser-evidence
-        run: python -m unittest discover -s tests -p test_browser_checks.py -v
+        run: |
+          python -m unittest discover -s tests -p test_browser_checks.py -v
+          python -m unittest discover -s tests -p test_scope_browser_checks.py -v
       - name: Preserve browser evidence, including failures
         if: ${{ always() && steps.browser.outcome != 'skipped' }}
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6

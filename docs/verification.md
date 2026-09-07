@@ -1,5 +1,16 @@
 # 검증 기록
 
+## 범위 평가 harness (이슈 #6)
+
+검증일: 2026-09-07. 네 독립 사례의 fixture·고정 TASK·허용 수정 범위와 외부 판정 기준을 추가했다. [실행 계약과 재현 명령](https://github.com/ch4570/lutriva/blob/main/evals/README.md#four-bounded-scope-trials-suite-version-1)에 source 검사, 브라우저 관찰, 별도 의미·화면 검수의 경계를 기록했다.
+
+- `narrow-spacing`, `audit-read-only`, `empty-state-copy-only`, `master-page-consistency`를 각기 분리된 제품 복사본으로 실행한다. 기존 `search-editor-v3`와 결과 schema 1은 유지한다.
+- 정상 대조군에서 시작해 읽기 전용 파일·루트 symlink 변경, 공통 토큰과 지역 브랜드 덮어쓰기, 저장 값 손실, 보간 변수·ARIA 손실, 없는 필터 초기화 안내, 디자인 기록 불일치를 각각 검출했다. 복구 안내의 문자열 검사는 정해진 변이만 탐지하며 문구 의미 전반의 통과 근거가 아니다.
+- Chrome 연결부 추출 후 기존 18개 회귀 검사가 통과했다. 새 브라우저 대조군은 네 사례의 실제 저장·검색·행 동작, 계산된 스타일, 접근 가능한 이름을 수집한다. 화면 캡처의 존재를 시각 검수로 취급하지 않는다.
+- 필수 관찰이나 검수가 빠지면 `not-run`/`incomplete`로 남긴다. 이미 관찰한 구체적 실패는 나중의 관찰 누락으로 지우지 않는다. 반복 결과는 여덟 비교 쌍별로 표시하며 평균 점수로 회귀를 숨기지 않는다.
+
+이 절은 harness 검증 범위다. 실제 16개 native 실행과 8개 비교 결과는 별도 기록이 필요하며, harness 통과만으로 이슈 #6의 실행 평가가 완료되거나 스킬 품질이 개선되었다고 판단하지 않는다. snapshot을 직접 읽힌 실행은 `snapshot-direct`로 기록하고, 설치된 호스트의 명시적 호출과 자동 발견은 각각 미실행으로 구분한다. 현재 로컬 harness 검증은 macOS/Node 25.2.1/Python 3.14.7과 설치된 Chrome에서 수행했다. Node 20/Python 3.9 기본 런타임, Node 22 이상의 선택적 Chrome 검사와 기존 CI 행렬은 유지하며 새 의존성은 추가하지 않았다.
+
 ## 2.2.0 브랜드와 CLI 호환성
 
 검증일: 2026-09-07. Lutriva 이름, README·배너, npm 패키지와 CLI 별칭을 반영했다. `skills/`의 지침은 2.1.0과 동일하다.

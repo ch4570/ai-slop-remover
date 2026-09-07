@@ -1,0 +1,7 @@
+{
+  "empty_title": "“{query}” 검색 결과가 0건입니다.",
+  "empty_body": "조회된 결과가 없습니다. 검색어를 확인하십시오.",
+  "empty_name": "{query} 검색 결과 0건",
+  "never_title": "저장된 항목이 없습니다.",
+  "never_body": "등록된 항목은 이 목록에 표시됩니다."
+}

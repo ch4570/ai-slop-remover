@@ -50,6 +50,19 @@ class CompareEvaluationTests(unittest.TestCase):
     def invalid(self):
         self.assertEqual(self.compare()["verdict"], "invalid")
 
+    def test_pinned_suite_is_explicit_and_does_not_replace_default(self):
+        suite = {"id": "narrow-spacing-v1", "fixture_id": "narrow-spacing",
+                 "cases": {"narrow-spacing": {"allowed-scope": "behavior"}}}
+        for run in (self.baseline, self.candidate):
+            run["suite"] = suite["id"]
+            run["fixture"]["id"] = suite["fixture_id"]
+            run["cases"] = [{"id": "narrow-spacing", "checks": [
+                {"id": "allowed-scope", "kind": "behavior", "status": "pass",
+                 "evidence": {"text": "Only the designated margin declaration changed."}}]}]
+        self.assertEqual(comparator.compare(self.baseline, self.candidate, suite=suite)["verdict"], "pass")
+        self.invalid()
+        self.assertEqual(comparator.SUITE["id"], "search-editor-v3")
+
     def test_missing_evidence_cannot_pass(self):
         del self.candidate["cases"][0]["checks"][0]["evidence"]
         self.invalid()

@@ -1,0 +1,12 @@
+* { box-sizing: border-box; }
+body { margin: 0; color: var(--ink); background: #f1f4f2; font: 16px/1.6 system-ui, sans-serif; }
+header { padding: 16px 24px; background: var(--brand); color: white; }
+header a { color: white; margin-right: 20px; }
+main { max-width: 960px; padding: 24px 16px; margin: auto; }
+h1 { font-size: 28px; }
+.table-scroll { overflow-x: auto; border: 1px solid #bac9c0; border-radius: var(--radius); background: var(--surface); }
+table { width: 100%; border-collapse: collapse; white-space: nowrap; }
+th, td { padding: var(--cell-space) 12px; text-align: left; border-bottom: 1px solid #bac9c0; }
+button { padding: 8px 12px; border: 1px solid var(--brand); border-radius: 4px; color: var(--brand); background: white; font: inherit; cursor: pointer; }
+:focus-visible { outline: 3px solid #a3481b; outline-offset: 2px; }
+#detail { min-height: 26px; }

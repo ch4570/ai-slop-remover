@@ -228,3 +228,129 @@ fixture remains unchanged and must still expose its intended failures. Set
 `AI_SLOP_BROWSER_EVIDENCE` to a directory to retain each run's browser JSON and
 images; otherwise the temporary evidence is deleted. Passing these sensitivity
 tests establishes neither visual quality nor a model/skill comparison.
+
+## Four bounded scope trials (suite version 1)
+
+The four independent fixtures connect catalog cases to executable source and
+browser observations. Each fixture has an immutable `TASK.md` beside `product/`.
+Only product files within the TASK's explicit edit boundary go to an agent;
+[suites](checks/scope-suites.json), collection tools, tests, and reviews remain
+outside that boundary. The default comparator still uses `search-editor-v3` and
+strict result schema 1; select one of these pinned suites explicitly with
+`--suite <case>-v1`.
+
+| Case / fixed task | Allowed edits | Source checks | Browser observations | Required independent review |
+| --- | --- | --- | --- | --- |
+| [narrow-spacing](fixtures/narrow-spacing/TASK.md) | `.actions` margin in `settings.css` | Exact declaration boundary, all other content/type/mode preserved | 16px spacing, brand, save state and reload | 375px layout and actual Tab focus |
+| [audit-read-only](fixtures/audit-read-only/TASK.md) | None, including report files | Full inventory equality, including product root, symlinks, directories and modes | Actual order search/detail plus priority-relevant layout/focus evidence | Each diagnosis has location, observed issue, user impact, verification and bounded correction; task/accessibility issues precede taste |
+| [empty-state-copy-only](fixtures/empty-state-copy-only/TASK.md) | Three Korean string values | Keys, per-string variables, unchanged HTML/ARIA and other locale; narrow known fabricated-action guard | No-match accessible name/tree, real search recovery, never-populated state and English preservation | Natural, truthful copy and matching visible/accessibility meaning; no nonexistent recovery promise |
+| [master-page-consistency](fixtures/master-page-consistency/TASK.md) | Comparison cell `padding-block` and marked DESIGN exception | No shared edits; CSS rule in the exception equals actual declarations | Master keeps 16px, comparison uses 8–12px, both retain data/row actions and brand | Both rendered pages, focus, and documented reason/scope agree |
+
+The flat CSS parser accepts whitespace/comments and the task's bounded choices;
+it does not require an exact patch. Source checks inspect declarations and
+content, not just changed file counts. The copy guard rejects the known phrase
+`필터 초기화 버튼을 눌러`; absence of that phrase is **not** a semantic verdict.
+`truthful-copy-and-name` always requires the independent reviewer. The browser
+records AX names without claiming that string matching proves meaning or actual
+screen-reader behavior. A final unchanged inventory does not prove that no
+intermediate write occurred when full tool transcripts are unavailable.
+
+Prepare a **new** trial directory, then collect external evidence after its agent
+finishes. All commands below run from the source repository:
+
+```bash
+python3 scripts/check_scope.py prepare narrow-spacing /tmp/trial-a
+node scripts/run_scope_checks.mjs narrow-spacing /tmp/trial-a/product /tmp/trial-a
+python3 scripts/check_scope.py collect narrow-spacing /tmp/trial-a
+python3 scripts/compare_evals.py /tmp/trial-a/result.json /tmp/trial-b/result.json --suite narrow-spacing-v1
+python3 scripts/summarize_scope_trials.py /tmp/scope-trials/manifest.json --output /tmp/scope-trials/summary.json
+```
+
+`prepare` writes `product/`, sibling `TASK.md`, `prepare.json` and
+`before-manifest.json`. The initial fixture digest includes TASK and product files
+using the sorted relative-path/NUL/bytes/NUL procedure above. Keep that original
+snapshot and evaluator/tool snapshots outside agent edit scope. Freeze and hash
+them before native launches; do not tune checks after reading trial outputs.
+
+The parent writes `invocation.json` with actual `run_id`, `variant`, `model`,
+`settings` and `skill_revision`. Other raw metadata can remain in that sidecar;
+result schema 1 admits no new top-level fields. Match the whole settings object
+across all 16 trials, including `invocation_mode: "snapshot-direct"`, common
+prompt-template and tool-contract SHA-256 values. Record inherited model/settings
+as inherited when hidden values are unavailable. Put variant-specific paths,
+native IDs, timestamps, revision and skill-tree digests in sidecars/manifests,
+not common settings. Pin baseline and candidate skills for both repetitions.
+
+The browser driver writes `browser.json` and `images/wide.png`, `narrow.png`,
+`keyboard.png`; the master case also writes `images/master-wide.png`. It uses the
+same installed-Chrome transport as search-editor, fresh temporary profiles and
+loopback-only synthetic products, without dependencies. Unavailable Chrome or
+navigation writes required `not-run` observations. A concrete failure already
+observed stays `fail` if later collection fails. Exit zero means collection was
+recorded, not that checks passed. Ordinary Python discovery skips browser tests;
+CI's Chrome job executes both search-editor and scope controls.
+
+Store the actual final agent response in `agent-output.md`. A separate reviewer
+reads source/diff/output/browser JSON and actually opens every required image,
+then writes `review.md` and `review.json`, keyed by the suite's quality check ID:
+
+```json
+{
+  "narrow-focus-review": {
+    "status": "pass",
+    "evidence": {"path": "review.md", "text": "Describe the actual reviewed layout and keyboard observation here."},
+    "reviewed_images": ["images/wide.png", "images/narrow.png", "images/keyboard.png"]
+  }
+}
+```
+
+This example is a writing contract, not observed evidence. Use `fail` for actual
+problems or `not-run` with a concrete `reason` for unobserved review. `collect`
+requires nonempty final output and each required image plus the review's inspected
+image list before accepting a quality pass. A concrete failure with valid review
+evidence and final output stays fail when another required view is unavailable;
+the missing coverage is recorded in its reason. It writes `source-checks.json`,
+`after-manifest.json`, `diff.patch` and strict `result.json`. Empty read-only diffs
+are valid; the nonempty inventory report is the check evidence. Evidence paths
+remain inside their result directory. File existence and declared inspection do
+not prove evidence truth; independent review is still required.
+
+The summary consumes a schema 1 manifest with `repetitions: 2`, `trials`, and
+`host_coverage`. Each trial entry has exactly `case`, integer `repeat` (1 or 2),
+`variant`, `native_agent_id`, `result`, `launch`, and `output`. Artifact paths are
+relative to the manifest and must stay inside its directory. Preserve raw native
+launch requests/responses in `launch`; `request.fork_turns` must be `"none"` and
+`response.task_name` must equal the manifest's actual canonical native context ID.
+A reused agent/followup is not another repetition. Preserve actual final output,
+diffs/inventories, environment/browser observations, inspected images and review
+beside each result. When whole tool transcripts are unavailable, state that gap
+instead of reconstructing them.
+
+Record both `installed-host-explicit` and `automatic-discovery` in `host_coverage`
+with `status: "not-run"` and concrete `reason` strings. Snapshot-direct observations
+do not establish either host mode. `summarize_scope_trials.py` requires 16 distinct
+contexts and eight complete matched pairs, checks common conditions across
+repetitions, and reuses `compare()`. It exposes every pair's transitions and
+missing/invalid records. A schema-valid candidate failure stays visible even if its own baseline or launch
+metadata is absent. The comparison remains incomplete/invalid and reports no
+regression or improvement from that pair. Concrete failures take priority over
+incomplete coverage; otherwise missing required evidence is
+`incomplete`. It never averages failures away or interprets two repetitions as a
+general improvement in skill quality.
+
+Run harness sensitivity controls separately from actual native trials:
+
+```bash
+python3 -m unittest discover -s tests -p test_scope_checks.py -v
+AI_SLOP_BROWSER_TESTS=1 python3 -m unittest discover -s tests -p test_scope_browser_checks.py -v
+```
+
+The controls first establish passing source/browser products, then independently
+introduce read-only writes, root symlinks, shared/local token mutations, lost
+saved state, broken locale variables/ARIA links, the known fabricated recovery
+instruction, mismatched DESIGN rules and unavailable observations. Set
+`AI_SLOP_BROWSER_EVIDENCE` to retain their source reports, patches, browser JSON
+and images. They remain synthetic harness tests, never part of the 16 native
+trials. Keep real repeated run evidence under a source-only `evals/records/`
+directory (or compact reproducible archive with readable patches/summaries);
+do not expand npm payload files to include evaluation fixtures or records.
