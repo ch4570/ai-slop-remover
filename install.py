@@ -48,7 +48,7 @@ def unique_object(pairs):
 def read_json(path):
     try:
         return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique_object)
-    except (ValueError, UnicodeError, OSError) as exc:
+    except (ValueError, UnicodeError, OSError, RecursionError) as exc:
         raise BundleError("Cannot read JSON: " + str(path)) from exc
 
 

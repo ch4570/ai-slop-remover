@@ -536,6 +536,17 @@ class SkillSetInstallerTests(InstallerTestCase):
                 self.assertEqual(output.count("Status: identical installation"), len(self.dependencies) - 1)
                 self.assertNotIn("Private", output)
 
+    def test_status_continues_after_deeply_nested_receipt(self):
+        self.assert_success(self.install_repo())
+        marker = self.repo / ".agents" / "skills" / LEGACY_NAME / ".ui-craft-bundle-install.json"
+        marker.write_text("[" * 2000 + "0" + "]" * 2000, encoding="utf-8")
+        output = self.status_repo()
+        self.assertIn("Status: unverifiable", self.status_block(output, LEGACY_NAME))
+        self.assertEqual(output.count("Status:"), len(self.dependencies))
+        self.assertEqual(output.count("Status: identical installation"), len(self.dependencies) - 1)
+        refused = self.assert_repo_refused()
+        self.assertNotIn("Traceback", refused.stderr)
+
     def test_status_reports_deletions_leaving_empty_directories_and_added_empty_directories(self):
         self.assert_success(self.install_repo())
         dest = self.repo / ".agents" / "skills" / LEGACY_NAME
