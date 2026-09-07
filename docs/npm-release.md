@@ -22,4 +22,4 @@ npm view lutriva version dist-tags --json
 
 인증이 없으면 로컬 터미널에서 `npm login --registry=https://registry.npmjs.org/`으로 로그인한다. 비밀번호·토큰·OTP를 저장소나 채팅에 기록하지 않는다. 계정의 보안 설정에 따라 게시 시 추가 인증이 필요할 수 있다.
 
-게시 성공 후 레지스트리의 버전·무결성을 확인하고, 새 임시 프로젝트에서 `npx lutriva@2.2.0 --list`와 설치를 검증한다. 로컬 tarball 검증과 실제 레지스트리 설치 검증은 구분해서 보고한다.
+게시 성공 후 레지스트리의 버전·무결성을 확인하고, 새 임시 프로젝트에서 `npx lutriva@2.3.0 --list`와 설치를 검증한다. 로컬 tarball 검증과 실제 레지스트리 설치 검증은 구분해서 보고한다.

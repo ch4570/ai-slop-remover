@@ -1,7 +1,7 @@
 {
   "schema": 2,
   "name": "ai-slop-remover",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "skills": {
     "ai-slop-remover": {
       "dependencies": [
@@ -43,13 +43,13 @@
     }
   },
   "files": {
-    "CHANGELOG.md": "5dc78bfe3fd15059d56f98161530f30c3966c58bb9eba214cf803e518861b2af",
+    "CHANGELOG.md": "bc40312ab6eea0ab1c7f5be95952ff923de90dca04ae21028c0f378b127f8bc9",
     "LICENSE": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d",
-    "README.ko.md": "64cab979e38ca90a41dd2437d34cf192e6b22bbd08599ac3c7b41c76b81d7ef2",
-    "README.md": "a7c4f73a38c8827530209d163c9115f4e72a7fc3b397408da587f12a69828748",
+    "README.ko.md": "dec01ce0f68b4d2dfb771fc345380229855c5b393841482bf1fba59f8c168f13",
+    "README.md": "cdf9fe3122873e64e796553277fe78c2abda7e155f3c4c957711dfb16b54d196",
     "docs/assets/README.md": "97146aa13cf3e5916f3af906f81bc84411be8bb1b7ecca3967ebe920ea07ed6f",
     "docs/assets/lutriva-hero.png": "72e6ab0cd1c9f6fb3c2e0528ff29f713ed166e4dba5d0c2d75cc869800fa2942",
-    "docs/naming.md": "7bf0c7ee93ba66dfb7f92fef4746752305597d2201c37c01f3bf8f7fbae8a10b",
+    "docs/naming.md": "ac908695c6088064108adcc58fb226797c951ba16abb9a99d88244fed48f2d4a",
     "docs/verification.md": "66a54335302e64a76055cf3e54eb801c53e8d5efb39dccaccd901589fb5fa700",
     "evals/skill-cases.json": "1ba751fd1b4ee27317372a54903fd694bc879c2649edb91952c4667eca7020d9",
     "install.py": "63c5260e1ee961a3c5d73465edec1aef71e9c2bd53451f18fba2d7af16a1f408",

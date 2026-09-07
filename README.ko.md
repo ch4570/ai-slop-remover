@@ -76,10 +76,10 @@ npx --yes --package='git+https://github.com/ch4570/lutriva.git' -- lutriva --lis
 npx --yes --package='git+https://github.com/ch4570/lutriva.git' -- lutriva --repo "/path/to/project" --agent codex --dry-run
 ```
 
-이 명령은 기본 브랜치를 따라가며 저장소 접근 권한이 필요합니다. `--dry-run`을 빼면 설치합니다. npm에 `lutriva@2.2.0`이 게시된 후에는 다음 명령을 쓸 수 있습니다.
+이 명령은 기본 브랜치를 따라가며 저장소 접근 권한이 필요합니다. `--dry-run`을 빼면 설치합니다. npm에 `lutriva@2.3.0`이 게시된 후에는 다음 명령을 쓸 수 있습니다.
 
 ```sh
-npx lutriva@2.2.0 --repo "/path/to/project" --agent codex
+npx lutriva@2.3.0 --repo "/path/to/project" --agent codex
 ```
 
 같은 패키지에서 기존 `ai-slop-remover` CLI도 제공합니다. Python을 찾지 못하면 `AI_SLOP_PYTHON`에 실행 파일의 정확한 경로를 지정하세요. npm 런타임 의존성과 자동 postinstall 작업은 없습니다.
@@ -217,7 +217,7 @@ UI UX Pro Max, Vercel, getdesign.md에서 유용한 방법을 선별해 연결�
 python3 -m unittest discover -s tests -q
 npm test
 npm run check
-python3 scripts/export_bundle.py --output dist/lutriva-2.2.0.zip
+python3 scripts/export_bundle.py --output dist/lutriva-2.3.0.zip
 npm pack --dry-run
 ```
 

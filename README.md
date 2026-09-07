@@ -76,10 +76,10 @@ npx --yes --package='git+https://github.com/ch4570/lutriva.git' -- lutriva --lis
 npx --yes --package='git+https://github.com/ch4570/lutriva.git' -- lutriva --repo "/path/to/project" --agent codex --dry-run
 ```
 
-These commands follow the default branch and require repository access. Remove `--dry-run` to install. After `lutriva@2.2.0` is published to npm, the shorter command will be:
+These commands follow the default branch and require repository access. Remove `--dry-run` to install. After `lutriva@2.3.0` is published to npm, the shorter command will be:
 
 ```sh
-npx lutriva@2.2.0 --repo "/path/to/project" --agent codex
+npx lutriva@2.3.0 --repo "/path/to/project" --agent codex
 ```
 
 The same package also exposes the compatible `ai-slop-remover` CLI. Set `AI_SLOP_PYTHON` to an exact Python executable path when needed. There are no npm runtime dependencies or automatic postinstall steps.
@@ -206,7 +206,7 @@ python3 -m unittest discover -s tests -q
 npm test
 npm run check
 npm run check:js
-python3 scripts/export_bundle.py --output dist/lutriva-2.2.0.zip
+python3 scripts/export_bundle.py --output dist/lutriva-2.3.0.zip
 npm pack --dry-run
 ```
 
