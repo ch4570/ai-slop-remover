@@ -100,6 +100,12 @@ try {
     await waitForFixture(previousTimeOrigin);
     await evaluate(source);
   };
+  const navigateFixture = async url => {
+    const previousTimeOrigin = await evaluate('performance.timeOrigin');
+    await page('Page.navigate', { url });
+    await waitForFixture(previousTimeOrigin);
+    await evaluate(source);
+  };
   const resetFixture = async () => {
     const snapshot = await evaluate('seedSearchEditor()');
     await reloadFixture();
@@ -136,6 +142,38 @@ try {
   }
   checks.push(await evaluate(`observeOrdinaryEnter(${JSON.stringify(enter)})`));
   checks.push(await observeSavedReload('ordinary-enter-reload', enter.expected));
+  snapshot = await resetFixture();
+  // Preserve concrete failures and distinguish unavailable observations while
+  // later checks run independently, outside the navigated document.
+  const observeNavigation = async (id, observe) => {
+    try { checks.push(await observe()); }
+    catch (error) {
+      checks.push({ id, kind: 'behavior', status: 'not-run',
+        reason: 'Navigation observation did not complete: ' + String(error) });
+    }
+  };
+  let entries;
+  await observeNavigation('history-back', async () => {
+    entries = await evaluate('prepareSearchHistory()');
+    return evaluate(`evaluateHistoryTraversal('history-back', ${JSON.stringify(snapshot)}, 'back', ${JSON.stringify([entries[1], entries[0]])})`);
+  });
+  await observeNavigation('history-forward', async () => {
+    if (!entries) throw new Error('History entry preparation did not complete.');
+    return evaluate(`evaluateHistoryTraversal('history-forward', ${JSON.stringify(snapshot)}, 'forward', ${JSON.stringify([entries[1], entries[2]])})`);
+  });
+  // A body-only match also checks that shared URLs use the same search semantics.
+  const sharedQuery = '긴 한국어';
+  const sharedUrl = new URL(origin);
+  sharedUrl.searchParams.set('q', sharedQuery);
+  await observeNavigation('query-direct-entry', async () => {
+    await navigateFixture(sharedUrl.href);
+    return evaluate(`observeQueryRestoration('query-direct-entry', ${JSON.stringify(snapshot)}, ${JSON.stringify(sharedQuery)})`);
+  });
+  await observeNavigation('query-reload', async () => {
+    await reloadFixture();
+    return evaluate(`observeQueryRestoration('query-reload', ${JSON.stringify(snapshot)}, ${JSON.stringify(sharedQuery)})`);
+  });
+  await navigateFixture(origin);
   await resetFixture();
   await page('Emulation.setDeviceMetricsOverride', { width: 375, height: 844, deviceScaleFactor: 1, mobile: true });
   await page('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
@@ -162,7 +200,7 @@ try {
   const version = await call('Browser.getVersion');
   const evidence = { browser: version.product, origin, checks, layout, narrowState, focusOrder, exceptions, limitations: ['Synthetic composition events do not prove OS IME behavior.', 'Screenshots require actual visual inspection.', 'Emulated viewport is not a physical device.'] };
   await writeFile(path.join(output, 'browser.json'), JSON.stringify(evidence, null, 2) + '\n');
-  console.log(JSON.stringify({ output, passed: checks.filter(check => check.status === 'pass').length, failed: checks.filter(check => check.status === 'fail').length, exceptions: exceptions.length }));
+  console.log(JSON.stringify({ output, passed: checks.filter(check => check.status === 'pass').length, failed: checks.filter(check => check.status === 'fail').length, notRun: checks.filter(check => check.status === 'not-run').length, exceptions: exceptions.length }));
   if (exceptions.length) process.exitCode = 1;
 } finally {
   for (const entry of pending.values()) clearTimeout(entry.timer);

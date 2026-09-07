@@ -82,8 +82,28 @@ class CompareEvaluationTests(unittest.TestCase):
                 self.invalid()
 
     def test_old_suite_cannot_claim_current_pass(self):
-        self.baseline["suite"] = self.candidate["suite"] = "search-editor-v1"
-        self.invalid()
+        for suite_id in ("search-editor-v1", "search-editor-v2"):
+            with self.subTest(suite_id=suite_id):
+                self.baseline["suite"] = self.candidate["suite"] = suite_id
+                self.invalid()
+
+    def test_each_history_restoration_check_is_required_in_both_runs(self):
+        for check_id in ("history-back", "history-forward", "query-direct-entry", "query-reload"):
+            with self.subTest(check_id=check_id):
+                self.baseline, self.candidate = result("baseline"), result("candidate")
+                for run in (self.baseline, self.candidate):
+                    checks = run["cases"][0]["checks"]
+                    self.assertIn(check_id, {check["id"] for check in checks})
+                    checks[:] = [check for check in checks if check["id"] != check_id]
+                self.invalid()
+
+    def test_unobserved_history_restoration_is_incomplete(self):
+        checks = self.candidate["cases"][0]["checks"]
+        check = next((check for check in checks if check["id"] == "history-back"), None)
+        self.assertIsNotNone(check)
+        check.update(status="not-run", reason="The browser did not complete the history observation.")
+        check.pop("evidence")
+        self.assertEqual(self.compare()["verdict"], "incomplete")
 
     def test_example_tracks_the_current_suite_without_claiming_observations(self):
         example = json.loads((ROOT / "evals/examples/result-template.json").read_text(encoding="utf-8"))
@@ -142,13 +162,19 @@ class CompareEvaluationTests(unittest.TestCase):
         self.assertEqual(verdict["regressions"], ["search-editor/search-matches"])
 
     def test_observed_failure_takes_priority_over_unexecuted_checks(self):
-        self.candidate["cases"][0]["checks"][0]["status"] = "fail"
-        self.candidate["cases"][0]["checks"][-1].update(
-            status="not-run", reason="No browser was available for keyboard inspection.")
-        verdict = self.compare()
-        self.assertEqual(verdict["verdict"], "changes-required")
-        self.assertEqual(verdict["candidate_failures"], ["search-editor/search-matches"])
-        self.assertEqual(verdict["not_run"], ["candidate/search-editor/narrow-keyboard-review"])
+        for failed_id, incomplete_id in (("search-matches", "narrow-keyboard-review"),
+                                         ("history-back", "history-forward"),
+                                         ("history-back", "query-direct-entry")):
+            with self.subTest(failed_id=failed_id, incomplete_id=incomplete_id):
+                self.candidate = result("candidate")
+                checks = {check["id"]: check for check in self.candidate["cases"][0]["checks"]}
+                checks[failed_id]["status"] = "fail"
+                checks[incomplete_id].update(
+                    status="not-run", reason="The browser could not complete this observation.")
+                verdict = self.compare()
+                self.assertEqual(verdict["verdict"], "changes-required")
+                self.assertEqual(verdict["candidate_failures"], ["search-editor/" + failed_id])
+                self.assertEqual(verdict["not_run"], ["candidate/search-editor/" + incomplete_id])
 
     def test_unverified_baseline_cannot_establish_improvement(self):
         check = self.baseline["cases"][0]["checks"][0]

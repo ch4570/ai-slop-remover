@@ -2,7 +2,7 @@
 
 `skill-cases.json` is a scenario catalog. Package validation confirms its structure
 and routes; it does **not** execute an agent or establish improved UI quality.
-The separate, runnable `search-editor-v2` suite exercises observable outcomes in a
+The separate, runnable `search-editor-v3` suite exercises observable outcomes in a
 small local UI. Neither suite assigns a beauty score.
 
 ## Controlled agent trial
@@ -40,6 +40,20 @@ small local UI. Neither suite assigns a beauty score.
      Append `observeOrdinaryEnter(context)`, reload and reinject, then append
      `observeReload('ordinary-enter-reload', context.expected)`. A synthetic DOM
      key event cannot replace this positive control for native form submission.
+   - Seed, reload, and reinject again. Retain `await prepareSearchHistory()` as
+     `entries`. It creates three same-document entries: all notes, `고객`, and
+     `배송 확인`. Append `await evaluateHistoryTraversal('history-back', snapshot,
+     'back', [entries[1], entries[0]])`, then the corresponding `history-forward`
+     observation with `'forward', [entries[1], entries[2]]`. Each traversal calls
+     real `history.back()` or `history.forward()` and waits for a trusted
+     `popstate` from the expected entry. Both intermediate and final states count.
+   - Navigate the same isolated tab directly to `/?q=긴%20한국어` and wait for a
+     new document to finish loading. Reinject and append
+     `observeQueryRestoration('query-direct-entry', snapshot, '긴 한국어')`.
+     Reload that URL, wait for the new document, reinject, and append the same
+     observation with ID `query-reload`. Keep the snapshot outside the page and
+     do not rewrite its query input before either observation. Return to the
+     fixture origin before collecting the separate narrow-screen evidence.
 
    Each save mode starts from the same seeded snapshot to keep a prior failure
    from masking later controls. Reload checks run **before** the next seed and
@@ -47,6 +61,9 @@ small local UI. Neither suite assigns a beauty score.
    Missing/duplicate note buttons yield failed observations. Preserve completed
    observations and console errors; a runner exception makes unexecuted checks
    `not-run` with the error as the reason, never pass.
+   The installed driver records navigation/observation errors as `not-run` with
+   their reasons and continues the independent checks. A concrete observed state
+   mismatch remains `fail`; subsequent reloads and seeds do not erase it.
 6. Independently inspect the rendered UI at desktop and 375px width. Record a
    screenshot and keyboard observations for the quality checks below. Read the
    actual screenshots. DOM dimensions, build success, or an implementation agent's
@@ -72,7 +89,7 @@ kinds. Missing a check from both runs still invalidates a comparison.
 | Check | Evidence required |
 | --- | --- |
 | `search-matches` | Intended query returns the actual matching note. |
-| `query-history` | Three input events keep history length stable **and** synchronize URL query. |
+| `query-history` | Three rapid input events keep history length stable and, after a bounded settle, retain the final query consistently in the URL, input, matching records, and result count. |
 | `failed-save-draft` | Title/body survive injected failure; persisted storage remains unchanged. |
 | `failed-save-feedback` | Error feedback is truthful and saving is available again. |
 | `failed-save-storage` | Injected failure preserves the entire seeded storage snapshot, including every ID and title/body. |
@@ -83,15 +100,31 @@ kinds. Missing a check from both runs still invalidates a comparison.
 | `ordinary-reload` | After button saving and a real reload, the complete expected storage and every note's editor values remain intact. |
 | `ordinary-enter` | Selecting id 3 and pressing real browser Enter saves only its title/body while preserving all records and unique IDs. |
 | `ordinary-enter-reload` | After Enter saving and a real reload, the complete expected storage and every note's editor values remain intact. |
+| `history-back` | Two actual Back traversals complete with trusted popstate events at the expected entries; URL, input, matching records, and result count agree at both destinations. |
+| `history-forward` | Two actual Forward traversals complete with trusted popstate events at the expected entries; URL, input, matching records, and result count agree at both destinations. |
+| `query-direct-entry` | Direct navigation to a shared URL restores its query, matching records, and result count in a newly loaded document. |
+| `query-reload` | Reloading that shared URL restores the same complete search state in another newly loaded document. |
 | `brand-consistency` | A reviewer reads DESIGN.md and active tokens/components, then visually inspects the rendered result for preserved brand roles and justified exceptions. |
 | `narrow-keyboard-review` | A reviewer inspects a 375px rendered screenshot with long Korean input/error text and exercises keyboard access to search/editor/save with visible focus and readable feedback. |
 
-The first twelve checks are executable browser observations. The last two are
+The first sixteen checks are executable browser observations. The last two are
 read-only quality reviews of the agent's result: reviewers do not repair product
 code during scoring. Keep exact observed failures instead of averaging them away.
 The browser check uses a bounded 150ms wait for this fixture's 30ms local save;
 record slow/incomplete execution rather than inventing an observation. Synthetic
 composition events test application handlers, not actual OS/browser IME ordering.
+Rapid typing is observed after 150ms. Each history traversal waits up to 1000ms
+for a trusted `popstate`, verifies the evaluator-owned entry and URL, then waits
+50ms for app handlers before reading state. A wrong destination or observed state
+mismatch fails. If state matches but completion cannot be observed, the check is
+`not-run` with a concrete reason and the partial observations. Synthetic `popstate`
+dispatch cannot complete this wait. These bounds cover the small local fixture,
+not arbitrary network or long-debounce applications.
+History includes all-notes and filtered states so stale lists and counts are
+observable in both directions. Shared-URL checks use a body-only Korean match.
+The query observations match exact record sets through unique seeded titles and
+the title/body opened from each list button; the fixture exposes no numeric IDs
+in its DOM. They compare the visible numeric count as well as the button count.
 Storage comparisons check the full record count, unique numeric IDs, and all
 expected title/body values; record order is not significant. Expected snapshots
 come from evaluator-owned seed data and edits, not the candidate's saved output.
@@ -100,7 +133,7 @@ trial notes; do not upgrade the bounded checks to those broader claims.
 
 ## Result JSON contract (schema 1)
 
-- `schema`: integer `1`; `suite`: `search-editor-v2`.
+- `schema`: integer `1`; `suite`: `search-editor-v3`.
 - `run_id`: distinct lowercase identifier for each run; `variant`: `baseline` or
   `candidate` as appropriate to the comparator argument.
 - `fixture`: `{ "id": "search-editor", "sha256": "<initial-fixture-digest>" }`.
@@ -141,9 +174,10 @@ metadata. It is a writing template, **not execution evidence**; the comparator
 rejects it until real metadata and observations replace the placeholders. A valid
 schema does not prove that evidence is truthful. The independent reviewer remains
 responsible for checking artifacts, logs, and the stated observation scope.
-Version 1 records cannot establish a version 2 pass. Even if their suite name is
-updated, omitting any of the four new storage/reload checks invalidates the record;
-mark genuinely unexecuted checks `not-run` with a concrete reason instead.
+Version 1 and 2 records cannot establish a version 3 pass. Even if their suite name
+is updated, omitting any required check invalidates the record, including the
+four storage/reload checks added in v2 and the four history/shared-URL restoration
+checks added in v3. Mark unexecuted checks `not-run` with a concrete reason instead.
 
 Exit codes: `0` = candidate passes all required checks with a complete baseline;
 `1` = candidate has observed failures; `2` = invalid/incomparable records; `3` =
@@ -164,7 +198,8 @@ node scripts/run_browser_checks.mjs /tmp/candidate-fixture /tmp/evidence/candida
 
 Set `AI_SLOP_CHROME` to the exact browser executable when detection does not apply.
 The driver creates a temporary browser profile and a loopback-only server, seeds
-synthetic notes, runs all twelve external checks with actual page reloads, and
+synthetic notes, runs all sixteen external checks with actual Back/Forward,
+direct shared-URL navigation, and page reloads, and
 records 1280px, 375px error-state, and keyboard-focus images. It seeds again before
 collecting the narrow error-state images so a broken save cannot prevent that
 separate observation. Each check's evidence retains its expected/observed records.
@@ -183,7 +218,12 @@ AI_SLOP_BROWSER_TESTS=1 python3 -m unittest discover -s tests -p test_browser_ch
 These tests copy the flawed fixture to temporary directories, repair only its
 intended defects for a passing control, and inject data loss, unrelated content
 changes, duplicate IDs, hard-coded id 1 updates, failed-save writes, and reload
-regressions. Assertions consume actual `browser.json` observations. The original
+regressions. Search mutations remove popstate restoration, leave the list/count
+stale, ignore query restoration on entry or reload, block trusted events while
+dispatching synthetic replacements, make a shared document unavailable, and
+overwrite the final query with a delayed earlier input. Assertions consume actual
+`browser.json` observations, including incomplete checks that preserve observed
+failures. The original
 fixture remains unchanged and must still expose its intended failures. Set
 `AI_SLOP_BROWSER_EVIDENCE` to a directory to retain each run's browser JSON and
 images; otherwise the temporary evidence is deleted. Passing these sensitivity

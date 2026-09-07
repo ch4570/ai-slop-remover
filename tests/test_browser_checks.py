@@ -11,6 +11,8 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 SAVE = "const updated = notes.map(note => note.id === draft.id ? draft : note);"
+QUERY_FROM_URL = "el('query').value = new URL(location.href).searchParams.get('q') || '';"
+POPSTATE = "window.addEventListener('popstate', () => {\n  " + QUERY_FROM_URL + "\n  renderNotes();\n});"
 
 
 def replace_once(source, before, after):
@@ -59,6 +61,7 @@ class BrowserCheckTests(unittest.TestCase):
         self.assertIn(run.returncode, (0, 1) if allow_exceptions else (0,), run.stdout + run.stderr)
         self.assertTrue((output / "browser.json").is_file(), run.stdout + run.stderr)
         observed = json.loads((output / "browser.json").read_text(encoding="utf-8"))
+        self.observed = observed
         if not allow_exceptions:
             self.assertEqual(observed["exceptions"], [])
         checks = observed["checks"]
@@ -80,6 +83,77 @@ class BrowserCheckTests(unittest.TestCase):
         source = replace_once(repaired_source(), SAVE, SAVE[:-1] + ".reverse();")
         checks = self.run_fixture("reordered", source)
         self.assertEqual(set(checks.values()), {"pass"}, checks)
+
+    def test_missing_popstate_restoration_is_rejected(self):
+        source = replace_once(repaired_source(), POPSTATE, "")
+        checks = self.run_fixture("missing-popstate", source)
+        self.assert_failed(checks, "history-back", "history-forward")
+
+    def test_popstate_must_restore_the_list(self):
+        source = replace_once(repaired_source(), POPSTATE,
+                              "window.addEventListener('popstate', () => {\n  " + QUERY_FROM_URL + "\n});")
+        checks = self.run_fixture("popstate-stale-list", source)
+        self.assert_failed(checks, "history-back", "history-forward")
+
+    def test_popstate_must_restore_the_count(self):
+        source = replace_once(repaired_source(), POPSTATE,
+                              POPSTATE.replace("renderNotes();", "renderNotes();\n  el('count').textContent = '99개 메모';"))
+        checks = self.run_fixture("popstate-stale-count", source)
+        self.assert_failed(checks, "history-back", "history-forward")
+
+    def test_direct_entry_and_reload_must_restore_query(self):
+        source = replace_once(repaired_source(), QUERY_FROM_URL + "\n\nfunction showStatus",
+                              "el('query').value = '';\n\nfunction showStatus")
+        checks = self.run_fixture("entry-ignores-query", source)
+        self.assert_failed(checks, "query-direct-entry", "query-reload")
+
+    def test_reload_query_restoration_has_its_own_observation(self):
+        source = replace_once(repaired_source(), QUERY_FROM_URL + "\n\nfunction showStatus",
+                              QUERY_FROM_URL + "\nif (performance.getEntriesByType('navigation')[0].type === 'reload') "
+                              "el('query').value = '';\n\nfunction showStatus")
+        checks = self.run_fixture("reload-ignores-query", source)
+        self.assertEqual(checks.get("query-direct-entry"), "pass", checks)
+        self.assert_failed(checks, "query-reload")
+
+    def test_unobserved_popstate_cannot_pass_or_erase_later_checks(self):
+        source = replace_once(repaired_source(), POPSTATE,
+                              POPSTATE.replace("() => {", "event => {\n  if (!event.isTrusted) return;\n"
+                                               "  event.stopImmediatePropagation();\n"
+                                               "  queueMicrotask(() => window.dispatchEvent("
+                                               "new PopStateEvent('popstate', { state: event.state })));"))
+        checks = self.run_fixture("unobserved-popstate", source)
+        for check_id in ("history-back", "history-forward"):
+            self.assertEqual(checks.get(check_id), "not-run", checks)
+        for check_id in ("query-direct-entry", "query-reload", "ordinary-enter-reload"):
+            self.assertEqual(checks.get(check_id), "pass", checks)
+        for check in self.observed["checks"]:
+            if check["id"] in ("history-back", "history-forward"):
+                self.assertIn("popstate", check["reason"])
+                navigations = json.loads(check["evidence"]["text"])["navigations"]
+                self.assertTrue(navigations)
+                for navigation in navigations:
+                    self.assertFalse(navigation["completed"])
+                    self.assertIn("timeout", navigation["reason"].lower())
+                    self.assertTrue(navigation["stateMatches"])
+
+    def test_unavailable_shared_document_keeps_prior_failures(self):
+        source = replace_once(repaired_source(), POPSTATE, "")
+        source += "\nif (new URL(location.href).searchParams.get('q') === '긴 한국어') el('save').remove();\n"
+        checks = self.run_fixture("unavailable-shared-document", source)
+        self.assert_failed(checks, "history-back", "history-forward")
+        for check_id in ("query-direct-entry", "query-reload"):
+            self.assertEqual(checks.get(check_id), "not-run", checks)
+        self.assertEqual(checks["ordinary-enter-reload"], "pass", checks)
+        for check in self.observed["checks"]:
+            if check["id"] in ("query-direct-entry", "query-reload"):
+                self.assertIn("Fixture did not finish loading", check["reason"])
+
+    def test_delayed_earlier_input_cannot_replace_the_final_query(self):
+        source = replace_once(repaired_source(), "history.replaceState({}, '', url);",
+                              "history.replaceState({}, '', url);\n  if (el('query').value === '배') "
+                              "setTimeout(() => history.replaceState({}, '', url), 50);")
+        checks = self.run_fixture("delayed-stale-query", source)
+        self.assert_failed(checks, "query-history")
 
     def test_data_loss_is_rejected(self):
         source = replace_once(repaired_source(), SAVE, "const updated = [draft];")

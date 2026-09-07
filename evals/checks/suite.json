@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "id": "search-editor-v2",
+  "id": "search-editor-v3",
   "fixture_id": "search-editor",
   "cases": {
     "search-editor": {
@@ -16,6 +16,10 @@
       "ordinary-reload": "behavior",
       "ordinary-enter": "behavior",
       "ordinary-enter-reload": "behavior",
+      "history-back": "behavior",
+      "history-forward": "behavior",
+      "query-direct-entry": "behavior",
+      "query-reload": "behavior",
       "brand-consistency": "quality",
       "narrow-keyboard-review": "quality"
     }

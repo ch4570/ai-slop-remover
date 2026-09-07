@@ -38,7 +38,7 @@ const searchEditorCheck = {
 // Seed before loading the app again, so failed saves exercise existing data.
 // Expected records live in the evaluator/driver, never in candidate app globals.
 function seedSearchEditor() {
-  if (!['query', 'notes', 'title', 'body', 'editor', 'save', 'fail-save', 'status'].every(searchEditorCheck.el)) {
+  if (!['query', 'notes', 'count', 'title', 'body', 'editor', 'save', 'fail-save', 'status'].every(searchEditorCheck.el)) {
     throw new Error('Fixture DOM contract is missing; behavior checks were not run.');
   }
   const snapshot = [
@@ -55,11 +55,14 @@ async function evaluateSearchEditor(snapshot) {
   const checks = [];
   const initialHistory = history.length;
   input('query', '배'); input('query', '배송'); input('query', '배송 확인');
+  // Let this fixture's short async input work settle before checking the final URL.
+  await wait(150);
   checks.push(record('search-matches', el('notes').children.length === 1 && el('notes').textContent.includes('배송 확인'), {
     query: el('query').value, matches: el('notes').textContent,
   }));
-  checks.push(record('query-history', history.length === initialHistory && new URL(location.href).searchParams.get('q') === '배송 확인', {
-    before: initialHistory, after: history.length, urlQuery: new URL(location.href).searchParams.get('q'),
+  const query = observeQueryState(snapshot, '배송 확인');
+  checks.push(record('query-history', history.length === initialHistory && query.pass, {
+    before: initialHistory, after: history.length, settleMs: 150, ...query.observed,
   }));
   input('query', '');
   const selectionFound = select(snapshot.find(note => note.id === 1));
@@ -89,6 +92,97 @@ async function evaluateSearchEditor(snapshot) {
     targetId: 1, expected, persisted, selectionFound, feedback: el('status').textContent, disabled: el('save').disabled,
   }));
   return { checks, expected };
+}
+
+// Match listed records through their unique seeded titles and opened editor
+// values. The fixture exposes no note IDs in the DOM; do not read app globals.
+function observeQueryState(snapshot, query) {
+  const { el, select, sameNotes } = searchEditorCheck;
+  const expected = snapshot.filter(note => `${note.title} ${note.body}`.includes(query.trim()));
+  const listed = [...el('notes').querySelectorAll('button')].map(button => button.textContent);
+  const opened = expected.map(note => {
+    const selectionFound = select(note);
+    return { id: note.id, selectionFound,
+      title: selectionFound ? el('title').value : null,
+      body: selectionFound ? el('body').value : null };
+  });
+  const urlQuery = new URL(location.href).searchParams.get('q') || '';
+  const inputQuery = el('query').value;
+  const countText = el('count').textContent;
+  const count = countText.match(/\d+/);
+  const reportedCount = count ? Number(count[0]) : null;
+  return {
+    pass: urlQuery === query && inputQuery === query && listed.length === expected.length &&
+      reportedCount === expected.length && opened.every(note => note.selectionFound) && sameNotes(expected, opened),
+    observed: { expectedQuery: query, expected, urlQuery, inputQuery, listed, opened, countText, reportedCount },
+  };
+}
+
+async function prepareSearchHistory() {
+  const { input, wait } = searchEditorCheck;
+  input('query', '배송 확인');
+  await wait(150);
+  // Only evaluator-owned entries on this synthetic origin are traversed. Starting
+  // with three states makes missing restoration visible in both directions.
+  return ['', '고객', '배송 확인'].map((query, entry) => {
+    const url = new URL(location.href);
+    if (query) url.searchParams.set('q', query); else url.searchParams.delete('q');
+    const state = { searchEditorEntry: entry };
+    if (entry === 0) history.replaceState(state, '', url);
+    else history.pushState(state, '', url);
+    return { query, url: url.href, entry };
+  });
+}
+
+async function evaluateHistoryTraversal(id, snapshot, direction, destinations) {
+  const { wait, record } = searchEditorCheck;
+  const navigations = [];
+  for (const destination of destinations) {
+    const started = performance.now();
+    const navigation = await new Promise(resolve => {
+      const finish = observed => {
+        clearTimeout(timer);
+        window.removeEventListener('popstate', onPopstate);
+        resolve({ ...observed, elapsedMs: performance.now() - started });
+      };
+      const onPopstate = event => {
+        if (!event.isTrusted) return;
+        const completed = location.href === destination.url && event.state?.searchEditorEntry === destination.entry;
+        finish({ completed, trustedPopstate: true, eventUrl: location.href, eventState: event.state,
+          ...(completed ? {} : { reason: 'History reached an unexpected entry.' }) });
+      };
+      const timer = setTimeout(() => finish({ completed: false, trustedPopstate: false,
+        reason: 'Trusted popstate observation timeout after 1000ms.' }), 1000);
+      window.addEventListener('popstate', onPopstate);
+      try {
+        if (direction === 'back') history.back(); else history.forward();
+      } catch (error) {
+        finish({ completed: false, trustedPopstate: false, reason: String(error) });
+      }
+    });
+    // Observe after the entire popstate dispatch, including the app's handlers.
+    await wait(50);
+    try {
+      const state = observeQueryState(snapshot, destination.query);
+      navigations.push({ direction, destination, ...navigation, stateMatches: state.pass, ...state.observed });
+    } catch (error) {
+      navigations.push({ direction, destination, ...navigation, stateMatches: null, observationError: String(error) });
+    }
+  }
+  const failed = navigations.some(step => step.stateMatches === false || (step.trustedPopstate && !step.completed));
+  const complete = navigations.length > 0 && navigations.every(step => step.completed && step.stateMatches);
+  const check = record(id, complete, { navigations });
+  if (!failed && !complete) {
+    check.status = 'not-run';
+    check.reason = 'History observation incomplete: ' + [...new Set(navigations
+      .flatMap(step => [step.reason, step.observationError]).filter(Boolean))].join(' ');
+  }
+  return check;
+}
+
+function observeQueryRestoration(id, snapshot, query) {
+  const state = observeQueryState(snapshot, query);
+  return searchEditorCheck.record(id, state.pass, state.observed);
 }
 
 async function evaluateOrdinarySave(snapshot) {
