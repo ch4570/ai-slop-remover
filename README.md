@@ -161,13 +161,39 @@ Run from a source checkout:
 python3 -m unittest discover -s tests -q
 npm test
 npm run check
+npm run check:js
 python3 scripts/export_bundle.py --output dist/lutriva-2.2.0.zip
 npm pack --dry-run
 ```
 
 After intentional release-file edits, run `python3 scripts/update_manifest.py`, review the hashes, and rerun the checks. Export validates first, then creates a new offline ZIP with the installer, skills, and user documentation. Git metadata, development scripts, and tests are excluded.
 
-The optional `scripts/run_browser_checks.mjs` requires an existing Chrome installation and Node 22+. It installs no dependencies. See `docs/npm-release.md` for registry publication steps.
+`.github/workflows/ci.yml` runs on every pull request and push to `main`:
+
+| Job | Node | Python | Checks |
+| --- | --- | --- | --- |
+| Ubuntu 24.04 | 20 | 3.9 | Minimum supported runtimes; full Python suite, npm tests, release and syntax checks |
+| macOS 15 | 22 | 3.13 | Same checks on a representative macOS combination |
+| Windows 2025 | 22 | 3.13 | Same checks, including actual npm command shims and filesystem behavior |
+| Ubuntu 24.04 + existing Chrome | 22 | 3.13 | Opt-in browser regression tests; retained evidence artifacts |
+
+The three runtime jobs explicitly report the 18 browser tests as skipped; the separate Chrome job executes them. The Python suite includes fresh Git clones with both `core.autocrlf=false` and `true`, hash checks and installs. The npm suite creates a real tarball, installs it offline, executes both command aliases, and tests Python selection, paths with spaces, dry-run and identical reinstall. CI pins `AI_SLOP_PYTHON` to the selected setup-python executable; a separate case also exercises automatic discovery. Tests that need symlinks require symlink privileges, including Developer Mode or elevation on Windows; CI does not suppress those failures.
+
+On Windows, use the selected `python` executable for the Python commands. These are the equivalents of the first and third checks above:
+
+```sh
+python -m unittest discover -s tests -v
+python scripts/update_manifest.py --check
+python scripts/check_package.py
+```
+
+The browser driver requires an existing Chrome installation and Node 22+. To reproduce its CI job on macOS or Linux:
+
+```sh
+AI_SLOP_BROWSER_TESTS=1 python3 -m unittest discover -s tests -p test_browser_checks.py -v
+```
+
+Set `AI_SLOP_CHROME` to the browser executable if automatic detection fails, and `AI_SLOP_BROWSER_EVIDENCE` to retain evidence outside the temporary directory. Missing Chrome or failed observations fail the browser job. All checks use built-in runtime modules and install no project dependencies. Model-calling comparisons remain a separate, manual maintainer workflow in `evals/README.md`; CI does not claim model quality, visual review or actual OS IME coverage. See `docs/npm-release.md` for registry publication steps.
 
 </details>
 

@@ -10,7 +10,6 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const cli = path.join(root, 'bin/ai-slop-remover.js');
 const manifest = JSON.parse(readFileSync(path.join(root, 'manifest.json'), 'utf8'));
 const packageInfo = JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8'));
-const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 
 function temporary(t) {
   const dir = realpathSync(mkdtempSync(path.join(tmpdir(), 'slop npm ')));
@@ -28,7 +27,16 @@ function run(args, options = {}) {
 }
 
 function succeeded(result) {
-  assert.equal(result.status, 0, result.stdout + result.stderr);
+  assert.equal(result.status, 0, result.error?.message || result.stdout + result.stderr);
+}
+
+function runNpm(args, options) {
+  // npm test supplies its CLI path. Running that JavaScript through Node avoids
+  // npm.cmd shell parsing of tarball and consumer paths containing spaces.
+  assert.ok(process.env.npm_execpath, 'Run this suite with npm test.');
+  return spawnSync(process.execPath, [process.env.npm_execpath, ...args], {
+    encoding: 'utf8', timeout: 30000, ...options,
+  });
 }
 
 test('help and version work without Python or filesystem changes', (t) => {
@@ -52,10 +60,27 @@ test('missing Python fails clearly without creating a destination', (t) => {
   assert.deepEqual(readdirSync(cwd), []);
 });
 
-test('list exposes every packaged skill', () => {
-  const result = run(['--list']);
+test('list exposes every skill with detected Python and an explicit executable path containing spaces', (t) => {
+  const automatic = { ...process.env };
+  delete automatic.AI_SLOP_PYTHON;
+  const result = run(['--list'], { env: automatic });
   succeeded(result);
   for (const skill of Object.keys(manifest.skills)) assert.ok(result.stdout.includes(skill));
+
+  const environment = path.join(temporary(t), 'python environment');
+  const python = process.env.AI_SLOP_PYTHON || (process.platform === 'win32' ? 'python' : 'python3');
+  succeeded(spawnSync(python, ['-m', 'venv', '--without-pip', '--copies', environment], {
+    encoding: 'utf8', timeout: 30000,
+  }));
+  const executable = path.join(environment, process.platform === 'win32' ? 'Scripts/python.exe' : 'bin/python');
+  const probe = spawnSync(executable, ['-c', 'import sys; print(sys.version); print(sys.executable)'], {
+    encoding: 'utf8', timeout: 15000,
+  });
+  succeeded(probe);
+  t.diagnostic('Explicit Python: ' + probe.stdout.trim());
+  const configured = run(['--list'], { env: { ...process.env, AI_SLOP_PYTHON: executable } });
+  succeeded(configured);
+  assert.equal(configured.stdout, result.stdout);
 });
 
 for (const agent of ['codex', 'claude']) {
@@ -99,8 +124,8 @@ test('status forwards selection, reports every dependency, and preserves user ed
   const before = statSync(entry).mtimeMs;
   const status = run([...args, '--status']);
   succeeded(status);
-  assert.match(status.stdout, /ui-craft-bundle:\n[\s\S]*Status: user modifications/);
-  assert.match(status.stdout, /ux-writing:\n[\s\S]*Status: identical installation/);
+  assert.match(status.stdout, /ui-craft-bundle:\r?\n[\s\S]*Status: user modifications/);
+  assert.match(status.stdout, /ux-writing:\r?\n[\s\S]*Status: identical installation/);
   assert.match(status.stdout, /modified: "SKILL.md"/);
   assert.ok(status.stdout.includes('Review and back up before reinstalling: ' + path.dirname(entry)));
   assert.equal(readFileSync(entry, 'utf8'), 'User customization');
@@ -114,8 +139,8 @@ test('npm tarball has exactly the release payload and equivalent installed comma
   const directory = temporary(t);
   // A parent `npm publish --dry-run` propagates its config to lifecycle tests.
   // These isolated fixtures still need a real tarball and local installation.
-  const packed = spawnSync(npm, ['pack', '--dry-run=false', '--ignore-scripts', '--json', '--pack-destination', directory], {
-    cwd: root, encoding: 'utf8', timeout: 30000,
+  const packed = runNpm(['pack', '--dry-run=false', '--ignore-scripts', '--json', '--pack-destination', directory], {
+    cwd: root,
   });
   succeeded(packed);
   const [report] = JSON.parse(packed.stdout);
@@ -124,8 +149,8 @@ test('npm tarball has exactly the release payload and equivalent installed comma
   assert.equal(report.name, packageInfo.name);
   const consumer = path.join(directory, 'consumer');
   mkdirSync(consumer);
-  const installed = spawnSync(npm, ['install', '--dry-run=false', '--offline', '--ignore-scripts', '--no-audit', '--no-fund', '--prefix', consumer, path.join(directory, report.filename)], {
-    cwd: directory, encoding: 'utf8', timeout: 30000,
+  const installed = runNpm(['install', '--dry-run=false', '--offline', '--ignore-scripts', '--no-audit', '--no-fund', '--prefix', consumer, path.join(directory, report.filename)], {
+    cwd: directory,
   });
   succeeded(installed);
   const commandOutput = new Map();
