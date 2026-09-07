@@ -20,7 +20,17 @@ AI가 만든 듯 획일적인 화면을 다듬고, 사용자가 편하게 작업
 
 ## 설치
 
-Python 3.9 이상이 필요합니다. 저장소를 clone하거나 배포 ZIP을 풀고 `install.py`가 있는 폴더에서 실행하세요. 별도 Python 패키지나 API 키는 필요하지 않습니다.
+Node.js 20 이상과 Python 3.9 이상이 있으면 npm으로 바로 실행합니다.
+
+```bash
+npx ai-slop-remover-skills --list
+npx ai-slop-remover-skills --repo "/path/to/project" --agent codex --dry-run
+npx ai-slop-remover-skills --repo "/path/to/project" --agent codex
+```
+
+npm 명령은 함께 배포한 Python 설치기를 실행합니다. Python은 미리 설치되어 있어야 하며, PATH에서 찾지 못하면 `AI_SLOP_PYTHON`에 실행 파일의 정확한 경로를 지정하세요. npm 런타임 의존성이나 자동 postinstall 작업은 없습니다. Claude Code는 `--agent claude`로 설치합니다.
+
+저장소 clone 또는 ZIP으로도 설치할 수 있습니다. `install.py`가 있는 폴더에서 아래 명령을 실행하세요. Python 설치기에는 별도 패키지나 API 키가 필요하지 않습니다.
 
 ```bash
 python3 install.py --list
@@ -104,6 +114,8 @@ python3 -m unittest discover -s tests -v
 python3 scripts/update_manifest.py --check
 python3 scripts/check_package.py
 python3 scripts/export_bundle.py --output dist/ai-slop-remover.zip
+npm test
+npm pack --dry-run
 ```
 
 배포 파일을 의도적으로 수정했다면 `python3 scripts/update_manifest.py`로 해시를 갱신한 뒤 다시 검증합니다. 내보내기는 검증을 통과한 manifest 파일만 ZIP에 넣습니다.

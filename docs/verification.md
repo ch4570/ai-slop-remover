@@ -15,6 +15,9 @@
 | 실제 ZIP 내보내기 및 해제 | 통과 | manifest와 파일 목록 일치, Git·OMX·개발 도구·Finder 파일 제외 |
 | ZIP → 임시 Codex/Claude 프로젝트 | 모두 통과 | 각 7개 스킬 dry-run·설치·동일 재설치, 프로젝트 지침 파일 무변경 |
 | `git diff --check` | 통과 | 공백 오류 |
+| `npm test` | 7개 통과 | CLI 옵션, Python 부재 처리, 공백 경로, Codex·Claude 설치·재설치·수정본 보존, 선택 설치, npm tarball의 정확한 파일 목록과 오프라인 설치 후 실행 |
+
+npm 패키지는 `ai-slop-remover-skills@2.0.0`, 실행 명령은 `ai-slop-remover`이다. Node.js 20 이상과 Python 3.9 이상을 요구하며 기존 Python 설치기를 재사용한다. npm 설치 시 프로젝트를 수정하는 lifecycle hook은 없고, 배포 전 검사만 설정했다. npm 검증은 macOS의 Node.js 25.2.1/npm 11.7.0에서 실행했으며 Windows의 Python launcher 경로는 실제 실행 검증하지 않았다. 이 문서의 패키징 검사 통과는 npm 레지스트리 게시 성공을 뜻하지 않는다.
 
 공식 validator는 이미 설치된 SkillEvaluator 환경의 PyYAML을 사용했다. 프로젝트에 의존성을 추가하지 않았다. SkillEvaluator 원본 보고서는 로컬 임시 경로 `agentlab-skillevaluator.MFmKx8/<skill>/`에 생성했으며 배포 파일에 넣지 않았다.
 

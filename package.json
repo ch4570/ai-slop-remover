@@ -1,0 +1,48 @@
+{
+  "name": "ai-slop-remover-skills",
+  "version": "2.0.0",
+  "description": "A skill set for removing generic AI UI and creating clear, smooth, user-friendly product experiences.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "ai-slop-remover": "bin/ai-slop-remover.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "bin/ai-slop-remover.js",
+    "install.py",
+    "manifest.json",
+    "README.ko.md",
+    "CHANGELOG.md",
+    "docs/verification.md",
+    "evals/skill-cases.json",
+    "skills/**/SKILL.md",
+    "skills/**/LICENSE",
+    "skills/**/agents/*.yaml",
+    "skills/**/reference/**/*.md",
+    "skills/**/references/*.md",
+    "skills/**/assets/*.md",
+    "skills/**/assets/LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test tests/npm-cli.test.mjs",
+    "check": "python3 scripts/update_manifest.py --check && python3 scripts/check_package.py",
+    "prepack": "npm run check",
+    "prepublishOnly": "npm test && python3 -m unittest discover -s tests -q"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ch4570/ai-slop-remover.git"
+  },
+  "homepage": "https://github.com/ch4570/ai-slop-remover#readme",
+  "bugs": {
+    "url": "https://github.com/ch4570/ai-slop-remover/issues"
+  },
+  "keywords": ["agent-skills", "codex", "claude-code", "ui", "ux", "ai-slop", "design", "accessibility"],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

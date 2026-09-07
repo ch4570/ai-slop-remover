@@ -43,11 +43,11 @@
     }
   },
   "files": {
-    "CHANGELOG.md": "19da417d825d224f483a82379cfeab1c969d490e384ac97751aab9fa0f56c3d9",
+    "CHANGELOG.md": "9248c3701c13ece7f566bca7c77ec486e6447e4173e8582432ad212620076277",
     "LICENSE": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d",
-    "README.ko.md": "56749f860b0fb6b27b6a2fe40964f262edfe4e0d384f930babbe083ddae57c2d",
-    "README.md": "71ddd48badf545b32b2cb9e4108039cfe532fdc579bc3f0e405ae278238e59bd",
-    "docs/verification.md": "d706877487e194506bdc859a401a6efdda286e5c34f939bdd646187609f47d81",
+    "README.ko.md": "1da6bffac49c670c965b9fe4ae9835feb1c81d380e73be26acb53c23e7373f83",
+    "README.md": "d7714c7a27b39685cc6ea877f6547d46b03b7c5a865362a9d23cc0679f13c8a7",
+    "docs/verification.md": "7f25b7ef366a2c1c7ec76ead013752e02b9819d2b1bb5ec748a6141f808940ba",
     "evals/skill-cases.json": "711894db4c2a4d546f0c65ec673609eaa6b9634d53221d112f1057b3b874b00b",
     "install.py": "6d8f3ba65257fd590086ac06fd6d42be1248fb94a56e4f8b35723b1d5197f75e",
     "skills/ai-slop-remover/LICENSE": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d",

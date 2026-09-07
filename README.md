@@ -18,7 +18,17 @@ Preserve the product's brand and stack. Remove friction and unnecessary decorati
 
 ## Install
 
-Python 3.9+; no third-party packages, API keys, or network downloads. Clone or download the repository and run from its root:
+Use npm with Node.js 20+ and Python 3.9+:
+
+```bash
+npx ai-slop-remover-skills --list
+npx ai-slop-remover-skills --repo "/path/to/project" --agent codex --dry-run
+npx ai-slop-remover-skills --repo "/path/to/project" --agent codex
+```
+
+The npm command calls the bundled Python installer; Python must already be installed. No npm runtime dependencies or automatic postinstall steps are included. Set `AI_SLOP_PYTHON` to an exact executable path if Python is not on PATH. Use `--agent claude` for Claude Code.
+
+Alternatively, clone or download the repository and run from its root. The Python installer itself uses no third-party packages, API keys, or network downloads:
 
 ```bash
 python3 install.py --list
@@ -68,6 +78,8 @@ python3 -m unittest discover -s tests -v
 python3 scripts/update_manifest.py --check
 python3 scripts/check_package.py
 python3 scripts/export_bundle.py --output dist/ai-slop-remover.zip
+npm test
+npm pack --dry-run
 ```
 
 After intentional release-file edits, run `python3 scripts/update_manifest.py`, review the hashes, and rerun the checks. Export validates first and creates an offline ZIP containing manifest-listed release files.
