@@ -10,19 +10,20 @@ const args = process.argv.slice(2);
 if (args[0] === 'install') args.shift();
 
 if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
-  console.log(`AI Slop Remover Skills ${version}
+  console.log(`Lutriva ${version}
 
 Install product UI/UX skills for Codex or Claude Code.
 Requires Python 3.9+ for the bundled, hash-verifying installer.
 
 Usage:
-  ai-slop-remover --list
-  ai-slop-remover [install] --repo <project> --agent codex|claude [--dry-run]
-  ai-slop-remover --repo <project> --agent codex --skill ux-writing
-  ai-slop-remover --dest <exact-ui-craft-bundle-directory>
+  lutriva --list
+  lutriva [install] --repo <project> --agent codex|claude [--dry-run]
+  lutriva --repo <project> --agent codex --skill ux-writing
+  lutriva --dest <exact-ui-craft-bundle-directory>
 
 Repeat --skill to select multiple skills and their dependencies.
 Project installs default to all seven skills. Existing files are never overwritten.
+The ai-slop-remover command remains available as a compatibility alias.
 Set AI_SLOP_PYTHON to an exact Python executable path if automatic detection fails.`);
   process.exit(0);
 }

@@ -86,7 +86,7 @@ test('selection forwards to dependency-aware installer and preserves argument er
   assert.equal(run(['--definitely-invalid']).status, 2);
 });
 
-test('npm tarball has exactly the release payload and a working installed CLI', (t) => {
+test('npm tarball has exactly the release payload and equivalent installed command aliases', (t) => {
   const directory = temporary(t);
   // A parent `npm publish --dry-run` propagates its config to lifecycle tests.
   // These isolated fixtures still need a real tarball and local installation.
@@ -104,10 +104,24 @@ test('npm tarball has exactly the release payload and a working installed CLI', 
     cwd: directory, encoding: 'utf8', timeout: 30000,
   });
   succeeded(installed);
-  const installedCli = path.join(consumer, 'node_modules', packageInfo.name, 'bin', 'ai-slop-remover.js');
-  const result = spawnSync(process.execPath, [installedCli, '--list'], { cwd: directory, encoding: 'utf8', timeout: 15000 });
-  succeeded(result);
-  for (const skill of Object.keys(manifest.skills)) assert.ok(result.stdout.includes(skill));
-  const binName = process.platform === 'win32' ? 'ai-slop-remover.cmd' : 'ai-slop-remover';
-  assert.ok(statSync(path.join(consumer, 'node_modules', '.bin', binName)).isFile());
+  const commandOutput = new Map();
+  for (const command of ['lutriva', 'ai-slop-remover']) {
+    const binName = process.platform === 'win32' ? `${command}.cmd` : command;
+    const installedBin = path.join(consumer, 'node_modules', '.bin', binName);
+    assert.ok(statSync(installedBin).isFile());
+    const output = {};
+    for (const argument of ['--version', '--list']) {
+      const commandPath = process.platform === 'win32' ? `"${installedBin}"` : installedBin;
+      const result = spawnSync(commandPath, [argument], {
+        cwd: directory, encoding: 'utf8', timeout: 15000,
+        shell: process.platform === 'win32',
+      });
+      succeeded(result);
+      output[argument] = { stdout: result.stdout, stderr: result.stderr };
+    }
+    assert.equal(output['--version'].stdout.trim(), packageInfo.version);
+    for (const skill of Object.keys(manifest.skills)) assert.ok(output['--list'].stdout.includes(skill));
+    commandOutput.set(command, output);
+  }
+  assert.deepEqual(commandOutput.get('lutriva'), commandOutput.get('ai-slop-remover'));
 });

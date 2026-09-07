@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install verified AI Slop Remover skills from a checkout or exported bundle.
+"""Install verified Lutriva skills from a checkout or exported bundle.
 
 Uses Python's standard library only. Hashes detect changed payloads; they do not
 authenticate a publisher. Existing skill directories are never updated in place.
@@ -23,6 +23,7 @@ SET_NAME = "ai-slop-remover"
 SET_MARKER = ".ai-slop-remover-install.json"
 RELEASE_FILES = {
     "install.py", "README.ko.md", "README.md", "LICENSE", "CHANGELOG.md",
+    "docs/naming.md", "docs/assets/README.md", "docs/assets/lutriva-hero.png",
     "docs/verification.md", "evals/skill-cases.json",
 }
 

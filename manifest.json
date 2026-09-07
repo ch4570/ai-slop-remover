@@ -1,7 +1,7 @@
 {
   "schema": 2,
   "name": "ai-slop-remover",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "skills": {
     "ai-slop-remover": {
       "dependencies": [
@@ -43,13 +43,16 @@
     }
   },
   "files": {
-    "CHANGELOG.md": "7fd68e3a14d71518b96c3d6d86846ae2aa32bcf868829a7f364f0ca922b8cd48",
+    "CHANGELOG.md": "26fbbad2f8773b0defd66be07f52b18365829bf711ff1fb7af425a7db2899fa3",
     "LICENSE": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d",
-    "README.ko.md": "e9e0bab4c871156f8a7710eb2113711f2dd49dc54402b92338f7a3885043b2c4",
-    "README.md": "e65ffd41d75fb9b3ac3974221b08a5f206da3fc9e70003be430e3a44d69ddec8",
-    "docs/verification.md": "badbc817003169f501c0dc45919782c21df856b41651df055a2b1ebda21ad2ad",
+    "README.ko.md": "4d1d707d1b8a41aa5e5bae36cf1644c323f842eb6129feac7e85ee394328ae43",
+    "README.md": "e90029c05895638ee096db869513d5bbf43d24173f0cab7eaf09a1a1d6c0bc53",
+    "docs/assets/README.md": "97146aa13cf3e5916f3af906f81bc84411be8bb1b7ecca3967ebe920ea07ed6f",
+    "docs/assets/lutriva-hero.png": "72e6ab0cd1c9f6fb3c2e0528ff29f713ed166e4dba5d0c2d75cc869800fa2942",
+    "docs/naming.md": "3664b6e7f19f6f617fd5384205f0fec73057243c18b9371c64da2db60b48a780",
+    "docs/verification.md": "030ac2a4916230f5f58ed13f4edf68a200c274a0933c00e1363a1ff26d551e95",
     "evals/skill-cases.json": "5e21c2889e266769a234dca895c9f5547cda24c7500fa320ff52a780b825f8fc",
-    "install.py": "6d8f3ba65257fd590086ac06fd6d42be1248fb94a56e4f8b35723b1d5197f75e",
+    "install.py": "a4f567d9b6db181ce516b669107a57b2a32f288184d9fc7b5cd0be37c772c315",
     "skills/ai-slop-remover/LICENSE": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d",
     "skills/ai-slop-remover/SKILL.md": "c9d80c33dc20013c4d607b3dc99b16f9ebdba71b8ae0d1a05a35c7331be9f1a3",
     "skills/ai-slop-remover/agents/openai.yaml": "c0816bebb1903d69c9e754898a4f466d5e0b715ce8ae8c1734117aea6dbe1c9a",

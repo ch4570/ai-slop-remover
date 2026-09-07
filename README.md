@@ -1,105 +1,156 @@
-# AI Slop Remover
+<p align="center">
+  <img src="docs/assets/lutriva-hero.png" alt="Lutriva — an ivory river otter moving through a flowing jade current" width="100%">
+</p>
 
-A skill set for clear, calm, user-friendly product interfaces. Diagnose generic UI, improve visual hierarchy, make interactions predictable, write useful microcopy, and verify real outcomes.
+# Lutriva
 
-[한국어 안내 및 사용 예시](README.ko.md)
+[English](README.md) · [한국어](README.ko.md)
 
-| Skill | Responsibility |
-| --- | --- |
-| `ai-slop-remover` | Coordinate a scoped improvement from diagnosis to verification |
-| `ui-slop-audit` | Read-only diagnosis with evidence and user impact |
-| `ui-visual-refine` | Layout, hierarchy, density, typography, and responsive detail |
-| `ux-flow-refine` | Feedback, motion, interaction states, and failure recovery |
-| `ux-writing` | Action labels, instructions, errors, and empty states |
-| `ui-quality-gate` | Read-only verification of the implemented journey |
-| `ui-craft-bundle` | Original workflow and shared web/native references |
+**Interfaces, at ease.**
 
-Preserve the product's brand and stack. Remove friction and unnecessary decoration when they interfere with the task; do not ban colors, fonts, or cards by category. This is not an AI-authorship detector or a universal aesthetic preset.
+Lutriva gives **Codex and Claude Code** seven skills for making product interfaces clearer and easier to use. Find the friction, refine the screen, preserve the user's flow, and check the result in the actual product.
 
-## What changes in 2.1
+**7 skills · Web & native guidance · Codex / Claude Code · MIT**
 
-The same seven skills now carry design decisions between screens: read the existing design record, connect semantic roles to real tokens/components, and keep page exceptions scoped. Task-based pattern guidance helps choose structure and density. Eight interaction recipes cover composition input, history, scroll/focus continuity, pending feedback, rapid input, retry, and paste/autofill. A component specimen checks shared changes before a broad rollout.
+Formerly **AI Slop Remover**. The river otter represents the experience we aim for: purposeful movement with less friction. [The name and compatibility map](docs/naming.md).
 
-The workflow adapts selected ideas from UI UX Pro Max, Vercel, and getdesign.md while retaining the product's own authority. It adds no required upstream tools or new npm dependencies. For example:
+[Quick start](#quick-start) · [Try it](#give-it-a-real-task) · [Skills](#choose-your-scope) · [Design approach](#what-good-feels-like) · [Evidence](#check-the-work)
 
-```text
-$ai-slop-remover
-Add a detail page using our existing DESIGN.md and code tokens.
-Preserve any documented page exceptions. Keep search history, scroll position,
-Korean input, and save recovery predictable. Record reusable decisions and
-report actual checks separately from unverified behavior.
-```
+## What good feels like
 
-## Install
+- **A screen with a clear purpose.** Hierarchy, density, and words help people find their next action.
+- **A flow that holds together.** Input responds, focus stays predictable, and failed saves keep the draft.
+- **A product that stays itself.** Existing brand, tokens, components, and page exceptions guide the change.
+- **An outcome you can inspect.** Implementation, visual observation, and behavior checks are reported separately.
 
-Use npm with Node.js 20+ and Python 3.9+:
+Start with the task and the existing screen. A spacing fix should stay a spacing fix; a product redesign can go deeper. Colors, cards, and fonts are judged in context.
 
-```bash
-npx ai-slop-remover-skills --list
-npx ai-slop-remover-skills --repo "/path/to/project" --agent codex --dry-run
-npx ai-slop-remover-skills --repo "/path/to/project" --agent codex
-```
+## Quick start
 
-The npm command calls the bundled Python installer; Python must already be installed. No npm runtime dependencies or automatic postinstall steps are included. Set `AI_SLOP_PYTHON` to an exact executable path if Python is not on PATH. Use `--agent claude` for Claude Code.
+The npm registry release is **pending**. Use a source checkout now; access to this repository is required while it is private. The Python installer needs **Python 3.9+**, with no third-party packages or API keys.
 
-Alternatively, clone or download the repository and run from its root. The Python installer itself uses no third-party packages, API keys, or network downloads:
-
-```bash
-python3 install.py --list
+```sh
+git clone https://github.com/ch4570/ai-slop-remover.git lutriva
+cd lutriva
 python3 install.py --repo "/path/to/project" --agent codex --dry-run
 python3 install.py --repo "/path/to/project" --agent codex
 ```
 
-Codex destination: `.agents/skills/`. Use `--agent claude` for `.claude/skills/`. Refresh or restart the host as required for discovery; copying files does not prove runtime discovery or execution.
+Replace the example path with an existing project. Use `--agent claude` for Claude Code. The default installs all seven skills and their shared references.
 
-Select a specialist and its shared references with repeatable `--skill`:
+| Host | Skill directory |
+| --- | --- |
+| Codex | `.agents/skills/` |
+| Claude Code | `.claude/skills/` |
 
-```bash
-python3 install.py --repo "/path/to/project" --agent codex --skill ux-writing
+In Codex, start with `$ai-slop-remover`; in Claude Code, `/ai-slop-remover`.
+
+Refresh skill discovery or restart the host after installation. **Install in the terminal; send task prompts inside Codex or Claude Code.** Choose the host's skill selector if it uses a different invocation format.
+
+<details>
+<summary>npm CLI and installation options</summary>
+
+The npm package and preferred command are `lutriva`. The npm wrapper requires **Node.js 20+ and Python 3.9+**. Run the repository version with npm and Git before registry publication:
+
+```sh
+npx --yes --package='git+https://github.com/ch4570/ai-slop-remover.git' -- lutriva --list
+npx --yes --package='git+https://github.com/ch4570/ai-slop-remover.git' -- lutriva --repo "/path/to/project" --agent codex --dry-run
 ```
 
-The default installs all seven skills. Selecting `ai-slop-remover` includes the full set. Existing identical installations are left alone; changed or unowned directories are refused before new skills are copied. Review and move old installations to a backup location before updating. Nothing is overwritten automatically.
+These commands follow the default branch and require repository access. Remove `--dry-run` to install. After `lutriva@2.2.0` is published to npm, the shorter command will be:
 
-The legacy exact-directory command installs standalone UI Craft Bundle:
+```sh
+npx lutriva@2.2.0 --repo "/path/to/project" --agent codex
+```
 
-```bash
+The same package also exposes the compatible `ai-slop-remover` CLI. Set `AI_SLOP_PYTHON` to an exact Python executable path when needed. There are no npm runtime dependencies or automatic postinstall steps.
+
+Select individual skills from a checkout:
+
+```sh
+python3 install.py --list
+python3 install.py --repo "/path/to/project" --agent codex --skill ux-writing
+python3 install.py --repo "/path/to/project" --agent codex --skill ui-slop-audit --skill ui-quality-gate
+```
+
+Repeat `--skill` to combine specialists. Each selection includes its declared references; selecting `ai-slop-remover` includes the full set. The legacy exact-directory command installs standalone UI Craft Bundle:
+
+```sh
 python3 install.py --dest "/path/to/skills/ui-craft-bundle"
 ```
 
-Use project mode for dependency-bearing skills. Project code, `AGENTS.md`, `CLAUDE.md`, and global settings are unchanged. Release hashes detect edited files, not publisher identity. Git metadata and developer tooling are outside the installed payload.
+Use `--repo --agent` for skills that depend on sibling packages. Identical installations are left alone. Modified or unowned directories are refused before new skills are copied; review and move old installations to a backup location before updating. User files are never overwritten automatically.
 
-## Use
+The installer leaves project code, `AGENTS.md`, `CLAUDE.md`, and global settings alone. The Python installer performs no network downloads. Hashes detect edited files; they do not authenticate the publisher. [Compatibility details](docs/naming.md#compatibility).
+
+</details>
+
+## Give it a real task
+
+Tell Lutriva who is using the screen, what they need to finish, and what must stay familiar.
 
 ```text
 $ai-slop-remover
-Make this search screen clearer and easier to use.
-Preserve our brand and existing behavior. Inspect the current screen first.
-Improve the friction you identify, then check the primary task,
-small-screen layout, keyboard use, and relevant failure states.
-Distinguish what you implemented from what you actually tested.
+Improve this search screen for someone comparing several results.
+Inspect it first. Preserve our brand and existing behavior.
+Clarify hierarchy, filters, empty results, and failure recovery.
+Check narrow screens, keyboard use, and the main journey.
+Report what you changed and what you actually verified.
 ```
 
-Call a specialist for narrower work. Use the host's selector or equivalent invocation if dollar syntax is unavailable; Claude Code uses slash invocations such as `/ai-slop-remover`.
+For focused work, call one specialist:
 
-Figma, external design skills, and animation libraries are optional. Running and inspecting a product requires its development environment and authorized browser/device tools.
+| Need | Prompt inside Codex |
+| --- | --- |
+| Keep work safe when saving fails | `$ux-flow-refine` — Preserve the draft and focus, show save status, and make retry predictable. |
+| Make errors useful | `$ux-writing` — Rewrite the error and empty-state copy so people know what happened and what to do next. |
+| Check a finished change | `$ui-quality-gate` — Inspect the main journey, keyboard flow, narrow layout, and relevant failure states. |
 
-## Maintain
+Claude Code uses `/` in place of `$`. The same workflow supports native projects: name the platform, its conventions, and the journey. Running a product or inspecting its screen needs the project's environment and authorized browser/device tools. Figma and external design tools are optional.
 
-Run these commands from a source checkout. The exported ZIP contains the installer, skills, and user documentation; it omits development scripts and tests.
+## Choose your scope
 
-```bash
-python3 -m unittest discover -s tests -v
-python3 scripts/update_manifest.py --check
-python3 scripts/check_package.py
-python3 scripts/export_bundle.py --output dist/ai-slop-remover.zip
+| Skill | What it owns |
+| --- | --- |
+| [`ai-slop-remover`](skills/ai-slop-remover/SKILL.md) | Connect diagnosis, scoped improvements, and verification |
+| [`ui-slop-audit`](skills/ui-slop-audit/SKILL.md) | Read-only findings with evidence and user impact |
+| [`ui-visual-refine`](skills/ui-visual-refine/SKILL.md) | Hierarchy, layout, density, type, and responsive detail |
+| [`ux-flow-refine`](skills/ux-flow-refine/SKILL.md) | State, feedback, motion, and failure recovery |
+| [`ux-writing`](skills/ux-writing/SKILL.md) | Action labels, instructions, errors, and empty states |
+| [`ui-quality-gate`](skills/ui-quality-gate/SKILL.md) | Read-only checks of the implemented journey |
+| [`ui-craft-bundle`](skills/ui-craft-bundle/SKILL.md) | Integrated workflow and shared web/native references |
+
+Shared references keep the work coherent: [design memory](skills/ui-craft-bundle/references/design-memory.md) connects `DESIGN.md` to real tokens and components; [pattern selection](skills/ui-craft-bundle/references/pattern-selection.md) starts with the user's task; [eight interaction recipes](skills/ui-craft-bundle/references/interaction-recipes.md) cover input and navigation details. A [component specimen](skills/ui-craft-bundle/assets/component-specimen.md) checks shared changes before they spread to other screens.
+
+Selected ideas from UI UX Pro Max, Vercel, and getdesign.md inform the workflow. [Sources and adoption boundaries](skills/ui-craft-bundle/references/sources.md).
+
+## Check the work
+
+Version 2.1's bounded comparison found **no observed regression**: both the existing and revised guidance produced implementations that passed eight browser behavior checks and scoped visual/keyboard review. That single pair does not establish a general improvement in UI quality. [Full verification record](docs/verification.md).
+
+The source includes 19 [behavioral case contracts](evals/skill-cases.json), a deliberately flawed synthetic UI, external browser checks, and a result comparator. Case validation is a static check; an executed trial needs separate evidence. Maintainers can follow `evals/README.md`. Developer evaluation tools are excluded from the installed skills.
+
+<details>
+<summary>Contributor checks and portable export</summary>
+
+Run from a source checkout:
+
+```sh
+python3 -m unittest discover -s tests -q
 npm test
+npm run check
+python3 scripts/export_bundle.py --output dist/lutriva-2.2.0.zip
 npm pack --dry-run
 ```
 
-After intentional release-file edits, run `python3 scripts/update_manifest.py`, review the hashes, and rerun the checks. Export validates first and creates an offline ZIP containing manifest-listed release files.
+After intentional release-file edits, run `python3 scripts/update_manifest.py`, review the hashes, and rerun the checks. Export validates first, then creates a new offline ZIP with the installer, skills, and user documentation. Git metadata, development scripts, and tests are excluded.
 
-[Behavioral cases](evals/skill-cases.json) specify observable expectations for agent trials. Validating their structure is not an executed benchmark. See [verification scope](docs/verification.md).
+The optional `scripts/run_browser_checks.mjs` requires an existing Chrome installation and Node 22+. It installs no dependencies. See `docs/npm-release.md` for registry publication steps.
 
-The source checkout also contains an intentionally flawed synthetic UI and external checks in `evals/`. Follow `evals/README.md` for baseline/candidate trials and `scripts/compare_evals.py` for evidence comparison. The optional `scripts/run_browser_checks.mjs` uses an already installed Chrome and Node 22+; it installs nothing. These maintainer tools are not included in the npm skill payload. One trial demonstrates only its observed outcomes, not general design improvement.
+</details>
 
-Original instructions and code use [MIT](LICENSE). External resources are linked, not vendored. The [Agent Skills specification](https://agentskills.io/specification) informs the package format; specialist boundaries are this project's design choice.
+## Project notes
+
+[Name & artwork](docs/naming.md) · [Changelog](CHANGELOG.md) · [Verification](docs/verification.md) · [MIT license](LICENSE)
+
+Original instructions and code use MIT. The banner's generation notes are in [assets/README.md](docs/assets/README.md). External skill sources, fonts, and icons are not bundled. The [Agent Skills specification](https://agentskills.io/specification) informs the package format.

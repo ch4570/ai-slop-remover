@@ -1,10 +1,11 @@
 {
-  "name": "ai-slop-remover-skills",
-  "version": "2.1.0",
-  "description": "A skill set for removing generic AI UI and creating clear, smooth, user-friendly product experiences.",
+  "name": "lutriva",
+  "version": "2.2.0",
+  "description": "UI/UX skills for clear, calm product interfaces that feel easy to use.",
   "license": "MIT",
   "type": "module",
   "bin": {
+    "lutriva": "bin/ai-slop-remover.js",
     "ai-slop-remover": "bin/ai-slop-remover.js"
   },
   "engines": {
@@ -16,6 +17,9 @@
     "manifest.json",
     "README.ko.md",
     "CHANGELOG.md",
+    "docs/naming.md",
+    "docs/assets/README.md",
+    "docs/assets/lutriva-hero.png",
     "docs/verification.md",
     "evals/skill-cases.json",
     "skills/**/SKILL.md",

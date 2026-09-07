@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.2.0 — 2026-09-07
+
+- Introduce **Lutriva · 루트리바** with an original river-otter banner and the tagline “Interfaces, at ease.”
+- Reorganize both READMEs around purpose, a working source install, task prompts, and the seven skills; mark npm registry commands as pending.
+- Rename the npm package to `lutriva` and add its CLI alongside the compatible `ai-slop-remover` command. Keep skill IDs, environment variables, and installer receipts stable.
+- Include the banner and brand/compatibility notes in offline and npm payloads. No new dependencies or skill instruction changes.
+- Verify both installed CLI names with the existing package integration test.
+
 ## 2.1.0 — 2026-09-07
 
 - Connect all seven skills to persistent design decisions, real token/component mappings, scoped page exceptions, and documented conflict handling.
