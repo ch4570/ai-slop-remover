@@ -205,12 +205,13 @@ try {
 } finally {
   for (const entry of pending.values()) clearTimeout(entry.timer);
   socket?.close();
-  if (chrome && chrome.exitCode === null) {
+  if (chrome && chrome.exitCode === null && chrome.signalCode === null) {
     const exited = new Promise(resolve => chrome.once('exit', resolve));
     chrome.kill('SIGTERM');
     await Promise.race([exited, pause(2000)]);
-    if (chrome.exitCode === null) { chrome.kill('SIGKILL'); await Promise.race([exited, pause(2000)]); }
+    if (chrome.exitCode === null && chrome.signalCode === null) { chrome.kill('SIGKILL'); await Promise.race([exited, pause(2000)]); }
   }
   await new Promise(resolve => server.close(resolve));
-  await rm(profile, { recursive: true, force: true });
+  // Chrome helpers can finish profile writes just after the browser exits.
+  await rm(profile, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 }

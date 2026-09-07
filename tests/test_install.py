@@ -96,7 +96,8 @@ class InstallerTestCase(unittest.TestCase):
 class CheckoutInstallerTests(InstallerTestCase):
     def run_git(self, *args):
         result = subprocess.run(
-            ["git", "-c", "core.attributesFile=" + os.devnull, *map(str, args)],
+            ["git", "-c", "core.attributesFile=" + os.devnull,
+             "-c", "maintenance.auto=false", "-c", "gc.auto=0", *map(str, args)],
             cwd=self.workspace,
             env=dict(os.environ, GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull),
             capture_output=True,
