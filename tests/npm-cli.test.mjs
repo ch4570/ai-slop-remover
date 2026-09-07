@@ -127,7 +127,14 @@ test('status forwards selection, reports every dependency, and preserves user ed
   assert.match(status.stdout, /ui-craft-bundle:\r?\n[\s\S]*Status: user modifications/);
   assert.match(status.stdout, /ux-writing:\r?\n[\s\S]*Status: identical installation/);
   assert.match(status.stdout, /modified: "SKILL.md"/);
-  assert.ok(status.stdout.includes('Review and back up before reinstalling: ' + path.dirname(entry)));
+  const expectedDirectory = path.dirname(entry);
+  const backupPath = status.stdout.match(/^  Review and back up before reinstalling: ([^\r\n]+)\r?$/m)?.[1];
+  const pathDiagnostic = `Expected backup directory: ${expectedDirectory}\nStatus output:\n${status.stdout}`;
+  assert.ok(backupPath && path.isAbsolute(backupPath), pathDiagnostic);
+  let resolvedBackup;
+  assert.doesNotThrow(() => { resolvedBackup = realpathSync.native(backupPath); }, pathDiagnostic);
+  assert.equal(resolvedBackup, realpathSync.native(expectedDirectory), pathDiagnostic);
+  t.diagnostic(`Backup directory: reported=${backupPath}; expected=${expectedDirectory}; resolved=${resolvedBackup}`);
   assert.equal(readFileSync(entry, 'utf8'), 'User customization');
   assert.equal(statSync(entry).mtimeMs, before);
   assert.equal(run(args).status, 1);
