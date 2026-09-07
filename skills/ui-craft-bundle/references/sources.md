@@ -1,4 +1,22 @@
-# Upstream options and provenance
+# Research, upstream options, and provenance
+
+## UI/UX research integrated in this bundle
+
+The [anti-slop methods](anti-slop-methods.md) and [UX foundations](ux-foundations.md) were researched on 2026-09-07. They contain original decision aids and checks, with direct links beside the relevant guidance. Their practical examples are Lutriva's synthesis, not copied manuals or measured claims of improvement.
+
+- Nielsen Norman Group's [usability heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/), [visual hierarchy](https://www.nngroup.com/articles/visual-hierarchy-ux-definition/), [common region](https://www.nngroup.com/articles/common-region/), and [progressive disclosure](https://www.nngroup.com/articles/progressive-disclosure/) inform task, grouping, emphasis, and complexity decisions. They do not prescribe an aesthetic preset or a fixed number of actions.
+- GOV.UK's [notification guidance](https://design-system.service.gov.uk/components/notification-banner/) and [check-answers pattern](https://design-system.service.gov.uk/patterns/check-answers/) inform contextual feedback and review/edit recovery. Their service-specific layouts are not imposed on other products.
+- The foundations reference separates linked W3C WCAG 2.2 criteria from Apple and Android platform recommendations, and pairs them with observable checks. An expert review or automated check alone does not establish accessibility conformance.
+
+Read the reference relevant to the current design decision; using the bundle does not require retrieving all sources or installing external skills.
+
+## Toss technology blog design research
+
+[Toss design cases](toss-design.md) records eight official `toss.tech` articles inspected on 2026-09-07, with each original title, publication date, author, and direct URL. The cases cover Korean UX writing, keyboard-aware forms, accessible reordering, meaningful motion, mobile/desktop task context, component variation, specification order, and early task validation.
+
+Each case separates the author's account from Lutriva's application and recheck. The guidance is connected to the relevant writing, flow, motion, pattern-selection, and design-memory references. Historical implementation workarounds and reported metrics are not current platform standards or expected results for another product. No Toss branding, source bodies, internal tools, or TDS packages are bundled.
+
+## Optional upstream skills
 
 Reviewed 2026-09-07. These are optional external resources, not bundled dependencies or an upstream source snapshot. The bundle's instructions and packaging code were written for this workflow; upstream skill text and tools are not vendored. Verify current upstream instructions before installing because behavior can change.
 

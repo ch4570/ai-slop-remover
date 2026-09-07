@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+- Add a project-local learning CLI for frozen candidates, submitted-evidence evaluation, explicit adoption, scoped context, and rollback. Require repeated improvement, regression/transfer checks, compatible base/policy/generation, and intact evidence. Equal passes remain `no-change`; evidence declarations do not authenticate observed UI quality.
+- Define a broader local evaluation/improvement contract; distinguish the shipped manual workflow from unimplemented model execution, automatic adoption, host injection, and enforced isolation.
+- Benchmark Ouroboros and OMX templates plus OMC and Claude Code PR examples; standardize typed titles and Summary/Changes/Test plan sections with optional review notes and source-attributed guidance.
+- Integrate eight official Toss technology blog design articles as source-attributed cases, with scoped applications and rechecks routed into copy, flow, motion, pattern selection, and component guidance.
+- Add 14 task-driven methods for removing generic UI, with symptoms, scoped corrections, preservation boundaries, and observable rechecks.
+- Add shared web/mobile UX foundations covering recognition, grouping, disclosure, user control, feedback, error prevention, and accessibility; distinguish WCAG 2.2 criteria from Apple and Android recommendations.
+- Route all seven skills to the relevant guidance on demand, consolidate the visual symptom catalog, and record primary research sources and adoption boundaries.
+- Add three behavioral case contracts for disclosure, platform target criteria, and simplification that preserves affordances; catalog validation remains separate from executed trials.
+- Document the new guidance and manual CLI in both READMEs. Keep skill IDs, installer dependencies, and existing installer behavior unchanged.
+
 ## 2.2.0 — 2026-09-07
 
 - Introduce **Lutriva · 루트리바** with an original river-otter banner and the tagline “Interfaces, at ease.”

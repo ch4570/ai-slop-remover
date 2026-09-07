@@ -18,6 +18,9 @@ Turn a user's product task into a distinctive, usable screen whose controls work
 
 | Work | Read |
 | --- | --- |
+| Turn generic UI symptoms into concrete corrections | [anti-slop-methods.md](references/anti-slop-methods.md) |
+| Choose common UX principles and platform-specific checks | [ux-foundations.md](references/ux-foundations.md) |
+| Apply Toss design research to copy, forms, motion, or product structure | [toss-design.md](references/toss-design.md) |
 | New screen or visual redesign | [art-direction.md](references/art-direction.md) |
 | Reuse or update design decisions across screens | [design-memory.md](references/design-memory.md) |
 | Choose a task-appropriate layout or density | [pattern-selection.md](references/pattern-selection.md) |
@@ -29,6 +32,7 @@ Turn a user's product task into a distinctive, usable screen whose controls work
 | Critique, completion, regression checks | [verification.md](references/verification.md) |
 | Comparing or adding upstream skills | [sources.md](references/sources.md) |
 | Compare skill versions on real UI tasks | [behavior-evaluation.md](references/behavior-evaluation.md) |
+| Evaluate and improve project-local skill rules | [local-learning.md](references/local-learning.md), then [manual CLI](references/local-learning-cli.md) |
 
 For a small fix, load only the relevant reference. For a substantial screen, work through direction, interaction, platform implementation, and verification. Do not load all references by default. Treat the repository's explicit design system and the user's choices as stronger context than generic aesthetic preferences from this or an optional upstream skill.
 

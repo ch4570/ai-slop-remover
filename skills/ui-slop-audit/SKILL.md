@@ -19,6 +19,7 @@ Read [principles](reference/principles.md) first. Use the [KB index](reference/k
 
 ## Diagnose against the task
 
+- When a generic-looking symptom needs explanation, select from [anti-slop methods](../ui-craft-bundle/references/anti-slop-methods.md). Use [UX foundations](../ui-craft-bundle/references/ux-foundations.md) for relevant human factors or platform criteria. A heuristic suggests a finding to investigate; it does not prove a defect or authorize implementation.
 - Look for competing primary actions, repetition that hides relationships, poor grouping, content pushed below decoration, misleading labels, missing feedback, inaccessible controls, and narrow-screen content loss.
 - Examine the actual brand and domain. A color, gradient, typeface, card, or corner radius is not a defect by itself. Preserve explicit design constraints.
 - Distinguish a task defect from a preference. Give priority to blocked tasks, data-loss or false-success risks, inaccessible essential controls, and unreadable content; then assess hierarchy and detail.

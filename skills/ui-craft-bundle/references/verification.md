@@ -21,6 +21,8 @@ Test outcomes, not control existence:
 
 Choose a primary end-to-end journey and risk-relevant edge states. Check changed controls with keyboard/touch and changed motion with reduced motion. Include no-results, failure, long labels, or repeat clicks when relevant. Do not add a large suite for cosmetic spacing.
 
+For the changed surface, select measurable checks from [UX foundations](ux-foundations.md). Record the applicable platform, criterion, unit, and any relevant exception. Keep normative accessibility checks distinct from recommendations and usability hypotheses. For anti-slop work, also revisit the chosen [method's tradeoff](anti-slop-methods.md): less decoration should not hide actions, errors, or necessary information.
+
 ## Inspect actual images
 
 Render representative narrow/wide web sizes or relevant native profiles. Actually open captured images. Look for clipping, overlap, wrapping, hierarchy, inaccessible controls, inconsistent alignment, empty regions, and broken images. Include focus/error/empty states when they materially affect layout.

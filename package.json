@@ -27,6 +27,7 @@
     "skills/**/agents/*.yaml",
     "skills/**/reference/**/*.md",
     "skills/**/references/*.md",
+    "skills/**/scripts/*.py",
     "skills/**/assets/*.md",
     "skills/**/assets/LICENSE"
   ],

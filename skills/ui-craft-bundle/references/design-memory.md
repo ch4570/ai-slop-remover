@@ -32,6 +32,8 @@ Separate **observed** facts from **inferred** intent and **proposed** decisions.
 
 Keep page exceptions small: page/route, affected role, reason, code location, inherited default, and a condition for revisiting the exception. A dense comparison view may use tighter row spacing while retaining the product's typography and interaction conventions. Do not copy the complete common document into every page file.
 
+When repeated component workarounds suggest an unmet product need, use the component-variation and specification cases in [Toss design](toss-design.md). Prefer an existing supported extension that retains shared states and update paths; record a justified exception without forcing every screen into the same structure or rewriting the component API by default.
+
 ## Close the loop
 
 After implementation, check that documented symbols resolve and the scoped components use the intended roles. Update renamed tokens, approved exceptions, and relevant evidence in the same change. For a broad token or primitive change, check a [component specimen](../assets/component-specimen.md) before rolling it through screens. Record pending decisions without turning them into established rules.

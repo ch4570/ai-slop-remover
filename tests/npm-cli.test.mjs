@@ -180,4 +180,31 @@ test('npm tarball has exactly the release payload and equivalent installed comma
     commandOutput.set(command, output);
   }
   assert.deepEqual(commandOutput.get('lutriva'), commandOutput.get('ai-slop-remover'));
+  // Exercise the scripts from the packed, then installed skill tree. This catches
+  // missing sibling imports and accidental dependencies on the source checkout.
+  const project = path.join(directory, 'learning project');
+  mkdirSync(project);
+  const packagedCli = path.join(consumer, 'node_modules', packageInfo.name, 'bin', 'ai-slop-remover.js');
+  succeeded(spawnSync(process.execPath, [packagedCli, '--repo', project, '--agent', 'codex', '--skill', 'ux-writing'], {
+    cwd: consumer, encoding: 'utf8', timeout: 15000,
+  }));
+  const installedSkills = path.join(project, '.agents', 'skills');
+  const learningCli = path.join(installedSkills, 'ui-craft-bundle', 'scripts', 'local_learning.py');
+  const python = process.env.AI_SLOP_PYTHON || (process.platform === 'win32' ? 'python' : 'python3');
+  for (const operation of ['init', 'status']) {
+    const result = spawnSync(python, ['-B', learningCli, operation, '--project', project], {
+      cwd: consumer, encoding: 'utf8', timeout: 15000,
+    });
+    succeeded(result);
+    const state = JSON.parse(result.stdout);
+    assert.equal(state.state, 'base-only');
+    assert.equal(state.automatic_execution, false);
+  }
+  const policy = JSON.parse(readFileSync(path.join(project, '.lutriva', 'local', 'policy.json'), 'utf8'));
+  assert.equal(realpathSync(policy.base), realpathSync(installedSkills));
+  const installationStatus = spawnSync(process.execPath, [packagedCli, '--repo', project, '--agent', 'codex', '--skill', 'ux-writing', '--status'], {
+    cwd: consumer, encoding: 'utf8', timeout: 15000,
+  });
+  succeeded(installationStatus);
+  assert.equal(installationStatus.stdout.match(/Status: identical installation/g)?.length, 2);
 });

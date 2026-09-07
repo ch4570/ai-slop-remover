@@ -18,6 +18,7 @@ Read [principles](reference/principles.md) first. Use the [KB index](reference/k
 
 ## Check the affected outcomes
 
+- Select relevant criteria from [UX foundations](../ui-craft-bundle/references/ux-foundations.md); distinguish WCAG requirements, platform recommendations, and design hypotheses. If an [anti-slop method](../ui-craft-bundle/references/anti-slop-methods.md) motivated the change, recheck its original task obstacle and tradeoff instead of counting removed decoration.
 - Run the narrow relevant project checks, inspect the output, and record their scope. Build success supports a build claim only. Dry fixtures, copied skills, and discovered skills do not prove an executed UI journey.
 - Exercise the primary changed action and relevant edge cases with the existing authorized environment. Assert the resulting state/data, recovery, and promised persistence; a control existing or a click returning without error is insufficient.
 - For changed forms or async work, include applicable invalid input, failure/retry, preserved drafts, repeat input, and latest-result behavior. Never accept a success toast when the operation failed or is missing.
@@ -48,3 +49,5 @@ When a browser, emulator, device, SDK, or integration is absent, complete useful
 Report the verdict, covered scope, actual commands/evidence, findings, and limitations. A passing scoped UI review is not deployment authorization or a guarantee of all-platform quality.
 
 When evaluating a skill release, apply [behavior evaluation](../ui-craft-bundle/references/behavior-evaluation.md). Separate seeded-defect recovery, observed visual judgments, scope preservation, and missing evidence. Do not call a sample trial an A/B improvement unless its baseline and candidate conditions are comparable and both were executed.
+
+For explicitly requested local skill improvement, supply scoped findings to the [local learning gate](../ui-craft-bundle/references/local-learning.md). This remains a read-only review: product `pass` does not establish skill improvement or activate a new rule. Explicit adoption and rollback belong to the separate [local CLI](../ui-craft-bundle/references/local-learning-cli.md), after its evidence and compatibility checks.

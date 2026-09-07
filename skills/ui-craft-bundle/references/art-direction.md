@@ -2,17 +2,9 @@
 
 ## Diagnose structure before styling
 
-Identify the highest-impact cause from the actual screen. Treat these as clues, not a forbidden-style list:
+Identify the highest-impact cause from the actual screen. When a symptom needs a concrete correction, use [anti-slop methods](anti-slop-methods.md): task priority, meaningful grouping, comparison structure, emphasis, content specificity, and state behavior. Each method includes a tradeoff and a recheck; choose only the relevant entries.
 
-| Symptom | Question | Possible correction |
-| --- | --- | --- |
-| Every object occupies the same rounded card | Do users compare, scan, edit, or browse? | Rows, tables, grouped lists, or timelines can expose relationships. Keep cards where they represent meaningful objects. |
-| Giant heading consumes a working screen | Does the user need persuasion or to perform a task? | Give the working object and primary controls more room. |
-| Decorative badges, glows, icons | Which encode actual state, category, or action? | Remove elements with no semantic job. |
-| Every section looks equally prominent | What must be noticed first? | Establish a dominant region, supporting region, and quieter metadata. |
-| Interchangeable SaaS dashboard | What is distinctive about this domain? | Show real units, object relationships, vocabulary, and workflows. |
-| Beige, serif, thin borders everywhere | Was an old template replaced by a new one? | Re-evaluate structure and type from the domain. |
-| Empty space but cramped data | Where do users need separation versus adjacency? | Spend whitespace on grouping and reading. |
+Do not replace one preset with another. Cards, gradients, familiar fonts, or a beige/serif palette are not defects by themselves. Diagnose what obscures the task and retain what already serves it.
 
 ## Choose one coherent direction
 

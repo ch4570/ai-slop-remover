@@ -77,6 +77,10 @@ def check():
     for directory in (ROOT / "scripts", ROOT / "tests"):
         for path in directory.glob("*.py"):
             ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+    for name in manifest["files"]:
+        if name.startswith("skills/") and name.endswith(".py"):
+            path = ROOT / name
+            ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
     ast.parse((ROOT / "install.py").read_text(encoding="utf-8"))
     print("Validated {} skills, release links/dependencies, {} case contracts, and Python syntax.".format(len(packages), len(identifiers)))
     print("Case contracts are static checks, not executed agent trials.")

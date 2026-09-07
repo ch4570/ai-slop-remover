@@ -8,12 +8,12 @@ Inspect the stack, lockfile, routing, styles, primitives, and test scripts first
 - Prefer existing accessible dialog/popover primitives. Apply the actual pattern's behavior: appropriate initial focus, Escape, focus return, and no keyboard escape into inert content for a modal. Do not trap focus in an ordinary nonmodal side panel.
 - Follow established keyboard behavior for tabs and menus; ARIA attributes alone do not implement it.
 - Check contrast on the composed surface, including focus, error, and selected treatments. Use measurement when reporting ratios; do not claim WCAG conformance from appearance.
-- A practical design target for common mobile controls is about 44 CSS px. This is not the WCAG 2.2 AA minimum: SC 2.5.8 defines 24×24 CSS px with specified exceptions including spacing. Use the actual criterion when auditing.
+- Choose generous targets for frequent touch actions. Use [UX foundations](ux-foundations.md) for the WCAG target-size criterion, exceptions, and measurement; do not substitute native pt/dp recommendations for CSS px requirements.
 - Author-created drag interactions need a simple click/tap path and keyboard operation unless an applicable exception exists. Keyboard equivalence alone does not meet the single-pointer requirement.
 
 ## Layout and states
 
-Choose breakpoints from content pressure. Probe a narrow phone around 360–390 CSS px and an appropriate desktop width, plus intermediate transitions when relevant. These are representative checks, not all-device coverage. Exercise long text and zoom/reflow when the changed layout could break.
+Choose breakpoints from content pressure. Probe a narrow phone around 360–390 CSS px and an appropriate desktop width, plus intermediate transitions when relevant. These are representative checks, not all-device coverage or the WCAG reflow test. Exercise long text and the separate text-resizing/reflow checks in [UX foundations](ux-foundations.md) when the changed layout could break.
 
 Keep loading/error/empty states in a stable structure when useful. Reserve media dimensions to avoid shifts. Do not hide overflow globally to conceal layout bugs. Provide a deliberate scroll region or task-preserving mobile representation for wide tables.
 
