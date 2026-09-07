@@ -30,7 +30,7 @@ Lutriva는 **Codex와 Claude Code**에서 제품 화면과 사용 흐름을 다�
 npm 레지스트리 게시는 **아직 완료되지 않았습니다**. 지금은 소스를 받아 설치하세요. 저장소가 비공개인 동안에는 접근 권한이 필요합니다. Python 설치기는 **Python 3.9 이상**만 있으면 되며 별도 패키지나 API 키가 필요하지 않습니다.
 
 ```sh
-git clone https://github.com/ch4570/ai-slop-remover.git lutriva
+git clone https://github.com/ch4570/lutriva.git lutriva
 cd lutriva
 python3 install.py --repo "/path/to/project" --agent codex --dry-run
 python3 install.py --repo "/path/to/project" --agent codex
@@ -53,8 +53,8 @@ Codex에서는 `$ai-slop-remover`, Claude Code에서는 `/ai-slop-remover`로 �
 새 npm 패키지와 기본 CLI 이름은 `lutriva`입니다. npm 실행에는 **Node.js 20 이상과 Python 3.9 이상**이 필요합니다. npm과 Git으로 저장소 버전을 직접 실행할 수도 있습니다.
 
 ```sh
-npx --yes --package='git+https://github.com/ch4570/ai-slop-remover.git' -- lutriva --list
-npx --yes --package='git+https://github.com/ch4570/ai-slop-remover.git' -- lutriva --repo "/path/to/project" --agent codex --dry-run
+npx --yes --package='git+https://github.com/ch4570/lutriva.git' -- lutriva --list
+npx --yes --package='git+https://github.com/ch4570/lutriva.git' -- lutriva --repo "/path/to/project" --agent codex --dry-run
 ```
 
 이 명령은 기본 브랜치를 따라가며 저장소 접근 권한이 필요합니다. `--dry-run`을 빼면 설치합니다. npm에 `lutriva@2.2.0`이 게시된 후에는 다음 명령을 쓸 수 있습니다.
