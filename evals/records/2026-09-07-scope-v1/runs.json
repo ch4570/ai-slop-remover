@@ -1,0 +1,2024 @@
+{
+  "schema": 1,
+  "record_kind": "actual Codex native snapshot-direct trials",
+  "archive": "evidence.tar.gz",
+  "archive_root": "scope-v1",
+  "environment": {
+    "os": "macOS-15.5-arm64-arm-64bit-Mach-O",
+    "architecture": "arm64",
+    "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 17.0.0 (clang-1700.6.4.2)]",
+    "python_executable": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "node": "v25.2.1",
+    "npm": "11.7.0",
+    "git": "git version 2.39.5 (Apple Git-154)",
+    "chrome": "Google Chrome 152.0.7977.82",
+    "native_tool_contract_sha256": "34c9fd6685abad9ea2f84af68c10afb1537aba6674b0fe16c55de42ba79cd4db"
+  },
+  "model": "Codex native parent runtime (same inherited model; separate per-child model identifier not exposed)",
+  "settings": {
+    "invocation_mode": "snapshot-direct",
+    "history": "fresh native context, fork_turns=none",
+    "reasoning": "Inherited parent runtime; no explicit override",
+    "prompt_template_sha256": "d2ec27469fbea7f0ea632f82854a454855cc0a72ba9cfcafebffd8515ddd10b8",
+    "launch_template_sha256": "e735d0f207d41e44e2f1b0223959c77bca2097332448400245e36f122da22188",
+    "tool_contract_sha256": "34c9fd6685abad9ea2f84af68c10afb1537aba6674b0fe16c55de42ba79cd4db"
+  },
+  "trials": [
+    {
+      "trial": "t01",
+      "case": "narrow-spacing",
+      "repeat": 1,
+      "variant": "baseline",
+      "native_agent_id": "/root/scope_trial_01",
+      "run_id": "scope-t01",
+      "skill_revision": "78c0726fcb0d8058e10f16b6de24120c8024d768",
+      "fixture_sha256": "ae5c94233d96b4bc2331f110c0b8a2d5d022cadbee348279dd2ca29fe8c0c9ce",
+      "task_sha256": "14c246985b2ded33f15b02884c420d62cbe69403dddf35e57dfb2839ec8fa228",
+      "verdict": "pass",
+      "checks": {
+        "allowed-scope": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "spacing-and-state": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "narrow-focus-review": {
+          "kind": "quality",
+          "status": "pass"
+        }
+      },
+      "changed_product_paths": [
+        "settings.css"
+      ],
+      "patch": "patches/t01.patch",
+      "artifacts": {
+        "prompt.md": {
+          "path": "scope-v1/actual/trials/t01/prompt.md",
+          "sha256": "66d1281539dbf4ae3b79bceeae620edbdb5b23e5a19a21f7fa18f51d161d1667",
+          "bytes": 3308
+        },
+        "native-launch.json": {
+          "path": "scope-v1/actual/trials/t01/native-launch.json",
+          "sha256": "693ba3b5e27106ac3d68194d96d1a1fed6aaa5b1910fe2ed20269dcea8153d63",
+          "bytes": 590
+        },
+        "native-completion.json": {
+          "path": "scope-v1/actual/trials/t01/native-completion.json",
+          "sha256": "5608135d324e4182ac04cfa021c92f778d4b8ca78b0ac9cd4c8be9307519bffa",
+          "bytes": 280
+        },
+        "agent-output.md": {
+          "path": "scope-v1/actual/trials/t01/agent-output.md",
+          "sha256": "6107d60ea6b8a545b288ca386525f54ff15cc56ad0ef14cfaf3fca1802297d53",
+          "bytes": 459
+        },
+        "scratch/agent-output.md": {
+          "path": "scope-v1/actual/trials/t01/scratch/agent-output.md",
+          "sha256": "35a97f64f60e8ad6fe5979b581974283e44befa1371714f1bfb94a118187e9a4",
+          "bytes": 2009
+        },
+        "scratch/commands.log": {
+          "path": "scope-v1/actual/trials/t01/scratch/commands.log",
+          "sha256": "7ab9cef84a26d169527e4ba363b040adec4d57f2cd0dd9c973f85da5ca7fe24d",
+          "bytes": 35847
+        },
+        "invocation.json": {
+          "path": "scope-v1/actual/trials/t01/invocation.json",
+          "sha256": "6791a63d161237bcff6b1affb7e922a8b6abea39e592638b3a0a14ea07fcd18c",
+          "bytes": 1251
+        },
+        "prepare.json": {
+          "path": "scope-v1/actual/trials/t01/prepare.json",
+          "sha256": "62aa04187e61ff143d49c9ce330940d9142a9f2dc08bb7c232d57f5c93606a50",
+          "bytes": 219
+        },
+        "TASK.md": {
+          "path": "scope-v1/actual/trials/t01/TASK.md",
+          "sha256": "14c246985b2ded33f15b02884c420d62cbe69403dddf35e57dfb2839ec8fa228",
+          "bytes": 754
+        },
+        "before-manifest.json": {
+          "path": "scope-v1/actual/trials/t01/before-manifest.json",
+          "sha256": "3b79bdf9ed6b107d4a1413066371388d7c0043b06def43e1409e6c4dd5691364",
+          "bytes": 900
+        },
+        "after-manifest.json": {
+          "path": "scope-v1/actual/trials/t01/after-manifest.json",
+          "sha256": "866cf28fdfcbc734bb2820441c43c5059ef177ac11dca2180419beb87286015e",
+          "bytes": 900
+        },
+        "diff.patch": {
+          "path": "scope-v1/actual/trials/t01/diff.patch",
+          "sha256": "f70929dcf41f2f3cb098db15a4dc9bd677766ecb422e57b6f62fcca7f597bf6a",
+          "bytes": 143
+        },
+        "source-checks.json": {
+          "path": "scope-v1/actual/trials/t01/source-checks.json",
+          "sha256": "356b106cf7db2edaa3994ca4b9705bb57bfd408d405021127d376f9230ecbc67",
+          "bytes": 2439
+        },
+        "browser.json": {
+          "path": "scope-v1/actual/trials/t01/browser.json",
+          "sha256": "40132ae5524b2966777fe6e5308d37b1adcb028cdbee5864a4478a14bc9d615a",
+          "bytes": 1752
+        },
+        "review.md": {
+          "path": "scope-v1/actual/trials/t01/review.md",
+          "sha256": "ae1d77ced63a7776db4f197e4355b04a9c6a7a95d1eef922d272d25cc7cc71ad",
+          "bytes": 5505
+        },
+        "review.json": {
+          "path": "scope-v1/actual/trials/t01/review.json",
+          "sha256": "493cbb0da1c4b5f9594c6e347f727f5dd1409c9771b63c0993b954c4e95b50a3",
+          "bytes": 584
+        },
+        "result.json": {
+          "path": "scope-v1/actual/trials/t01/result.json",
+          "sha256": "6c36691e2fa6276d56bc8b46be3e5709017715841144ca77c411b0067bfe370a",
+          "bytes": 2691
+        },
+        "external-executions.jsonl": {
+          "path": "scope-v1/actual/trials/t01/external-executions.jsonl",
+          "sha256": "dcec3dd3db8ee2a9ad9829e9aead3e8b2e4900e8d01a3ff96635a1db9974ac28",
+          "bytes": 10581
+        }
+      },
+      "missing_record_files": []
+    },
+    {
+      "trial": "t02",
+      "case": "narrow-spacing",
+      "repeat": 1,
+      "variant": "candidate",
+      "native_agent_id": "/root/scope_trial_02",
+      "run_id": "scope-t02",
+      "skill_revision": "69149804ea292a8a8589c9dde0ebf164d0dde8fc",
+      "fixture_sha256": "ae5c94233d96b4bc2331f110c0b8a2d5d022cadbee348279dd2ca29fe8c0c9ce",
+      "task_sha256": "14c246985b2ded33f15b02884c420d62cbe69403dddf35e57dfb2839ec8fa228",
+      "verdict": "pass",
+      "checks": {
+        "allowed-scope": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "spacing-and-state": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "narrow-focus-review": {
+          "kind": "quality",
+          "status": "pass"
+        }
+      },
+      "changed_product_paths": [
+        "settings.css"
+      ],
+      "patch": "patches/t02.patch",
+      "artifacts": {
+        "prompt.md": {
+          "path": "scope-v1/actual/trials/t02/prompt.md",
+          "sha256": "3441edf01d6217f4161348b0d772b32b890f6b7bed499c98280786174f7627f6",
+          "bytes": 3308
+        },
+        "native-launch.json": {
+          "path": "scope-v1/actual/trials/t02/native-launch.json",
+          "sha256": "64a97a5476989c78462ab868d9c6b9206490a8f6b59a1d7fd768ba96f48af7a8",
+          "bytes": 590
+        },
+        "native-completion.json": {
+          "path": "scope-v1/actual/trials/t02/native-completion.json",
+          "sha256": "7b781aefbe177371255909c5e1570845a6c36cd855951bb75f5765d57e57e177",
+          "bytes": 280
+        },
+        "agent-output.md": {
+          "path": "scope-v1/actual/trials/t02/agent-output.md",
+          "sha256": "ffabf96dd81253dd82d1f3b019664544848b3be3009e3a74558bb9914f0219a0",
+          "bytes": 524
+        },
+        "scratch/agent-output.md": {
+          "path": "scope-v1/actual/trials/t02/scratch/agent-output.md",
+          "sha256": "ef51b5658744ef8ee5bd2eb78eb10cc8f5c681de0e4a3cfc3d0cfcfb641d047a",
+          "bytes": 1887
+        },
+        "scratch/commands.log": {
+          "path": "scope-v1/actual/trials/t02/scratch/commands.log",
+          "sha256": "683f963cf533a0858bffb7cd1f6f9ef4eee2fb2afde2c6b11747d5e85c72a654",
+          "bytes": 41912
+        },
+        "invocation.json": {
+          "path": "scope-v1/actual/trials/t02/invocation.json",
+          "sha256": "b8106da7a5d5fd3314b6c0a3ed3c7e1bb5f1cd9039b5959af80c4879738328bd",
+          "bytes": 1252
+        },
+        "prepare.json": {
+          "path": "scope-v1/actual/trials/t02/prepare.json",
+          "sha256": "62aa04187e61ff143d49c9ce330940d9142a9f2dc08bb7c232d57f5c93606a50",
+          "bytes": 219
+        },
+        "TASK.md": {
+          "path": "scope-v1/actual/trials/t02/TASK.md",
+          "sha256": "14c246985b2ded33f15b02884c420d62cbe69403dddf35e57dfb2839ec8fa228",
+          "bytes": 754
+        },
+        "before-manifest.json": {
+          "path": "scope-v1/actual/trials/t02/before-manifest.json",
+          "sha256": "3b79bdf9ed6b107d4a1413066371388d7c0043b06def43e1409e6c4dd5691364",
+          "bytes": 900
+        },
+        "after-manifest.json": {
+          "path": "scope-v1/actual/trials/t02/after-manifest.json",
+          "sha256": "866cf28fdfcbc734bb2820441c43c5059ef177ac11dca2180419beb87286015e",
+          "bytes": 900
+        },
+        "diff.patch": {
+          "path": "scope-v1/actual/trials/t02/diff.patch",
+          "sha256": "f70929dcf41f2f3cb098db15a4dc9bd677766ecb422e57b6f62fcca7f597bf6a",
+          "bytes": 143
+        },
+        "source-checks.json": {
+          "path": "scope-v1/actual/trials/t02/source-checks.json",
+          "sha256": "356b106cf7db2edaa3994ca4b9705bb57bfd408d405021127d376f9230ecbc67",
+          "bytes": 2439
+        },
+        "browser.json": {
+          "path": "scope-v1/actual/trials/t02/browser.json",
+          "sha256": "2e86a0d2338b574bdf2fc8cb8c918961f3fa229775ca8267aa5ebe482c4ccda3",
+          "bytes": 1752
+        },
+        "review.md": {
+          "path": "scope-v1/actual/trials/t02/review.md",
+          "sha256": "5850c77b97c1b74d1b2f92af0bd391e193d4aefa510ffe13b486208a843025af",
+          "bytes": 5667
+        },
+        "review.json": {
+          "path": "scope-v1/actual/trials/t02/review.json",
+          "sha256": "6d236e7d303d53f9210a12166cea7d150c7a1f82c02cf636776f6aa6b81767f2",
+          "bytes": 550
+        },
+        "result.json": {
+          "path": "scope-v1/actual/trials/t02/result.json",
+          "sha256": "d5a1790ec4a187cab0a851f6de85b3d7bd830975000335c91a487fdd5d729a73",
+          "bytes": 2658
+        },
+        "external-executions.jsonl": {
+          "path": "scope-v1/actual/trials/t02/external-executions.jsonl",
+          "sha256": "31726a62cefef825e8367a2642ea05986e74411415cb19e2c6e37ee0ad6ee1b0",
+          "bytes": 11429
+        }
+      },
+      "missing_record_files": []
+    },
+    {
+      "trial": "t03",
+      "case": "narrow-spacing",
+      "repeat": 2,
+      "variant": "candidate",
+      "native_agent_id": "/root/scope_trial_03",
+      "run_id": "scope-t03",
+      "skill_revision": "69149804ea292a8a8589c9dde0ebf164d0dde8fc",
+      "fixture_sha256": "ae5c94233d96b4bc2331f110c0b8a2d5d022cadbee348279dd2ca29fe8c0c9ce",
+      "task_sha256": "14c246985b2ded33f15b02884c420d62cbe69403dddf35e57dfb2839ec8fa228",
+      "verdict": "pass",
+      "checks": {
+        "allowed-scope": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "spacing-and-state": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "narrow-focus-review": {
+          "kind": "quality",
+          "status": "pass"
+        }
+      },
+      "changed_product_paths": [
+        "settings.css"
+      ],
+      "patch": "patches/t03.patch",
+      "artifacts": {
+        "prompt.md": {
+          "path": "scope-v1/actual/trials/t03/prompt.md",
+          "sha256": "1adc90c9d59183c029449ac3c0312e03ea2c6eb50e103fa0535223dd0b3f69cc",
+          "bytes": 3308
+        },
+        "native-launch.json": {
+          "path": "scope-v1/actual/trials/t03/native-launch.json",
+          "sha256": "c5f72687d2afe02246b77630194451b8f1f73a99da906637ab4ee35bfa880ccc",
+          "bytes": 590
+        },
+        "native-completion.json": {
+          "path": "scope-v1/actual/trials/t03/native-completion.json",
+          "sha256": "c1080354a789020bd5e395d6515dd1b95e32798cc95f92798c1fa86d5b8af4d2",
+          "bytes": 280
+        },
+        "agent-output.md": {
+          "path": "scope-v1/actual/trials/t03/agent-output.md",
+          "sha256": "a9400163ec0d11050bea0c4d90266687cf18f1ff0b0b6d368abcd2016c511d66",
+          "bytes": 425
+        },
+        "scratch/agent-output.md": {
+          "path": "scope-v1/actual/trials/t03/scratch/agent-output.md",
+          "sha256": "adef67af91b7dd09fa9e631d58f5b07d8c306c0431884bd2d8a8f00ac8d94a79",
+          "bytes": 1986
+        },
+        "scratch/commands.log": {
+          "path": "scope-v1/actual/trials/t03/scratch/commands.log",
+          "sha256": "4ee913d206ceb27e582d4d4e40a5aad38ea6a1e3682bf1c21314d5eaba479427",
+          "bytes": 41726
+        },
+        "invocation.json": {
+          "path": "scope-v1/actual/trials/t03/invocation.json",
+          "sha256": "1845b423d69de30ca770baf30a7b5601cd35a540ef20c40b225daf12ad574795",
+          "bytes": 1252
+        },
+        "prepare.json": {
+          "path": "scope-v1/actual/trials/t03/prepare.json",
+          "sha256": "62aa04187e61ff143d49c9ce330940d9142a9f2dc08bb7c232d57f5c93606a50",
+          "bytes": 219
+        },
+        "TASK.md": {
+          "path": "scope-v1/actual/trials/t03/TASK.md",
+          "sha256": "14c246985b2ded33f15b02884c420d62cbe69403dddf35e57dfb2839ec8fa228",
+          "bytes": 754
+        },
+        "before-manifest.json": {
+          "path": "scope-v1/actual/trials/t03/before-manifest.json",
+          "sha256": "3b79bdf9ed6b107d4a1413066371388d7c0043b06def43e1409e6c4dd5691364",
+          "bytes": 900
+        },
+        "after-manifest.json": {
+          "path": "scope-v1/actual/trials/t03/after-manifest.json",
+          "sha256": "866cf28fdfcbc734bb2820441c43c5059ef177ac11dca2180419beb87286015e",
+          "bytes": 900
+        },
+        "diff.patch": {
+          "path": "scope-v1/actual/trials/t03/diff.patch",
+          "sha256": "f70929dcf41f2f3cb098db15a4dc9bd677766ecb422e57b6f62fcca7f597bf6a",
+          "bytes": 143
+        },
+        "source-checks.json": {
+          "path": "scope-v1/actual/trials/t03/source-checks.json",
+          "sha256": "356b106cf7db2edaa3994ca4b9705bb57bfd408d405021127d376f9230ecbc67",
+          "bytes": 2439
+        },
+        "browser.json": {
+          "path": "scope-v1/actual/trials/t03/browser.json",
+          "sha256": "47bae03f9506cc6a3055be7acda238497971f08039d59e10f71db3bc0e677d6c",
+          "bytes": 1752
+        },
+        "review.md": {
+          "path": "scope-v1/actual/trials/t03/review.md",
+          "sha256": "99e755d9c768d984d171ada142d4771c6eff627b7200c2c678152bac8a050d64",
+          "bytes": 5835
+        },
+        "review.json": {
+          "path": "scope-v1/actual/trials/t03/review.json",
+          "sha256": "7bc924bd79d970fc8aaf7486dd2a74c3648069e29003780040ae1780791bda63",
+          "bytes": 564
+        },
+        "result.json": {
+          "path": "scope-v1/actual/trials/t03/result.json",
+          "sha256": "d83f63019219fa7cab9484f1df7d843ae2fe3bd2aa38cbfb3b6c411315acb05c",
+          "bytes": 2672
+        },
+        "external-executions.jsonl": {
+          "path": "scope-v1/actual/trials/t03/external-executions.jsonl",
+          "sha256": "e3fd741bd608fae47f0174ff76d86c084a98f70c5a4464902aef93a64f51b28f",
+          "bytes": 11457
+        }
+      },
+      "missing_record_files": []
+    },
+    {
+      "trial": "t04",
+      "case": "narrow-spacing",
+      "repeat": 2,
+      "variant": "baseline",
+      "native_agent_id": "/root/scope_trial_04",
+      "run_id": "scope-t04",
+      "skill_revision": "78c0726fcb0d8058e10f16b6de24120c8024d768",
+      "fixture_sha256": "ae5c94233d96b4bc2331f110c0b8a2d5d022cadbee348279dd2ca29fe8c0c9ce",
+      "task_sha256": "14c246985b2ded33f15b02884c420d62cbe69403dddf35e57dfb2839ec8fa228",
+      "verdict": "pass",
+      "checks": {
+        "allowed-scope": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "spacing-and-state": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "narrow-focus-review": {
+          "kind": "quality",
+          "status": "pass"
+        }
+      },
+      "changed_product_paths": [
+        "settings.css"
+      ],
+      "patch": "patches/t04.patch",
+      "artifacts": {
+        "prompt.md": {
+          "path": "scope-v1/actual/trials/t04/prompt.md",
+          "sha256": "7fd60b058aff52cc88dafe3ea9bcdeea46c6f68e04edf8a57632a428390c5fd7",
+          "bytes": 3308
+        },
+        "native-launch.json": {
+          "path": "scope-v1/actual/trials/t04/native-launch.json",
+          "sha256": "001f9ec4a5dee1dd66d04891db506693adce6f4c8bf7c66da8ecc875612d1967",
+          "bytes": 590
+        },
+        "native-completion.json": {
+          "path": "scope-v1/actual/trials/t04/native-completion.json",
+          "sha256": "07fb71db8e8f3cd0d18d46498c64ddb829b4e2321361870093abbb217c316642",
+          "bytes": 280
+        },
+        "agent-output.md": {
+          "path": "scope-v1/actual/trials/t04/agent-output.md",
+          "sha256": "012f4f4a8ef83b66143a64362477bab765a92fc66cd45323cdc9bc7a4507e3eb",
+          "bytes": 485
+        },
+        "scratch/agent-output.md": {
+          "path": "scope-v1/actual/trials/t04/scratch/agent-output.md",
+          "sha256": "1e5e64be5c8da2784e1617fc7b9c073189877e69083520bdb81b4ee655737d75",
+          "bytes": 2065
+        },
+        "scratch/commands.log": {
+          "path": "scope-v1/actual/trials/t04/scratch/commands.log",
+          "sha256": "68fcb2a144da72de0c2eec28402a2bd9d08fc5324a493027375c76b94eb87b23",
+          "bytes": 45772
+        },
+        "invocation.json": {
+          "path": "scope-v1/actual/trials/t04/invocation.json",
+          "sha256": "8be457b7b779f0d65edd5e67e3354a905ea3e5970bd8fbd89b6e9aa568792e8b",
+          "bytes": 1251
+        },
+        "prepare.json": {
+          "path": "scope-v1/actual/trials/t04/prepare.json",
+          "sha256": "62aa04187e61ff143d49c9ce330940d9142a9f2dc08bb7c232d57f5c93606a50",
+          "bytes": 219
+        },
+        "TASK.md": {
+          "path": "scope-v1/actual/trials/t04/TASK.md",
+          "sha256": "14c246985b2ded33f15b02884c420d62cbe69403dddf35e57dfb2839ec8fa228",
+          "bytes": 754
+        },
+        "before-manifest.json": {
+          "path": "scope-v1/actual/trials/t04/before-manifest.json",
+          "sha256": "3b79bdf9ed6b107d4a1413066371388d7c0043b06def43e1409e6c4dd5691364",
+          "bytes": 900
+        },
+        "after-manifest.json": {
+          "path": "scope-v1/actual/trials/t04/after-manifest.json",
+          "sha256": "866cf28fdfcbc734bb2820441c43c5059ef177ac11dca2180419beb87286015e",
+          "bytes": 900
+        },
+        "diff.patch": {
+          "path": "scope-v1/actual/trials/t04/diff.patch",
+          "sha256": "f70929dcf41f2f3cb098db15a4dc9bd677766ecb422e57b6f62fcca7f597bf6a",
+          "bytes": 143
+        },
+        "source-checks.json": {
+          "path": "scope-v1/actual/trials/t04/source-checks.json",
+          "sha256": "356b106cf7db2edaa3994ca4b9705bb57bfd408d405021127d376f9230ecbc67",
+          "bytes": 2439
+        },
+        "browser.json": {
+          "path": "scope-v1/actual/trials/t04/browser.json",
+          "sha256": "c6061248ad368619cfd6d810bace1b79a44977eb112b30891be94d16875c177e",
+          "bytes": 1752
+        },
+        "review.md": {
+          "path": "scope-v1/actual/trials/t04/review.md",
+          "sha256": "c4ff88fd615430457a9d76af8d85441a7fc59edc3e02b6588c3f285b2d101036",
+          "bytes": 5860
+        },
+        "review.json": {
+          "path": "scope-v1/actual/trials/t04/review.json",
+          "sha256": "608c9c27ce699d3a959264167f1d6ad8e0e5472dc344d933d407aa6a92b4e327",
+          "bytes": 587
+        },
+        "result.json": {
+          "path": "scope-v1/actual/trials/t04/result.json",
+          "sha256": "1d66e32d129cfbe3ab14cd3f524fa562d53e69a73a4561633044b8056a9fdcea",
+          "bytes": 2694
+        },
+        "external-executions.jsonl": {
+          "path": "scope-v1/actual/trials/t04/external-executions.jsonl",
+          "sha256": "e5521e74124ad3921702eed328185f8a0a692cc43b71d02d590944ecaccda7d0",
+          "bytes": 11500
+        }
+      },
+      "missing_record_files": []
+    },
+    {
+      "trial": "t05",
+      "case": "audit-read-only",
+      "repeat": 1,
+      "variant": "baseline",
+      "native_agent_id": "/root/scope_trial_05",
+      "run_id": "scope-t05",
+      "skill_revision": "78c0726fcb0d8058e10f16b6de24120c8024d768",
+      "fixture_sha256": "7356934853be384f44af27d09564195022805df50d620ca05363f34ef262d9d1",
+      "task_sha256": "03b0a6b0510e072a236f5a7d914c8bcd794bf6a9a58b700eafaf5f57678f8d45",
+      "verdict": "pass",
+      "checks": {
+        "product-files-unchanged": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "audit-observation": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "prioritized-diagnosis": {
+          "kind": "quality",
+          "status": "pass"
+        }
+      },
+      "changed_product_paths": [],
+      "patch": "patches/t05.patch",
+      "artifacts": {
+        "prompt.md": {
+          "path": "scope-v1/actual/trials/t05/prompt.md",
+          "sha256": "8c768e5bb9ccecc4fba404ed2bedc01b3a6bc80fd1b41ae396838cc00f134259",
+          "bytes": 3305
+        },
+        "native-launch.json": {
+          "path": "scope-v1/actual/trials/t05/native-launch.json",
+          "sha256": "7141f85b887b31143a042d1ce30c235b610173476540ebd94f0e900e3d13a332",
+          "bytes": 590
+        },
+        "native-completion.json": {
+          "path": "scope-v1/actual/trials/t05/native-completion.json",
+          "sha256": "754a01bb19efe818b20cd2bad92e31296f542bc36be9358daec4de1a0cd5b35d",
+          "bytes": 280
+        },
+        "agent-output.md": {
+          "path": "scope-v1/actual/trials/t05/agent-output.md",
+          "sha256": "bb878246d99f1178a67f7452047ea0ee0c147df4e3946d19c167e43749989a2f",
+          "bytes": 641
+        },
+        "scratch/agent-output.md": {
+          "path": "scope-v1/actual/trials/t05/scratch/agent-output.md",
+          "sha256": "55469268966590883d74c30e71fcc98ab284f5626618af214983cfec678af898",
+          "bytes": 8158
+        },
+        "scratch/commands.log": {
+          "path": "scope-v1/actual/trials/t05/scratch/commands.log",
+          "sha256": "c8cd5df1e31806dc77f3cbab486aabdabfa129524bf9dc795418954dc9ac2556",
+          "bytes": 44432
+        },
+        "invocation.json": {
+          "path": "scope-v1/actual/trials/t05/invocation.json",
+          "sha256": "73da6aecb07e7b3427f196df538b726e75119c6321dabd50b747a8221c8476b2",
+          "bytes": 1252
+        },
+        "prepare.json": {
+          "path": "scope-v1/actual/trials/t05/prepare.json",
+          "sha256": "4340c0aee470004d8ff6a6b4b6a5d2b6e4d352a01a3e84caf9ccf21eaee5f0e5",
+          "bytes": 220
+        },
+        "TASK.md": {
+          "path": "scope-v1/actual/trials/t05/TASK.md",
+          "sha256": "03b0a6b0510e072a236f5a7d914c8bcd794bf6a9a58b700eafaf5f57678f8d45",
+          "bytes": 818
+        },
+        "before-manifest.json": {
+          "path": "scope-v1/actual/trials/t05/before-manifest.json",
+          "sha256": "ce4352e14c50c5e14fdbcc2d6836c1a7496cca73cea368c5039cb187afc7a856",
+          "bytes": 616
+        },
+        "after-manifest.json": {
+          "path": "scope-v1/actual/trials/t05/after-manifest.json",
+          "sha256": "ce4352e14c50c5e14fdbcc2d6836c1a7496cca73cea368c5039cb187afc7a856",
+          "bytes": 616
+        },
+        "diff.patch": {
+          "path": "scope-v1/actual/trials/t05/diff.patch",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "source-checks.json": {
+          "path": "scope-v1/actual/trials/t05/source-checks.json",
+          "sha256": "3a03d631577f7ab6438ff6e776049751f4961161dd7a521cb363aadbdb995ed1",
+          "bytes": 1804
+        },
+        "browser.json": {
+          "path": "scope-v1/actual/trials/t05/browser.json",
+          "sha256": "21c37f955ebed118d7812e8ccb29b27920bc69871f52133ef0ee6b966ae14374",
+          "bytes": 1532
+        },
+        "review.md": {
+          "path": "scope-v1/actual/trials/t05/review.md",
+          "sha256": "8fffc0bcd9b373a9b9926c627e6b5702f315518f3ce801f38e78a93ce056817e",
+          "bytes": 7078
+        },
+        "review.json": {
+          "path": "scope-v1/actual/trials/t05/review.json",
+          "sha256": "7c7be99a6c0e2ab0d8cd451c44520e59d0130fdc69a4c09c6b1f950b69d7d629",
+          "bytes": 590
+        },
+        "result.json": {
+          "path": "scope-v1/actual/trials/t05/result.json",
+          "sha256": "e616f92d08ff6418692f4e149bb1a46b57d4e50f2ebf5e2b029c8bbb803fb2dd",
+          "bytes": 2478
+        },
+        "external-executions.jsonl": {
+          "path": "scope-v1/actual/trials/t05/external-executions.jsonl",
+          "sha256": "27889fdfedac5aaab9fe17ae34246276c3acb0c5f79f26c132a8462205b1347f",
+          "bytes": 10724
+        }
+      },
+      "missing_record_files": []
+    },
+    {
+      "trial": "t06",
+      "case": "audit-read-only",
+      "repeat": 1,
+      "variant": "candidate",
+      "native_agent_id": "/root/scope_trial_06",
+      "run_id": "scope-t06",
+      "skill_revision": "69149804ea292a8a8589c9dde0ebf164d0dde8fc",
+      "fixture_sha256": "7356934853be384f44af27d09564195022805df50d620ca05363f34ef262d9d1",
+      "task_sha256": "03b0a6b0510e072a236f5a7d914c8bcd794bf6a9a58b700eafaf5f57678f8d45",
+      "verdict": "pass",
+      "checks": {
+        "product-files-unchanged": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "audit-observation": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "prioritized-diagnosis": {
+          "kind": "quality",
+          "status": "pass"
+        }
+      },
+      "changed_product_paths": [],
+      "patch": "patches/t06.patch",
+      "artifacts": {
+        "prompt.md": {
+          "path": "scope-v1/actual/trials/t06/prompt.md",
+          "sha256": "2b10b505f11436619a2ef9ba1e6813428cae89da5c6207e52c3535a0747bcfce",
+          "bytes": 3305
+        },
+        "native-launch.json": {
+          "path": "scope-v1/actual/trials/t06/native-launch.json",
+          "sha256": "603a6f42dbb1551e5efb0a4c72593d242876fb791a3f57db97574130b89abd33",
+          "bytes": 590
+        },
+        "native-completion.json": {
+          "path": "scope-v1/actual/trials/t06/native-completion.json",
+          "sha256": "43f2c47ac7a13b4886bfaeb65077b1a22d2026c6a32360d9e13ace27aeec22c5",
+          "bytes": 280
+        },
+        "agent-output.md": {
+          "path": "scope-v1/actual/trials/t06/agent-output.md",
+          "sha256": "337ce33cc1f04387e8914ca890df68edd115157c2bbc7d60634660cb5dbc70f4",
+          "bytes": 1959
+        },
+        "scratch/agent-output.md": {
+          "path": "scope-v1/actual/trials/t06/scratch/agent-output.md",
+          "sha256": "fc0e5046560052181a983bd9ffbcc89f5a77ba5203eadd796094b360e65acf23",
+          "bytes": 9444
+        },
+        "scratch/commands.log": {
+          "path": "scope-v1/actual/trials/t06/scratch/commands.log",
+          "sha256": "5acb0dad59ebe0cc3c0a863bef908f13cb108dd801b5f4026a5b7fe878b2ba79",
+          "bytes": 92418
+        },
+        "invocation.json": {
+          "path": "scope-v1/actual/trials/t06/invocation.json",
+          "sha256": "516799feeffb8de3727c02eaf6917bd0af984c8dcd7d1ec0bb9ad9699424c86f",
+          "bytes": 1253
+        },
+        "prepare.json": {
+          "path": "scope-v1/actual/trials/t06/prepare.json",
+          "sha256": "4340c0aee470004d8ff6a6b4b6a5d2b6e4d352a01a3e84caf9ccf21eaee5f0e5",
+          "bytes": 220
+        },
+        "TASK.md": {
+          "path": "scope-v1/actual/trials/t06/TASK.md",
+          "sha256": "03b0a6b0510e072a236f5a7d914c8bcd794bf6a9a58b700eafaf5f57678f8d45",
+          "bytes": 818
+        },
+        "before-manifest.json": {
+          "path": "scope-v1/actual/trials/t06/before-manifest.json",
+          "sha256": "ce4352e14c50c5e14fdbcc2d6836c1a7496cca73cea368c5039cb187afc7a856",
+          "bytes": 616
+        },
+        "after-manifest.json": {
+          "path": "scope-v1/actual/trials/t06/after-manifest.json",
+          "sha256": "ce4352e14c50c5e14fdbcc2d6836c1a7496cca73cea368c5039cb187afc7a856",
+          "bytes": 616
+        },
+        "diff.patch": {
+          "path": "scope-v1/actual/trials/t06/diff.patch",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "source-checks.json": {
+          "path": "scope-v1/actual/trials/t06/source-checks.json",
+          "sha256": "3a03d631577f7ab6438ff6e776049751f4961161dd7a521cb363aadbdb995ed1",
+          "bytes": 1804
+        },
+        "browser.json": {
+          "path": "scope-v1/actual/trials/t06/browser.json",
+          "sha256": "972cff2b23afc5d8aa08f7a92222d100565691936ed102779f25edd4bb44e8ca",
+          "bytes": 1532
+        },
+        "review.md": {
+          "path": "scope-v1/actual/trials/t06/review.md",
+          "sha256": "281aa67cb54da0489f0310ab4af85d83d4fe58c1772a99667494c68cc3cde85a",
+          "bytes": 6908
+        },
+        "review.json": {
+          "path": "scope-v1/actual/trials/t06/review.json",
+          "sha256": "b2ac7254b66cecdc84bd764174e48a368cf73d70539cca9ee454a5e4d5a26b8e",
+          "bytes": 560
+        },
+        "result.json": {
+          "path": "scope-v1/actual/trials/t06/result.json",
+          "sha256": "7cf72df9827ea0e2b45da07add2f83077bcaea7a7cb0cb5a0e6f3734e22c35c4",
+          "bytes": 2449
+        },
+        "external-executions.jsonl": {
+          "path": "scope-v1/actual/trials/t06/external-executions.jsonl",
+          "sha256": "be4aaf6b0ef194ce4df6621bf5c521ca79a2a731249dbc5a410d3af9df9316cb",
+          "bytes": 10667
+        }
+      },
+      "missing_record_files": []
+    },
+    {
+      "trial": "t07",
+      "case": "audit-read-only",
+      "repeat": 2,
+      "variant": "candidate",
+      "native_agent_id": "/root/scope_trial_07",
+      "run_id": "scope-t07",
+      "skill_revision": "69149804ea292a8a8589c9dde0ebf164d0dde8fc",
+      "fixture_sha256": "7356934853be384f44af27d09564195022805df50d620ca05363f34ef262d9d1",
+      "task_sha256": "03b0a6b0510e072a236f5a7d914c8bcd794bf6a9a58b700eafaf5f57678f8d45",
+      "verdict": "pass",
+      "checks": {
+        "product-files-unchanged": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "audit-observation": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "prioritized-diagnosis": {
+          "kind": "quality",
+          "status": "pass"
+        }
+      },
+      "changed_product_paths": [],
+      "patch": "patches/t07.patch",
+      "artifacts": {
+        "prompt.md": {
+          "path": "scope-v1/actual/trials/t07/prompt.md",
+          "sha256": "d067748730dfff016b17f5cbebce4bc52ddbe395e771bf0d7911144cada8be20",
+          "bytes": 3305
+        },
+        "native-launch.json": {
+          "path": "scope-v1/actual/trials/t07/native-launch.json",
+          "sha256": "c033470c5af0edebba55494afc05601aff95e275d7ca39c008d36e822bc73d22",
+          "bytes": 590
+        },
+        "native-completion.json": {
+          "path": "scope-v1/actual/trials/t07/native-completion.json",
+          "sha256": "f78823de2901831edcbb890629c0306fb04d77e2e30ea7c5be8ef7c6778d8a92",
+          "bytes": 280
+        },
+        "agent-output.md": {
+          "path": "scope-v1/actual/trials/t07/agent-output.md",
+          "sha256": "af7467ac58dbc821819a644488ebf1b6ba950c76b51ce42751250017d8148bbc",
+          "bytes": 3026
+        },
+        "scratch/agent-output.md": {
+          "path": "scope-v1/actual/trials/t07/scratch/agent-output.md",
+          "sha256": "b2f1825fde4584a7c1253d41fbebeeae674ebcd0c8f8ed158c6bbd11aacc0c6c",
+          "bytes": 9739
+        },
+        "scratch/commands.log": {
+          "path": "scope-v1/actual/trials/t07/scratch/commands.log",
+          "sha256": "2bbac018f521a97ea20bca630dbe04a59b85f27b3647b2f09fb93bd5fe8cb5f0",
+          "bytes": 101615
+        },
+        "invocation.json": {
+          "path": "scope-v1/actual/trials/t07/invocation.json",
+          "sha256": "67aa6f1c35c521907d6cdbb0715f6266b65b7a3a197b137ed546373a229c9ec7",
+          "bytes": 1253
+        },
+        "prepare.json": {
+          "path": "scope-v1/actual/trials/t07/prepare.json",
+          "sha256": "4340c0aee470004d8ff6a6b4b6a5d2b6e4d352a01a3e84caf9ccf21eaee5f0e5",
+          "bytes": 220
+        },
+        "TASK.md": {
+          "path": "scope-v1/actual/trials/t07/TASK.md",
+          "sha256": "03b0a6b0510e072a236f5a7d914c8bcd794bf6a9a58b700eafaf5f57678f8d45",
+          "bytes": 818
+        },
+        "before-manifest.json": {
+          "path": "scope-v1/actual/trials/t07/before-manifest.json",
+          "sha256": "ce4352e14c50c5e14fdbcc2d6836c1a7496cca73cea368c5039cb187afc7a856",
+          "bytes": 616
+        },
+        "after-manifest.json": {
+          "path": "scope-v1/actual/trials/t07/after-manifest.json",
+          "sha256": "ce4352e14c50c5e14fdbcc2d6836c1a7496cca73cea368c5039cb187afc7a856",
+          "bytes": 616
+        },
+        "diff.patch": {
+          "path": "scope-v1/actual/trials/t07/diff.patch",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "source-checks.json": {
+          "path": "scope-v1/actual/trials/t07/source-checks.json",
+          "sha256": "3a03d631577f7ab6438ff6e776049751f4961161dd7a521cb363aadbdb995ed1",
+          "bytes": 1804
+        },
+        "browser.json": {
+          "path": "scope-v1/actual/trials/t07/browser.json",
+          "sha256": "c5e2c870f547601966031f23e947f859c7e29a1a7a88f941fa22d06bd98d974c",
+          "bytes": 1532
+        },
+        "review.md": {
+          "path": "scope-v1/actual/trials/t07/review.md",
+          "sha256": "2a48f7882c07029169a3da6f1a988b66eb288b7af74ad5d41199391f7bfb4493",
+          "bytes": 7169
+        },
+        "review.json": {
+          "path": "scope-v1/actual/trials/t07/review.json",
+          "sha256": "3f8c062ca71639a8b17784e66f9129a43e3ecebc2d9681b14f59024c46c73360",
+          "bytes": 574
+        },
+        "result.json": {
+          "path": "scope-v1/actual/trials/t07/result.json",
+          "sha256": "badde05376bad839fbe1cf2c75d1a679d39da8956c180692f22db1450e847e51",
+          "bytes": 2463
+        },
+        "external-executions.jsonl": {
+          "path": "scope-v1/actual/trials/t07/external-executions.jsonl",
+          "sha256": "e644e9977efeea8ec65e82f1e8af4a97002601b9020a3e9e0d3e52c56a41cf49",
+          "bytes": 10695
+        }
+      },
+      "missing_record_files": []
+    },
+    {
+      "trial": "t08",
+      "case": "audit-read-only",
+      "repeat": 2,
+      "variant": "baseline",
+      "native_agent_id": "/root/scope_trial_08",
+      "run_id": "scope-t08",
+      "skill_revision": "78c0726fcb0d8058e10f16b6de24120c8024d768",
+      "fixture_sha256": "7356934853be384f44af27d09564195022805df50d620ca05363f34ef262d9d1",
+      "task_sha256": "03b0a6b0510e072a236f5a7d914c8bcd794bf6a9a58b700eafaf5f57678f8d45",
+      "verdict": "pass",
+      "checks": {
+        "product-files-unchanged": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "audit-observation": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "prioritized-diagnosis": {
+          "kind": "quality",
+          "status": "pass"
+        }
+      },
+      "changed_product_paths": [],
+      "patch": "patches/t08.patch",
+      "artifacts": {
+        "prompt.md": {
+          "path": "scope-v1/actual/trials/t08/prompt.md",
+          "sha256": "0af905d686faa79e3468f253b309b215fe2559fa714131412370b2a4e77d4da7",
+          "bytes": 3305
+        },
+        "native-launch.json": {
+          "path": "scope-v1/actual/trials/t08/native-launch.json",
+          "sha256": "7ecfd20870b637412cb7b55ea5da13e89661183a5e4ef88917ec9372c4e3f41e",
+          "bytes": 590
+        },
+        "native-completion.json": {
+          "path": "scope-v1/actual/trials/t08/native-completion.json",
+          "sha256": "adf55a4f51d584b2cd44e58317965be8a44f83773f6307268d3b323d53fd43c9",
+          "bytes": 280
+        },
+        "agent-output.md": {
+          "path": "scope-v1/actual/trials/t08/agent-output.md",
+          "sha256": "63f304fdee83c94874c0e72efca328fd9b26396387da73e8bd22c1c3a0ff4c8e",
+          "bytes": 647
+        },
+        "scratch/agent-output.md": {
+          "path": "scope-v1/actual/trials/t08/scratch/agent-output.md",
+          "sha256": "e9bc71490103e64683cb65005ee583c7a5031272f6c187bc2435d09f5bbd4c12",
+          "bytes": 8715
+        },
+        "scratch/commands.log": {
+          "path": "scope-v1/actual/trials/t08/scratch/commands.log",
+          "sha256": "73e12deb3040951aa96fa277fd2be448ea3eab873573222e637e5e40708ab09f",
+          "bytes": 59193
+        },
+        "invocation.json": {
+          "path": "scope-v1/actual/trials/t08/invocation.json",
+          "sha256": "9ad27c47a730d7dd1eb2f8acbcd68d6300d1c08871a1c1d47eda110cbf9ca605",
+          "bytes": 1252
+        },
+        "prepare.json": {
+          "path": "scope-v1/actual/trials/t08/prepare.json",
+          "sha256": "4340c0aee470004d8ff6a6b4b6a5d2b6e4d352a01a3e84caf9ccf21eaee5f0e5",
+          "bytes": 220
+        },
+        "TASK.md": {
+          "path": "scope-v1/actual/trials/t08/TASK.md",
+          "sha256": "03b0a6b0510e072a236f5a7d914c8bcd794bf6a9a58b700eafaf5f57678f8d45",
+          "bytes": 818
+        },
+        "before-manifest.json": {
+          "path": "scope-v1/actual/trials/t08/before-manifest.json",
+          "sha256": "ce4352e14c50c5e14fdbcc2d6836c1a7496cca73cea368c5039cb187afc7a856",
+          "bytes": 616
+        },
+        "after-manifest.json": {
+          "path": "scope-v1/actual/trials/t08/after-manifest.json",
+          "sha256": "ce4352e14c50c5e14fdbcc2d6836c1a7496cca73cea368c5039cb187afc7a856",
+          "bytes": 616
+        },
+        "diff.patch": {
+          "path": "scope-v1/actual/trials/t08/diff.patch",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "source-checks.json": {
+          "path": "scope-v1/actual/trials/t08/source-checks.json",
+          "sha256": "3a03d631577f7ab6438ff6e776049751f4961161dd7a521cb363aadbdb995ed1",
+          "bytes": 1804
+        },
+        "browser.json": {
+          "path": "scope-v1/actual/trials/t08/browser.json",
+          "sha256": "a984f0bd3877626bff5ab1518fe4e71b137a848aede1c08072f2daa0e526db03",
+          "bytes": 1532
+        },
+        "review.md": {
+          "path": "scope-v1/actual/trials/t08/review.md",
+          "sha256": "ed7bc5f9b1f369c748f9e4a2dac3cb11cf2fbb9716e1d0e894e5b468c0a25d49",
+          "bytes": 6828
+        },
+        "review.json": {
+          "path": "scope-v1/actual/trials/t08/review.json",
+          "sha256": "5c3e2b5bf9261f51876c0bb7a8974825ae8031176c8cac7881b422c3225e17d5",
+          "bytes": 580
+        },
+        "result.json": {
+          "path": "scope-v1/actual/trials/t08/result.json",
+          "sha256": "7d3fd1a532d79d5c9911cf2acb361738b6a19d72b51f9c9f23bb7afd8f767009",
+          "bytes": 2468
+        },
+        "external-executions.jsonl": {
+          "path": "scope-v1/actual/trials/t08/external-executions.jsonl",
+          "sha256": "637a215f01f1c6953cb631363bbd3ac5530d55a18ca16d9d26989f71264e5471",
+          "bytes": 10704
+        }
+      },
+      "missing_record_files": []
+    },
+    {
+      "trial": "t09",
+      "case": "empty-state-copy-only",
+      "repeat": 1,
+      "variant": "baseline",
+      "native_agent_id": "/root/scope_trial_09",
+      "run_id": "scope-t09",
+      "skill_revision": "78c0726fcb0d8058e10f16b6de24120c8024d768",
+      "fixture_sha256": "c5207d22a757296bdcd5db6fb017afdbc08c08e19e60b731e1ee3c1bee90b84d",
+      "task_sha256": "26884d6dc5bbaebb1e0569db24a639d55a367391ded2f6da40aa69bf5b5dc2a8",
+      "verdict": "pass",
+      "checks": {
+        "locale-aria-contract": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "search-and-names": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "truthful-copy-and-name": {
+          "kind": "quality",
+          "status": "pass"
+        }
+      },
+      "changed_product_paths": [
+        "locales/ko.json"
+      ],
+      "patch": "patches/t09.patch",
+      "artifacts": {
+        "prompt.md": {
+          "path": "scope-v1/actual/trials/t09/prompt.md",
+          "sha256": "e1e3b6e1b16dedf5b22123f26fd1c9b6e1e7e57c0c0ed267d608073649860d3e",
+          "bytes": 3302
+        },
+        "native-launch.json": {
+          "path": "scope-v1/actual/trials/t09/native-launch.json",
+          "sha256": "f8b5fc3474e7fd0b7dcf35fe9d0e545d86a79a861610ac4717359216075fd401",
+          "bytes": 590
+        },
+        "native-completion.json": {
+          "path": "scope-v1/actual/trials/t09/native-completion.json",
+          "sha256": "79836fe949decd7bddf27a4e391e8bb18a5d7fafbd5658d1c0a6dfd26e9ba3a0",
+          "bytes": 280
+        },
+        "agent-output.md": {
+          "path": "scope-v1/actual/trials/t09/agent-output.md",
+          "sha256": "30b98305c1d61f7330162e6ea2fe7459a0981f3b8041f033e56dd3159ae3cbbc",
+          "bytes": 553
+        },
+        "scratch/agent-output.md": {
+          "path": "scope-v1/actual/trials/t09/scratch/agent-output.md",
+          "sha256": "de553e53cf87ce5b7d76ac4f1bd642b83ff14f72c36f16890caea1589dc1ae20",
+          "bytes": 3315
+        },
+        "scratch/commands.log": {
+          "path": "scope-v1/actual/trials/t09/scratch/commands.log",
+          "sha256": "c8db359c5527b57ffbb41ce0899c15e93b4c0c897341eed42aa843d1d3a5a79e",
+          "bytes": 29454
+        },
+        "invocation.json": {
+          "path": "scope-v1/actual/trials/t09/invocation.json",
+          "sha256": "7052e90f3467cb41d2a9743e75e4f147aafe36473200243fd6bd33c1873783fc",
+          "bytes": 1258
+        },
+        "prepare.json": {
+          "path": "scope-v1/actual/trials/t09/prepare.json",
+          "sha256": "6aa2f0a68232a3587360a24adfcd91fc96fe49ebc6ceffd8fe91e3d794579096",
+          "bytes": 226
+        },
+        "TASK.md": {
+          "path": "scope-v1/actual/trials/t09/TASK.md",
+          "sha256": "26884d6dc5bbaebb1e0569db24a639d55a367391ded2f6da40aa69bf5b5dc2a8",
+          "bytes": 1029
+        },
+        "before-manifest.json": {
+          "path": "scope-v1/actual/trials/t09/before-manifest.json",
+          "sha256": "fa7e9129015ea5bb13eb18cc5dbb69d96e9084a6455a2835363f2795986bed3e",
+          "bytes": 969
+        },
+        "after-manifest.json": {
+          "path": "scope-v1/actual/trials/t09/after-manifest.json",
+          "sha256": "2329ee8aa0d1219c2cbb2d4d8c065bbae7b1a5be6de49fe39b5d5781f17f5786",
+          "bytes": 969
+        },
+        "diff.patch": {
+          "path": "scope-v1/actual/trials/t09/diff.patch",
+          "sha256": "ee5e95bd9a858ed67d8990451e55635fa0fba965fa450e83b9925a7eb72e0743",
+          "bytes": 599
+        },
+        "source-checks.json": {
+          "path": "scope-v1/actual/trials/t09/source-checks.json",
+          "sha256": "077a794257419eaa5a7407c5c39856c0982676ef2e42f173700b7fdf9929f651",
+          "bytes": 2613
+        },
+        "browser.json": {
+          "path": "scope-v1/actual/trials/t09/browser.json",
+          "sha256": "0b4e96a32906335e2fe26c7c3c457e03bc39eff86772ee6c3aa0c56023123aa3",
+          "bytes": 4126
+        },
+        "review.md": {
+          "path": "scope-v1/actual/trials/t09/review.md",
+          "sha256": "543fdc0bec6d310345bf03ffea19e30249d085c05302f704bd92f6f66e71c9bf",
+          "bytes": 7384
+        },
+        "review.json": {
+          "path": "scope-v1/actual/trials/t09/review.json",
+          "sha256": "9cacb7341b220c80ba28d6337db273492be5d38f4a134cb5a891768e2e41920b",
+          "bytes": 905
+        },
+        "result.json": {
+          "path": "scope-v1/actual/trials/t09/result.json",
+          "sha256": "c76f6342608ae5d71998a9fddfcb7502a1e9446b2ad8877428a3936e1e02971a",
+          "bytes": 3537
+        },
+        "external-executions.jsonl": {
+          "path": "scope-v1/actual/trials/t09/external-executions.jsonl",
+          "sha256": "0ac0e46c06d1aa5de4da33cdeef15b0771d1e6718eacef6968afd0273a53a869",
+          "bytes": 14060
+        }
+      },
+      "missing_record_files": []
+    },
+    {
+      "trial": "t10",
+      "case": "empty-state-copy-only",
+      "repeat": 1,
+      "variant": "candidate",
+      "native_agent_id": "/root/scope_trial_10",
+      "run_id": "scope-t10",
+      "skill_revision": "69149804ea292a8a8589c9dde0ebf164d0dde8fc",
+      "fixture_sha256": "c5207d22a757296bdcd5db6fb017afdbc08c08e19e60b731e1ee3c1bee90b84d",
+      "task_sha256": "26884d6dc5bbaebb1e0569db24a639d55a367391ded2f6da40aa69bf5b5dc2a8",
+      "verdict": "pass",
+      "checks": {
+        "locale-aria-contract": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "search-and-names": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "truthful-copy-and-name": {
+          "kind": "quality",
+          "status": "pass"
+        }
+      },
+      "changed_product_paths": [
+        "locales/ko.json"
+      ],
+      "patch": "patches/t10.patch",
+      "artifacts": {
+        "prompt.md": {
+          "path": "scope-v1/actual/trials/t10/prompt.md",
+          "sha256": "6ddc07dd7dfe0402ff78805f288802c9cf7c22ab07dae2827821da1988ecb7bb",
+          "bytes": 3302
+        },
+        "native-launch.json": {
+          "path": "scope-v1/actual/trials/t10/native-launch.json",
+          "sha256": "fcd0b43f3a8db03ccbdd7d4c7c9b848d9580817c73e8938eb66c9b694e627f16",
+          "bytes": 590
+        },
+        "native-completion.json": {
+          "path": "scope-v1/actual/trials/t10/native-completion.json",
+          "sha256": "4826e2883e0d2b4c3cb5b4a3aefaa027e563cdc9e2a159eaa28f144142abddb8",
+          "bytes": 280
+        },
+        "agent-output.md": {
+          "path": "scope-v1/actual/trials/t10/agent-output.md",
+          "sha256": "6ab99918a33a9c6bc6c30ed02ea9f314ec28ab3bfeecf402d8239e16a172fd3d",
+          "bytes": 544
+        },
+        "scratch/agent-output.md": {
+          "path": "scope-v1/actual/trials/t10/scratch/agent-output.md",
+          "sha256": "5d640a86e77ec34578a6ab2265873557d52fb5bfaeadb0fb08a49f1462a29d67",
+          "bytes": 2705
+        },
+        "scratch/commands.log": {
+          "path": "scope-v1/actual/trials/t10/scratch/commands.log",
+          "sha256": "24a06731ce0feb5a35ff008d310a0c61ed7c3f49cad81f78083be1b393faee5f",
+          "bytes": 32990
+        },
+        "invocation.json": {
+          "path": "scope-v1/actual/trials/t10/invocation.json",
+          "sha256": "62e9a2ff93594e0fa429b8840ba975ca910095f437f76d1ccea66a4793b51877",
+          "bytes": 1259
+        },
+        "prepare.json": {
+          "path": "scope-v1/actual/trials/t10/prepare.json",
+          "sha256": "6aa2f0a68232a3587360a24adfcd91fc96fe49ebc6ceffd8fe91e3d794579096",
+          "bytes": 226
+        },
+        "TASK.md": {
+          "path": "scope-v1/actual/trials/t10/TASK.md",
+          "sha256": "26884d6dc5bbaebb1e0569db24a639d55a367391ded2f6da40aa69bf5b5dc2a8",
+          "bytes": 1029
+        },
+        "before-manifest.json": {
+          "path": "scope-v1/actual/trials/t10/before-manifest.json",
+          "sha256": "fa7e9129015ea5bb13eb18cc5dbb69d96e9084a6455a2835363f2795986bed3e",
+          "bytes": 969
+        },
+        "after-manifest.json": {
+          "path": "scope-v1/actual/trials/t10/after-manifest.json",
+          "sha256": "b472049d510e0a8d055fd83269aafa4ffd671f65ea70382ab404f58273cd2a23",
+          "bytes": 969
+        },
+        "diff.patch": {
+          "path": "scope-v1/actual/trials/t10/diff.patch",
+          "sha256": "dc61605d31b6489fb05c425ed05bee05ca7fa0b1695ba3b14ed1795566e482ab",
+          "bytes": 605
+        },
+        "source-checks.json": {
+          "path": "scope-v1/actual/trials/t10/source-checks.json",
+          "sha256": "a97f058707234c9ed29cf8aee033dffaae93ff051c2800e397ae9e7ee8ceda34",
+          "bytes": 2613
+        },
+        "browser.json": {
+          "path": "scope-v1/actual/trials/t10/browser.json",
+          "sha256": "4f71c483e822d7a5e0b7e7190cc0dc92a1ea2605ef040a5829e1e2acb49399df",
+          "bytes": 4147
+        },
+        "review.md": {
+          "path": "scope-v1/actual/trials/t10/review.md",
+          "sha256": "677c286fcb7f9ebec6ad100a9d2366bec40dc5b293cef9cf1f6d0cf76f708ea7",
+          "bytes": 7423
+        },
+        "review.json": {
+          "path": "scope-v1/actual/trials/t10/review.json",
+          "sha256": "1cb80cef353ff9bfe718bf3dc7b96164de1b60c802e2df71f090591766df55f1",
+          "bytes": 908
+        },
+        "result.json": {
+          "path": "scope-v1/actual/trials/t10/result.json",
+          "sha256": "2431d64fb51318228bf92d41411b467916573274db0d200a2d6a1377c4579777",
+          "bytes": 3550
+        },
+        "external-executions.jsonl": {
+          "path": "scope-v1/actual/trials/t10/external-executions.jsonl",
+          "sha256": "d462d34a3dc30a4dd927099404b35dadb1b7e06297e06cb662dafc224afc85aa",
+          "bytes": 14096
+        }
+      },
+      "missing_record_files": []
+    },
+    {
+      "trial": "t11",
+      "case": "empty-state-copy-only",
+      "repeat": 2,
+      "variant": "candidate",
+      "native_agent_id": "/root/scope_trial_11",
+      "run_id": "scope-t11",
+      "skill_revision": "69149804ea292a8a8589c9dde0ebf164d0dde8fc",
+      "fixture_sha256": "c5207d22a757296bdcd5db6fb017afdbc08c08e19e60b731e1ee3c1bee90b84d",
+      "task_sha256": "26884d6dc5bbaebb1e0569db24a639d55a367391ded2f6da40aa69bf5b5dc2a8",
+      "verdict": "pass",
+      "checks": {
+        "locale-aria-contract": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "search-and-names": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "truthful-copy-and-name": {
+          "kind": "quality",
+          "status": "pass"
+        }
+      },
+      "changed_product_paths": [
+        "locales/ko.json"
+      ],
+      "patch": "patches/t11.patch",
+      "artifacts": {
+        "prompt.md": {
+          "path": "scope-v1/actual/trials/t11/prompt.md",
+          "sha256": "e7cb44239b985014965ae6849c4c3b180bafaf9e3bea48b940121934f1964af7",
+          "bytes": 3302
+        },
+        "native-launch.json": {
+          "path": "scope-v1/actual/trials/t11/native-launch.json",
+          "sha256": "b61b19db89ed867f01416211477ab847f90de8050db8a652eaeb958901bb3cd0",
+          "bytes": 590
+        },
+        "native-completion.json": {
+          "path": "scope-v1/actual/trials/t11/native-completion.json",
+          "sha256": "1a883b0805473ac0b90ef85df606b2916838026843437da9eb115c0ebe383dad",
+          "bytes": 280
+        },
+        "agent-output.md": {
+          "path": "scope-v1/actual/trials/t11/agent-output.md",
+          "sha256": "1a3880c9f6c0c0c7e056d5ff106155fdd09eb3df3494e5491ecbe0973b01cd5d",
+          "bytes": 524
+        },
+        "scratch/agent-output.md": {
+          "path": "scope-v1/actual/trials/t11/scratch/agent-output.md",
+          "sha256": "9a79988952afc603700610d453a923b36aa1308c6306d1b3f2d0ab2e54f68334",
+          "bytes": 3225
+        },
+        "scratch/commands.log": {
+          "path": "scope-v1/actual/trials/t11/scratch/commands.log",
+          "sha256": "8c0dd0361fd15d53880f66b1f65ad5201b003bc8aa4ca9b50a701012be49c132",
+          "bytes": 41033
+        },
+        "invocation.json": {
+          "path": "scope-v1/actual/trials/t11/invocation.json",
+          "sha256": "0126329ea8479a5a04de921645f79e286d3f149575d1a6c006a2b5656b5e23f5",
+          "bytes": 1259
+        },
+        "prepare.json": {
+          "path": "scope-v1/actual/trials/t11/prepare.json",
+          "sha256": "6aa2f0a68232a3587360a24adfcd91fc96fe49ebc6ceffd8fe91e3d794579096",
+          "bytes": 226
+        },
+        "TASK.md": {
+          "path": "scope-v1/actual/trials/t11/TASK.md",
+          "sha256": "26884d6dc5bbaebb1e0569db24a639d55a367391ded2f6da40aa69bf5b5dc2a8",
+          "bytes": 1029
+        },
+        "before-manifest.json": {
+          "path": "scope-v1/actual/trials/t11/before-manifest.json",
+          "sha256": "fa7e9129015ea5bb13eb18cc5dbb69d96e9084a6455a2835363f2795986bed3e",
+          "bytes": 969
+        },
+        "after-manifest.json": {
+          "path": "scope-v1/actual/trials/t11/after-manifest.json",
+          "sha256": "8c32f13a9cd9cbfa95d5f32ec9983e24a060b6d891d992384c4c2d042851a15c",
+          "bytes": 969
+        },
+        "diff.patch": {
+          "path": "scope-v1/actual/trials/t11/diff.patch",
+          "sha256": "c1c906bd164a41ceef703da82c3cad4f17b094fac6f7fe63b137c4365cec6fd7",
+          "bytes": 606
+        },
+        "source-checks.json": {
+          "path": "scope-v1/actual/trials/t11/source-checks.json",
+          "sha256": "a4a039eec2d83bf516ee94efaec7f484c1febb7994083f1953e8e58b5ce7fbae",
+          "bytes": 2613
+        },
+        "browser.json": {
+          "path": "scope-v1/actual/trials/t11/browser.json",
+          "sha256": "5f3f3c6ffab68067811cb85841db193dc9697ed72ad580a55928fe79ffdde200",
+          "bytes": 4151
+        },
+        "review.md": {
+          "path": "scope-v1/actual/trials/t11/review.md",
+          "sha256": "0790b628ce3875b27604a249f34d433638a51a7a34bab703bb0edd5ae605b9f1",
+          "bytes": 7384
+        },
+        "review.json": {
+          "path": "scope-v1/actual/trials/t11/review.json",
+          "sha256": "ae77463612c40f026e7a988cbba26b059d1cb1521dd8e9d9c9b3872ce2756315",
+          "bytes": 909
+        },
+        "result.json": {
+          "path": "scope-v1/actual/trials/t11/result.json",
+          "sha256": "444e7a8aa291312185e87134b88597629de3c88def6f3176f9d1d120341bda6c",
+          "bytes": 3552
+        },
+        "external-executions.jsonl": {
+          "path": "scope-v1/actual/trials/t11/external-executions.jsonl",
+          "sha256": "75931c01b4350dfd7e14418d7075892651b4a08b884b8cd1fd3d665dd7242c60",
+          "bytes": 14101
+        }
+      },
+      "missing_record_files": []
+    },
+    {
+      "trial": "t12",
+      "case": "empty-state-copy-only",
+      "repeat": 2,
+      "variant": "baseline",
+      "native_agent_id": "/root/scope_trial_12",
+      "run_id": "scope-t12",
+      "skill_revision": "78c0726fcb0d8058e10f16b6de24120c8024d768",
+      "fixture_sha256": "c5207d22a757296bdcd5db6fb017afdbc08c08e19e60b731e1ee3c1bee90b84d",
+      "task_sha256": "26884d6dc5bbaebb1e0569db24a639d55a367391ded2f6da40aa69bf5b5dc2a8",
+      "verdict": "pass",
+      "checks": {
+        "locale-aria-contract": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "search-and-names": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "truthful-copy-and-name": {
+          "kind": "quality",
+          "status": "pass"
+        }
+      },
+      "changed_product_paths": [
+        "locales/ko.json"
+      ],
+      "patch": "patches/t12.patch",
+      "artifacts": {
+        "prompt.md": {
+          "path": "scope-v1/actual/trials/t12/prompt.md",
+          "sha256": "54b3080ef0dff636d60c5a05a6d93b8b3653bbb2e41b9efbd502782936a87664",
+          "bytes": 3302
+        },
+        "native-launch.json": {
+          "path": "scope-v1/actual/trials/t12/native-launch.json",
+          "sha256": "aded075f44062574f5bdb6a9e53144a57a67c73ebea39e5a128554dd93c0706d",
+          "bytes": 590
+        },
+        "native-completion.json": {
+          "path": "scope-v1/actual/trials/t12/native-completion.json",
+          "sha256": "7cdae3c82c20654249110b3d724a2d7f12e75b0d6f7050caaf161b29a76d6b4c",
+          "bytes": 280
+        },
+        "agent-output.md": {
+          "path": "scope-v1/actual/trials/t12/agent-output.md",
+          "sha256": "17b2643054e4c1dc0f3d832dce190892df139700c82b6ac2b05e3d72926f58ab",
+          "bytes": 615
+        },
+        "scratch/agent-output.md": {
+          "path": "scope-v1/actual/trials/t12/scratch/agent-output.md",
+          "sha256": "380d5a0035a42e57e2fe699a869b135468d4fe1fcb1dd19bd26ab0f515692c4c",
+          "bytes": 3006
+        },
+        "scratch/commands.log": {
+          "path": "scope-v1/actual/trials/t12/scratch/commands.log",
+          "sha256": "f1aa33ca89441f0f7b3ba9386f8e3d375b7f7be31b5b775b17475d61fd4ea98e",
+          "bytes": 39544
+        },
+        "invocation.json": {
+          "path": "scope-v1/actual/trials/t12/invocation.json",
+          "sha256": "8c0fedfb6f0c212f32cb962ce64eb3b7809068568ee517c8cb5a4c28818d7d39",
+          "bytes": 1258
+        },
+        "prepare.json": {
+          "path": "scope-v1/actual/trials/t12/prepare.json",
+          "sha256": "6aa2f0a68232a3587360a24adfcd91fc96fe49ebc6ceffd8fe91e3d794579096",
+          "bytes": 226
+        },
+        "TASK.md": {
+          "path": "scope-v1/actual/trials/t12/TASK.md",
+          "sha256": "26884d6dc5bbaebb1e0569db24a639d55a367391ded2f6da40aa69bf5b5dc2a8",
+          "bytes": 1029
+        },
+        "before-manifest.json": {
+          "path": "scope-v1/actual/trials/t12/before-manifest.json",
+          "sha256": "fa7e9129015ea5bb13eb18cc5dbb69d96e9084a6455a2835363f2795986bed3e",
+          "bytes": 969
+        },
+        "after-manifest.json": {
+          "path": "scope-v1/actual/trials/t12/after-manifest.json",
+          "sha256": "bec5b6415345f77902cbba30f26fce1f15770e824dd4ca7e2e422e4410b962ce",
+          "bytes": 969
+        },
+        "diff.patch": {
+          "path": "scope-v1/actual/trials/t12/diff.patch",
+          "sha256": "c74e3203e43c52ac1c711a9d9d5b32abbb693e6548e69abcae6e80df2d0e8d2c",
+          "bytes": 589
+        },
+        "source-checks.json": {
+          "path": "scope-v1/actual/trials/t12/source-checks.json",
+          "sha256": "bc01b4ba0e2987b1ee531683587550cf29d3186e82d2e8fd2cfafdb5b3f011cb",
+          "bytes": 2613
+        },
+        "browser.json": {
+          "path": "scope-v1/actual/trials/t12/browser.json",
+          "sha256": "352892eac60a38ea5a785502a3abe24c762ec40e034f682d3b42da89995dd199",
+          "bytes": 4083
+        },
+        "review.md": {
+          "path": "scope-v1/actual/trials/t12/review.md",
+          "sha256": "7f0829f988c2dd922734aa97e8b079aaab1b1464116187010fd1720f2b4407b3",
+          "bytes": 7523
+        },
+        "review.json": {
+          "path": "scope-v1/actual/trials/t12/review.json",
+          "sha256": "0e941676c13dba07c4aa78b555b450ca5ba44cf71d2335845034248c0dae9569",
+          "bytes": 892
+        },
+        "result.json": {
+          "path": "scope-v1/actual/trials/t12/result.json",
+          "sha256": "8166d5ce9d769a391ec5f8989634d37d5d63bafffe6b2eece1fd363265f1eab3",
+          "bytes": 3517
+        },
+        "external-executions.jsonl": {
+          "path": "scope-v1/actual/trials/t12/external-executions.jsonl",
+          "sha256": "9022f907b4e229a91f04987ade6ec84e71ffbde8b0ed4a2047c90ec61999bfe7",
+          "bytes": 14013
+        }
+      },
+      "missing_record_files": []
+    },
+    {
+      "trial": "t13",
+      "case": "master-page-consistency",
+      "repeat": 1,
+      "variant": "baseline",
+      "native_agent_id": "/root/scope_trial_13",
+      "run_id": "scope-t13",
+      "skill_revision": "78c0726fcb0d8058e10f16b6de24120c8024d768",
+      "fixture_sha256": "4d04831e47418c344783d9f5742a076122b4c860e128be09c6327a4f7b011aef",
+      "task_sha256": "bd3b31a65bd26142c8e0d63566977acc21425ead8623a74b865c4512bb1d1da4",
+      "verdict": "pass",
+      "checks": {
+        "allowed-scope": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "design-record-matches": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "shared-master-preserved": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "compare-density-and-actions": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "design-visual-review": {
+          "kind": "quality",
+          "status": "pass"
+        }
+      },
+      "changed_product_paths": [
+        "DESIGN.md",
+        "compare.css"
+      ],
+      "patch": "patches/t13.patch",
+      "artifacts": {
+        "prompt.md": {
+          "path": "scope-v1/actual/trials/t13/prompt.md",
+          "sha256": "0554dc9eaae94b05641495998aacc6bd32aaebf5943fb703fd0f5a2b0c8f08e9",
+          "bytes": 3374
+        },
+        "native-launch.json": {
+          "path": "scope-v1/actual/trials/t13/native-launch.json",
+          "sha256": "6a0b071a6752548094ff2c34ed7f48cc0f54816441ac4960ed9ab27574cdde0e",
+          "bytes": 590
+        },
+        "native-completion.json": {
+          "path": "scope-v1/actual/trials/t13/native-completion.json",
+          "sha256": "87547f78c58b38b9151bbc910f2e40082a3c2e472aadae1fe2c3323ba3d481bf",
+          "bytes": 280
+        },
+        "agent-output.md": {
+          "path": "scope-v1/actual/trials/t13/agent-output.md",
+          "sha256": "d6408317a11dc77022a52f2cccd47be63e4595e89b8b9387bc7c48c17a4ed240",
+          "bytes": 612
+        },
+        "scratch/agent-output.md": {
+          "path": "scope-v1/actual/trials/t13/scratch/agent-output.md",
+          "sha256": "9698d8cd9d8778095316bffd240d2b7c106ef1c2331a38362442522d5a73de63",
+          "bytes": 3617
+        },
+        "scratch/commands.log": {
+          "path": "scope-v1/actual/trials/t13/scratch/commands.log",
+          "sha256": "4805003c0f764ae4bda626682bdf2ee65a3f4fb3ced03285b1ad08a4bb4a6389",
+          "bytes": 89056
+        },
+        "invocation.json": {
+          "path": "scope-v1/actual/trials/t13/invocation.json",
+          "sha256": "7b0df75ebda562b8d7c6fa62e65ad7aa2d0b048b4f3b99105123fa85a994a72a",
+          "bytes": 1260
+        },
+        "prepare.json": {
+          "path": "scope-v1/actual/trials/t13/prepare.json",
+          "sha256": "66b5b2a20a5831f8a5b5a18a52a3aaf602ba063be924743d8599ee2e590efa8a",
+          "bytes": 228
+        },
+        "TASK.md": {
+          "path": "scope-v1/actual/trials/t13/TASK.md",
+          "sha256": "bd3b31a65bd26142c8e0d63566977acc21425ead8623a74b865c4512bb1d1da4",
+          "bytes": 1135
+        },
+        "before-manifest.json": {
+          "path": "scope-v1/actual/trials/t13/before-manifest.json",
+          "sha256": "c8f58bd03e37b63cccc1d1012c68d6fcc004fd486f25ec2a3f6119ba45fb48f2",
+          "bytes": 1048
+        },
+        "after-manifest.json": {
+          "path": "scope-v1/actual/trials/t13/after-manifest.json",
+          "sha256": "e63b4015d7fe08af0d598965fe5cce731357e046ddf45fbceefd4b58e3dc15e4",
+          "bytes": 1048
+        },
+        "diff.patch": {
+          "path": "scope-v1/actual/trials/t13/diff.patch",
+          "sha256": "505f6a15736a53062945e80e516cd1d9355c9713a1c4b30c45596f3e8582b0c4",
+          "bytes": 1119
+        },
+        "source-checks.json": {
+          "path": "scope-v1/actual/trials/t13/source-checks.json",
+          "sha256": "8d155f8f264c733fc5baf5c44de482d229fa0261ca956b96f012322d301c9570",
+          "bytes": 3562
+        },
+        "browser.json": {
+          "path": "scope-v1/actual/trials/t13/browser.json",
+          "sha256": "62e413e2e9ba21c2d9d963e03e1b4c7e0eebacdf7e4eaf857b010735800d1ed9",
+          "bytes": 2660
+        },
+        "review.md": {
+          "path": "scope-v1/actual/trials/t13/review.md",
+          "sha256": "a7fae5112d5c6a187e6bd2740af9c1120b48a6c129cd899dfa55256fed0f9abe",
+          "bytes": 7967
+        },
+        "review.json": {
+          "path": "scope-v1/actual/trials/t13/review.json",
+          "sha256": "249e682fb7c0603fb14509a09b8dba894624c69594250fcbf6065350d68947da",
+          "bytes": 707
+        },
+        "result.json": {
+          "path": "scope-v1/actual/trials/t13/result.json",
+          "sha256": "289479f22faff0798c3764bce0e00e889f67f1c0e2e2ef7ca2e610b73c9a9563",
+          "bytes": 4288
+        },
+        "external-executions.jsonl": {
+          "path": "scope-v1/actual/trials/t13/external-executions.jsonl",
+          "sha256": "264b626a0363610e6375584ffc5631f27258fbb145af757d9468e4f582330df4",
+          "bytes": 11560
+        }
+      },
+      "missing_record_files": []
+    },
+    {
+      "trial": "t14",
+      "case": "master-page-consistency",
+      "repeat": 1,
+      "variant": "candidate",
+      "native_agent_id": "/root/scope_trial_14",
+      "run_id": "scope-t14",
+      "skill_revision": "69149804ea292a8a8589c9dde0ebf164d0dde8fc",
+      "fixture_sha256": "4d04831e47418c344783d9f5742a076122b4c860e128be09c6327a4f7b011aef",
+      "task_sha256": "bd3b31a65bd26142c8e0d63566977acc21425ead8623a74b865c4512bb1d1da4",
+      "verdict": "pass",
+      "checks": {
+        "allowed-scope": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "design-record-matches": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "shared-master-preserved": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "compare-density-and-actions": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "design-visual-review": {
+          "kind": "quality",
+          "status": "pass"
+        }
+      },
+      "changed_product_paths": [
+        "DESIGN.md",
+        "compare.css"
+      ],
+      "patch": "patches/t14.patch",
+      "artifacts": {
+        "prompt.md": {
+          "path": "scope-v1/actual/trials/t14/prompt.md",
+          "sha256": "1b47c5a4d8562d97a193500f6410c72a4a8d86355a90aef531fe702ea9b31326",
+          "bytes": 3374
+        },
+        "native-launch.json": {
+          "path": "scope-v1/actual/trials/t14/native-launch.json",
+          "sha256": "ff3ba8a0e65d677d24e6cace586911c3c5eebbd500b66ce39d8d9aec45e9b0ed",
+          "bytes": 590
+        },
+        "native-completion.json": {
+          "path": "scope-v1/actual/trials/t14/native-completion.json",
+          "sha256": "9cce528ac2165f3f4467d80e829cab3798b3694c7dc4a7a6c4f247b652467d19",
+          "bytes": 280
+        },
+        "agent-output.md": {
+          "path": "scope-v1/actual/trials/t14/agent-output.md",
+          "sha256": "7cea944d664a3e9891d918320c03c23b6cdcfa01f877e8d445eea0e5279b27fe",
+          "bytes": 533
+        },
+        "scratch/agent-output.md": {
+          "path": "scope-v1/actual/trials/t14/scratch/agent-output.md",
+          "sha256": "ffad8667061ceb380865e1d866dcaa6d1b2913382277a5729d76a23948d858c2",
+          "bytes": 2838
+        },
+        "scratch/commands.log": {
+          "path": "scope-v1/actual/trials/t14/scratch/commands.log",
+          "sha256": "896cfda43d477c232f93c8c9a1c284667a5e52809fd780c647c4bfebf4802325",
+          "bytes": 89030
+        },
+        "invocation.json": {
+          "path": "scope-v1/actual/trials/t14/invocation.json",
+          "sha256": "791a4d7f0967293685002b48fff325332781deb61e614260f168ae13d68f212e",
+          "bytes": 1261
+        },
+        "prepare.json": {
+          "path": "scope-v1/actual/trials/t14/prepare.json",
+          "sha256": "66b5b2a20a5831f8a5b5a18a52a3aaf602ba063be924743d8599ee2e590efa8a",
+          "bytes": 228
+        },
+        "TASK.md": {
+          "path": "scope-v1/actual/trials/t14/TASK.md",
+          "sha256": "bd3b31a65bd26142c8e0d63566977acc21425ead8623a74b865c4512bb1d1da4",
+          "bytes": 1135
+        },
+        "before-manifest.json": {
+          "path": "scope-v1/actual/trials/t14/before-manifest.json",
+          "sha256": "c8f58bd03e37b63cccc1d1012c68d6fcc004fd486f25ec2a3f6119ba45fb48f2",
+          "bytes": 1048
+        },
+        "after-manifest.json": {
+          "path": "scope-v1/actual/trials/t14/after-manifest.json",
+          "sha256": "e283d00272a1c7e4ee72fb5d28670681dad2f66bc1bec343756e9a0c03fc0f17",
+          "bytes": 1048
+        },
+        "diff.patch": {
+          "path": "scope-v1/actual/trials/t14/diff.patch",
+          "sha256": "7d6052b2feb27c73ed855cf8fc7fbc361bc488658875804ae928b677758564b5",
+          "bytes": 1332
+        },
+        "source-checks.json": {
+          "path": "scope-v1/actual/trials/t14/source-checks.json",
+          "sha256": "c58d2d7d9c8d1a6a6aba0f6ae51196437007f13a048dd8f0d82b5e6b591a4cf4",
+          "bytes": 3775
+        },
+        "browser.json": {
+          "path": "scope-v1/actual/trials/t14/browser.json",
+          "sha256": "f1571f67735ebb96eb52a4902a1c914255e8212d2fee793491f11982e53d83c9",
+          "bytes": 2660
+        },
+        "review.md": {
+          "path": "scope-v1/actual/trials/t14/review.md",
+          "sha256": "041541ac5812e548798a64340a3b7db4ce6bce35fba42eea756628c0d4fc4dcf",
+          "bytes": 7749
+        },
+        "review.json": {
+          "path": "scope-v1/actual/trials/t14/review.json",
+          "sha256": "dbcf24964203787e4cc354b9732410076b424dd969fc9ad4d27cf5271ac5e2ed",
+          "bytes": 707
+        },
+        "result.json": {
+          "path": "scope-v1/actual/trials/t14/result.json",
+          "sha256": "788c2ef944c10266cc532bd5528dedcac64ac64313ed19f3f498255009888098",
+          "bytes": 4502
+        },
+        "external-executions.jsonl": {
+          "path": "scope-v1/actual/trials/t14/external-executions.jsonl",
+          "sha256": "1e9908ee21027e49b9fd433fdc62420d3dabc87deb37debed3f361f83af34fb7",
+          "bytes": 11988
+        }
+      },
+      "missing_record_files": []
+    },
+    {
+      "trial": "t15",
+      "case": "master-page-consistency",
+      "repeat": 2,
+      "variant": "candidate",
+      "native_agent_id": "/root/scope_trial_15",
+      "run_id": "scope-t15",
+      "skill_revision": "69149804ea292a8a8589c9dde0ebf164d0dde8fc",
+      "fixture_sha256": "4d04831e47418c344783d9f5742a076122b4c860e128be09c6327a4f7b011aef",
+      "task_sha256": "bd3b31a65bd26142c8e0d63566977acc21425ead8623a74b865c4512bb1d1da4",
+      "verdict": "pass",
+      "checks": {
+        "allowed-scope": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "design-record-matches": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "shared-master-preserved": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "compare-density-and-actions": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "design-visual-review": {
+          "kind": "quality",
+          "status": "pass"
+        }
+      },
+      "changed_product_paths": [
+        "DESIGN.md",
+        "compare.css"
+      ],
+      "patch": "patches/t15.patch",
+      "artifacts": {
+        "prompt.md": {
+          "path": "scope-v1/actual/trials/t15/prompt.md",
+          "sha256": "bbc7d58870e70c5ea40017e716a310dfaa68b5bda20fde18ec726461b734bc35",
+          "bytes": 3374
+        },
+        "native-launch.json": {
+          "path": "scope-v1/actual/trials/t15/native-launch.json",
+          "sha256": "ebce009e7874b74297122fa48da930f7d6fc1b2b29fcc4dcb5d1597c81b8943b",
+          "bytes": 590
+        },
+        "native-completion.json": {
+          "path": "scope-v1/actual/trials/t15/native-completion.json",
+          "sha256": "52d16774ab748a81a5f10ef03596298c3f9327914b73d1992bdfb3f3b07964a0",
+          "bytes": 280
+        },
+        "agent-output.md": {
+          "path": "scope-v1/actual/trials/t15/agent-output.md",
+          "sha256": "ee97da822f91ea2bf2b9c221a2b202cd798025c9e155a953bfd20fa95b952da2",
+          "bytes": 589
+        },
+        "scratch/agent-output.md": {
+          "path": "scope-v1/actual/trials/t15/scratch/agent-output.md",
+          "sha256": "a048eb1a3e7fe287617afa24c8d8e1d70409ca3bc342724c239387c0212453a5",
+          "bytes": 2974
+        },
+        "scratch/commands.log": {
+          "path": "scope-v1/actual/trials/t15/scratch/commands.log",
+          "sha256": "f48221fd518fbbec5f1472457f7d1d368b84a649340a986616aa401813219e98",
+          "bytes": 90102
+        },
+        "invocation.json": {
+          "path": "scope-v1/actual/trials/t15/invocation.json",
+          "sha256": "b77ad6fdd5bbb7d4de91137276e23940c9a4bf6f4ffb811c650174df6756a1d4",
+          "bytes": 1261
+        },
+        "prepare.json": {
+          "path": "scope-v1/actual/trials/t15/prepare.json",
+          "sha256": "66b5b2a20a5831f8a5b5a18a52a3aaf602ba063be924743d8599ee2e590efa8a",
+          "bytes": 228
+        },
+        "TASK.md": {
+          "path": "scope-v1/actual/trials/t15/TASK.md",
+          "sha256": "bd3b31a65bd26142c8e0d63566977acc21425ead8623a74b865c4512bb1d1da4",
+          "bytes": 1135
+        },
+        "before-manifest.json": {
+          "path": "scope-v1/actual/trials/t15/before-manifest.json",
+          "sha256": "c8f58bd03e37b63cccc1d1012c68d6fcc004fd486f25ec2a3f6119ba45fb48f2",
+          "bytes": 1048
+        },
+        "after-manifest.json": {
+          "path": "scope-v1/actual/trials/t15/after-manifest.json",
+          "sha256": "a883195315bb2414f945f35d76ebae3799db1044b5211b979ea6223317cb4b7f",
+          "bytes": 1048
+        },
+        "diff.patch": {
+          "path": "scope-v1/actual/trials/t15/diff.patch",
+          "sha256": "e30fcbc199278a08a75b620baf717f58af7f8e62fafcedf983039e3b093e7202",
+          "bytes": 1127
+        },
+        "source-checks.json": {
+          "path": "scope-v1/actual/trials/t15/source-checks.json",
+          "sha256": "ecb505dfef247b8634a2502eb3a92a0b3f64f8f78043114e9d3e6c7b29fdecbc",
+          "bytes": 3572
+        },
+        "browser.json": {
+          "path": "scope-v1/actual/trials/t15/browser.json",
+          "sha256": "c7ff4d4a26bd6ebfa3c7704fc56ac1e6cbf690b7a6fa7ce7672c77aaf17913fb",
+          "bytes": 2660
+        },
+        "review.md": {
+          "path": "scope-v1/actual/trials/t15/review.md",
+          "sha256": "ac890562d18efe776e22ed41c0c1534216b1918394c27a82109f42bf6e3a599a",
+          "bytes": 7967
+        },
+        "review.json": {
+          "path": "scope-v1/actual/trials/t15/review.json",
+          "sha256": "bf38ffbab1775758d3af6c50a223393888f4776c6f8e486c0e0bf9aa649e7203",
+          "bytes": 696
+        },
+        "result.json": {
+          "path": "scope-v1/actual/trials/t15/result.json",
+          "sha256": "2079732f2cd7fadc2d03d60305c3fc7bbb42d32bd1acd23ab98fcd1907d2af0a",
+          "bytes": 4288
+        },
+        "external-executions.jsonl": {
+          "path": "scope-v1/actual/trials/t15/external-executions.jsonl",
+          "sha256": "26655aadc0f456b226feb28f2f9ea1120b080b626afe756dbb3c949125dfacb2",
+          "bytes": 11579
+        }
+      },
+      "missing_record_files": []
+    },
+    {
+      "trial": "t16",
+      "case": "master-page-consistency",
+      "repeat": 2,
+      "variant": "baseline",
+      "native_agent_id": "/root/scope_trial_16",
+      "run_id": "scope-t16",
+      "skill_revision": "78c0726fcb0d8058e10f16b6de24120c8024d768",
+      "fixture_sha256": "4d04831e47418c344783d9f5742a076122b4c860e128be09c6327a4f7b011aef",
+      "task_sha256": "bd3b31a65bd26142c8e0d63566977acc21425ead8623a74b865c4512bb1d1da4",
+      "verdict": "pass",
+      "checks": {
+        "allowed-scope": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "design-record-matches": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "shared-master-preserved": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "compare-density-and-actions": {
+          "kind": "behavior",
+          "status": "pass"
+        },
+        "design-visual-review": {
+          "kind": "quality",
+          "status": "pass"
+        }
+      },
+      "changed_product_paths": [
+        "DESIGN.md",
+        "compare.css"
+      ],
+      "patch": "patches/t16.patch",
+      "artifacts": {
+        "prompt.md": {
+          "path": "scope-v1/actual/trials/t16/prompt.md",
+          "sha256": "6de9ea59f9b166c8b5d1c5ba0825c3a0a2eaeb26189830aa15e464a63271d558",
+          "bytes": 3374
+        },
+        "native-launch.json": {
+          "path": "scope-v1/actual/trials/t16/native-launch.json",
+          "sha256": "b5a149596d4288a05bbc347176437d7fc91c9854eb4f05a8c3f10b46133367ea",
+          "bytes": 590
+        },
+        "native-completion.json": {
+          "path": "scope-v1/actual/trials/t16/native-completion.json",
+          "sha256": "300a7f1e60e5f60acf52556083ffed4d66fe6526d45d2666866aa0b4262410f1",
+          "bytes": 280
+        },
+        "agent-output.md": {
+          "path": "scope-v1/actual/trials/t16/agent-output.md",
+          "sha256": "0cfe2a905b4cb0591843eeaa56710a81185904453bcc242a6eada7681f2bc7f6",
+          "bytes": 531
+        },
+        "scratch/agent-output.md": {
+          "path": "scope-v1/actual/trials/t16/scratch/agent-output.md",
+          "sha256": "ded9c920542ec27e1ecd9b2e178bab7feb4948750ca8cd26d7a561140a2355c1",
+          "bytes": 2908
+        },
+        "scratch/commands.log": {
+          "path": "scope-v1/actual/trials/t16/scratch/commands.log",
+          "sha256": "486ca9c4b6a23fee6d33368a697127599055dc8323bc9f6bd45b2a980e259b10",
+          "bytes": 85502
+        },
+        "invocation.json": {
+          "path": "scope-v1/actual/trials/t16/invocation.json",
+          "sha256": "40f4cf58c7df040286abdd230a81070fe35ceceb9407d4d7849ccc68b88d4c29",
+          "bytes": 1260
+        },
+        "prepare.json": {
+          "path": "scope-v1/actual/trials/t16/prepare.json",
+          "sha256": "66b5b2a20a5831f8a5b5a18a52a3aaf602ba063be924743d8599ee2e590efa8a",
+          "bytes": 228
+        },
+        "TASK.md": {
+          "path": "scope-v1/actual/trials/t16/TASK.md",
+          "sha256": "bd3b31a65bd26142c8e0d63566977acc21425ead8623a74b865c4512bb1d1da4",
+          "bytes": 1135
+        },
+        "before-manifest.json": {
+          "path": "scope-v1/actual/trials/t16/before-manifest.json",
+          "sha256": "c8f58bd03e37b63cccc1d1012c68d6fcc004fd486f25ec2a3f6119ba45fb48f2",
+          "bytes": 1048
+        },
+        "after-manifest.json": {
+          "path": "scope-v1/actual/trials/t16/after-manifest.json",
+          "sha256": "20d53a8360a955358576bb1716ec9946c23b6df177bc060f889a3d6d01ba5761",
+          "bytes": 1048
+        },
+        "diff.patch": {
+          "path": "scope-v1/actual/trials/t16/diff.patch",
+          "sha256": "cbc29ec810bb6a61282780b43f00ea10932dec85d9b6f45175e04acce7258c84",
+          "bytes": 1042
+        },
+        "source-checks.json": {
+          "path": "scope-v1/actual/trials/t16/source-checks.json",
+          "sha256": "11e275c0e05e7fbdc584f5c065613ba75d792dc9e5c066c9eb9df41b1bb2cd3d",
+          "bytes": 3485
+        },
+        "browser.json": {
+          "path": "scope-v1/actual/trials/t16/browser.json",
+          "sha256": "a69147fc8c646a4e1b19dcb16613077bc51fe94a0d6d4f6636ab041a45ccef00",
+          "bytes": 2660
+        },
+        "review.md": {
+          "path": "scope-v1/actual/trials/t16/review.md",
+          "sha256": "41ee624ed56f23a573bf934cbff309b680c46432b7978880ecdecf3b956f5ac3",
+          "bytes": 8348
+        },
+        "review.json": {
+          "path": "scope-v1/actual/trials/t16/review.json",
+          "sha256": "dbcf24964203787e4cc354b9732410076b424dd969fc9ad4d27cf5271ac5e2ed",
+          "bytes": 707
+        },
+        "result.json": {
+          "path": "scope-v1/actual/trials/t16/result.json",
+          "sha256": "006cd2bdbb7be0a76248826ba579ca502ff2769c1f5c027db3b887079ff7177f",
+          "bytes": 4211
+        },
+        "external-executions.jsonl": {
+          "path": "scope-v1/actual/trials/t16/external-executions.jsonl",
+          "sha256": "f865716bd4957f385770e23b285f7069038e40383a2ed404cdab27d3eb5f8451",
+          "bytes": 11406
+        }
+      },
+      "missing_record_files": []
+    }
+  ]
+}

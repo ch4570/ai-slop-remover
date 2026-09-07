@@ -1,0 +1,571 @@
+{
+  "schema": 1,
+  "record_kind": "synthetic harness controls; excluded from actual native trial counts",
+  "reported_tests": {
+    "scope_source_and_summary": 20,
+    "comparator": 23,
+    "existing_chrome": 18,
+    "scope_chrome": 10,
+    "scope_chrome_execution": "9 tests in initial log, root-symlink test in separate recorded run",
+    "python_discovery": {
+      "total": 149,
+      "skipped_browser": 28
+    },
+    "npm_cli": 8
+  },
+  "scope_observations": [
+    {
+      "control": "broken-aria",
+      "case": "empty-state-copy-only",
+      "archive_path": "scope-v1/controls/issue-6-scope-browser/scope-inprjc98/broken-aria",
+      "source": {
+        "locale-aria-contract": "fail"
+      },
+      "browser": {
+        "search-and-names": "fail"
+      }
+    },
+    {
+      "control": "design-disagreement",
+      "case": "master-page-consistency",
+      "archive_path": "scope-v1/controls/issue-6-scope-browser/scope-inprjc98/design-disagreement",
+      "source": {
+        "allowed-scope": "pass",
+        "design-record-matches": "fail"
+      },
+      "browser": {
+        "shared-master-preserved": "pass",
+        "compare-density-and-actions": "pass"
+      }
+    },
+    {
+      "control": "fabricated-recovery",
+      "case": "empty-state-copy-only",
+      "archive_path": "scope-v1/controls/issue-6-scope-browser/scope-inprjc98/fabricated-recovery",
+      "source": {
+        "locale-aria-contract": "fail"
+      },
+      "browser": {
+        "search-and-names": "pass"
+      }
+    },
+    {
+      "control": "failure-before-unavailable-reload",
+      "case": "narrow-spacing",
+      "archive_path": "scope-v1/controls/issue-6-scope-browser/scope-inprjc98/failure-before-unavailable-reload",
+      "source": {
+        "allowed-scope": "fail"
+      },
+      "browser": {
+        "spacing-and-state": "fail"
+      }
+    },
+    {
+      "control": "good-audit-read-only",
+      "case": "audit-read-only",
+      "archive_path": "scope-v1/controls/issue-6-scope-browser/scope-inprjc98/good-audit-read-only",
+      "source": {
+        "product-files-unchanged": "pass"
+      },
+      "browser": {
+        "audit-observation": "pass"
+      }
+    },
+    {
+      "control": "good-empty-state-copy-only",
+      "case": "empty-state-copy-only",
+      "archive_path": "scope-v1/controls/issue-6-scope-browser/scope-inprjc98/good-empty-state-copy-only",
+      "source": {
+        "locale-aria-contract": "pass"
+      },
+      "browser": {
+        "search-and-names": "pass"
+      }
+    },
+    {
+      "control": "good-master-page-consistency",
+      "case": "master-page-consistency",
+      "archive_path": "scope-v1/controls/issue-6-scope-browser/scope-inprjc98/good-master-page-consistency",
+      "source": {
+        "allowed-scope": "pass",
+        "design-record-matches": "pass"
+      },
+      "browser": {
+        "shared-master-preserved": "pass",
+        "compare-density-and-actions": "pass"
+      }
+    },
+    {
+      "control": "good-narrow-spacing",
+      "case": "narrow-spacing",
+      "archive_path": "scope-v1/controls/issue-6-scope-browser/scope-inprjc98/good-narrow-spacing",
+      "source": {
+        "allowed-scope": "pass"
+      },
+      "browser": {
+        "spacing-and-state": "pass"
+      }
+    },
+    {
+      "control": "local-brand-shadow",
+      "case": "narrow-spacing",
+      "archive_path": "scope-v1/controls/issue-6-scope-browser/scope-inprjc98/local-brand-shadow",
+      "source": {
+        "allowed-scope": "fail"
+      },
+      "browser": {
+        "spacing-and-state": "fail"
+      }
+    },
+    {
+      "control": "lost-setting",
+      "case": "narrow-spacing",
+      "archive_path": "scope-v1/controls/issue-6-scope-browser/scope-inprjc98/lost-setting",
+      "source": {
+        "allowed-scope": "fail"
+      },
+      "browser": {
+        "spacing-and-state": "fail"
+      }
+    },
+    {
+      "control": "no-browser",
+      "case": "narrow-spacing",
+      "archive_path": "scope-v1/controls/issue-6-scope-browser/scope-inprjc98/no-browser",
+      "source": {
+        "allowed-scope": "pass"
+      },
+      "browser": {
+        "spacing-and-state": "not-run"
+      }
+    },
+    {
+      "control": "shared-density-token",
+      "case": "master-page-consistency",
+      "archive_path": "scope-v1/controls/issue-6-scope-browser/scope-inprjc98/shared-density-token",
+      "source": {
+        "allowed-scope": "fail",
+        "design-record-matches": "pass"
+      },
+      "browser": {
+        "shared-master-preserved": "fail",
+        "compare-density-and-actions": "pass"
+      }
+    },
+    {
+      "control": "replaced-product-root",
+      "case": "narrow-spacing",
+      "archive_path": "scope-v1/controls/issue-6-scope-browser/scope-t9bm7omw/replaced-product-root",
+      "source": {
+        "allowed-scope": "fail"
+      },
+      "browser": {
+        "spacing-and-state": "not-run"
+      }
+    }
+  ],
+  "search_editor_observations": [
+    {
+      "control": "data-loss",
+      "archive_path": "scope-v1/controls/issue-6-existing-browser/run-3e9hjng7/data-loss",
+      "checks": {
+        "search-matches": "pass",
+        "query-history": "pass",
+        "failed-save-draft": "pass",
+        "failed-save-feedback": "pass",
+        "failed-save-storage": "pass",
+        "retry-persists": "fail",
+        "retry-reload": "fail",
+        "composition-enter": "pass",
+        "ordinary-save": "fail",
+        "ordinary-reload": "fail",
+        "ordinary-enter": "fail",
+        "ordinary-enter-reload": "fail",
+        "history-back": "pass",
+        "history-forward": "pass",
+        "query-direct-entry": "pass",
+        "query-reload": "pass"
+      }
+    },
+    {
+      "control": "delayed-stale-query",
+      "archive_path": "scope-v1/controls/issue-6-existing-browser/run-3e9hjng7/delayed-stale-query",
+      "checks": {
+        "search-matches": "pass",
+        "query-history": "fail",
+        "failed-save-draft": "pass",
+        "failed-save-feedback": "pass",
+        "failed-save-storage": "pass",
+        "retry-persists": "pass",
+        "retry-reload": "pass",
+        "composition-enter": "pass",
+        "ordinary-save": "pass",
+        "ordinary-reload": "pass",
+        "ordinary-enter": "pass",
+        "ordinary-enter-reload": "pass",
+        "history-back": "pass",
+        "history-forward": "pass",
+        "query-direct-entry": "pass",
+        "query-reload": "pass"
+      }
+    },
+    {
+      "control": "duplicate-id",
+      "archive_path": "scope-v1/controls/issue-6-existing-browser/run-3e9hjng7/duplicate-id",
+      "checks": {
+        "search-matches": "pass",
+        "query-history": "pass",
+        "failed-save-draft": "pass",
+        "failed-save-feedback": "pass",
+        "failed-save-storage": "pass",
+        "retry-persists": "fail",
+        "retry-reload": "fail",
+        "composition-enter": "pass",
+        "ordinary-save": "fail",
+        "ordinary-reload": "fail",
+        "ordinary-enter": "fail",
+        "ordinary-enter-reload": "fail",
+        "history-back": "pass",
+        "history-forward": "pass",
+        "query-direct-entry": "pass",
+        "query-reload": "pass"
+      }
+    },
+    {
+      "control": "entry-ignores-query",
+      "archive_path": "scope-v1/controls/issue-6-existing-browser/run-3e9hjng7/entry-ignores-query",
+      "checks": {
+        "search-matches": "pass",
+        "query-history": "pass",
+        "failed-save-draft": "pass",
+        "failed-save-feedback": "pass",
+        "failed-save-storage": "pass",
+        "retry-persists": "pass",
+        "retry-reload": "pass",
+        "composition-enter": "pass",
+        "ordinary-save": "pass",
+        "ordinary-reload": "pass",
+        "ordinary-enter": "pass",
+        "ordinary-enter-reload": "pass",
+        "history-back": "pass",
+        "history-forward": "pass",
+        "query-direct-entry": "fail",
+        "query-reload": "fail"
+      }
+    },
+    {
+      "control": "failure-storage",
+      "archive_path": "scope-v1/controls/issue-6-existing-browser/run-3e9hjng7/failure-storage",
+      "checks": {
+        "search-matches": "pass",
+        "query-history": "pass",
+        "failed-save-draft": "fail",
+        "failed-save-feedback": "pass",
+        "failed-save-storage": "fail",
+        "retry-persists": "pass",
+        "retry-reload": "pass",
+        "composition-enter": "pass",
+        "ordinary-save": "pass",
+        "ordinary-reload": "pass",
+        "ordinary-enter": "pass",
+        "ordinary-enter-reload": "pass",
+        "history-back": "pass",
+        "history-forward": "pass",
+        "query-direct-entry": "pass",
+        "query-reload": "pass"
+      }
+    },
+    {
+      "control": "hard-coded-id",
+      "archive_path": "scope-v1/controls/issue-6-existing-browser/run-3e9hjng7/hard-coded-id",
+      "checks": {
+        "search-matches": "pass",
+        "query-history": "pass",
+        "failed-save-draft": "pass",
+        "failed-save-feedback": "pass",
+        "failed-save-storage": "pass",
+        "retry-persists": "pass",
+        "retry-reload": "pass",
+        "composition-enter": "pass",
+        "ordinary-save": "fail",
+        "ordinary-reload": "fail",
+        "ordinary-enter": "fail",
+        "ordinary-enter-reload": "fail",
+        "history-back": "pass",
+        "history-forward": "pass",
+        "query-direct-entry": "pass",
+        "query-reload": "pass"
+      }
+    },
+    {
+      "control": "missing-popstate",
+      "archive_path": "scope-v1/controls/issue-6-existing-browser/run-3e9hjng7/missing-popstate",
+      "checks": {
+        "search-matches": "pass",
+        "query-history": "pass",
+        "failed-save-draft": "pass",
+        "failed-save-feedback": "pass",
+        "failed-save-storage": "pass",
+        "retry-persists": "pass",
+        "retry-reload": "pass",
+        "composition-enter": "pass",
+        "ordinary-save": "pass",
+        "ordinary-reload": "pass",
+        "ordinary-enter": "pass",
+        "ordinary-enter-reload": "pass",
+        "history-back": "fail",
+        "history-forward": "fail",
+        "query-direct-entry": "pass",
+        "query-reload": "pass"
+      }
+    },
+    {
+      "control": "original",
+      "archive_path": "scope-v1/controls/issue-6-existing-browser/run-3e9hjng7/original",
+      "checks": {
+        "search-matches": "pass",
+        "query-history": "fail",
+        "failed-save-draft": "fail",
+        "failed-save-feedback": "fail",
+        "failed-save-storage": "pass",
+        "retry-persists": "fail",
+        "retry-reload": "fail",
+        "composition-enter": "fail",
+        "ordinary-save": "pass",
+        "ordinary-reload": "pass",
+        "ordinary-enter": "pass",
+        "ordinary-enter-reload": "pass",
+        "history-back": "pass",
+        "history-forward": "pass",
+        "query-direct-entry": "pass",
+        "query-reload": "pass"
+      }
+    },
+    {
+      "control": "other-record-change",
+      "archive_path": "scope-v1/controls/issue-6-existing-browser/run-3e9hjng7/other-record-change",
+      "checks": {
+        "search-matches": "pass",
+        "query-history": "pass",
+        "failed-save-draft": "pass",
+        "failed-save-feedback": "pass",
+        "failed-save-storage": "pass",
+        "retry-persists": "fail",
+        "retry-reload": "fail",
+        "composition-enter": "pass",
+        "ordinary-save": "fail",
+        "ordinary-reload": "fail",
+        "ordinary-enter": "fail",
+        "ordinary-enter-reload": "fail",
+        "history-back": "pass",
+        "history-forward": "pass",
+        "query-direct-entry": "pass",
+        "query-reload": "pass"
+      }
+    },
+    {
+      "control": "popstate-stale-count",
+      "archive_path": "scope-v1/controls/issue-6-existing-browser/run-3e9hjng7/popstate-stale-count",
+      "checks": {
+        "search-matches": "pass",
+        "query-history": "pass",
+        "failed-save-draft": "pass",
+        "failed-save-feedback": "pass",
+        "failed-save-storage": "pass",
+        "retry-persists": "pass",
+        "retry-reload": "pass",
+        "composition-enter": "pass",
+        "ordinary-save": "pass",
+        "ordinary-reload": "pass",
+        "ordinary-enter": "pass",
+        "ordinary-enter-reload": "pass",
+        "history-back": "fail",
+        "history-forward": "fail",
+        "query-direct-entry": "pass",
+        "query-reload": "pass"
+      }
+    },
+    {
+      "control": "popstate-stale-list",
+      "archive_path": "scope-v1/controls/issue-6-existing-browser/run-3e9hjng7/popstate-stale-list",
+      "checks": {
+        "search-matches": "pass",
+        "query-history": "pass",
+        "failed-save-draft": "pass",
+        "failed-save-feedback": "pass",
+        "failed-save-storage": "pass",
+        "retry-persists": "pass",
+        "retry-reload": "pass",
+        "composition-enter": "pass",
+        "ordinary-save": "pass",
+        "ordinary-reload": "pass",
+        "ordinary-enter": "pass",
+        "ordinary-enter-reload": "pass",
+        "history-back": "fail",
+        "history-forward": "fail",
+        "query-direct-entry": "pass",
+        "query-reload": "pass"
+      }
+    },
+    {
+      "control": "reload-ignores-query",
+      "archive_path": "scope-v1/controls/issue-6-existing-browser/run-3e9hjng7/reload-ignores-query",
+      "checks": {
+        "search-matches": "pass",
+        "query-history": "pass",
+        "failed-save-draft": "pass",
+        "failed-save-feedback": "pass",
+        "failed-save-storage": "pass",
+        "retry-persists": "pass",
+        "retry-reload": "pass",
+        "composition-enter": "pass",
+        "ordinary-save": "pass",
+        "ordinary-reload": "pass",
+        "ordinary-enter": "pass",
+        "ordinary-enter-reload": "pass",
+        "history-back": "pass",
+        "history-forward": "pass",
+        "query-direct-entry": "pass",
+        "query-reload": "fail"
+      }
+    },
+    {
+      "control": "reload-ignores-storage",
+      "archive_path": "scope-v1/controls/issue-6-existing-browser/run-3e9hjng7/reload-ignores-storage",
+      "checks": {
+        "search-matches": "pass",
+        "query-history": "pass",
+        "failed-save-draft": "pass",
+        "failed-save-feedback": "pass",
+        "failed-save-storage": "pass",
+        "retry-persists": "pass",
+        "retry-reload": "fail",
+        "composition-enter": "pass",
+        "ordinary-save": "pass",
+        "ordinary-reload": "fail",
+        "ordinary-enter": "pass",
+        "ordinary-enter-reload": "fail",
+        "history-back": "pass",
+        "history-forward": "pass",
+        "query-direct-entry": "pass",
+        "query-reload": "pass"
+      }
+    },
+    {
+      "control": "reload-resets-storage",
+      "archive_path": "scope-v1/controls/issue-6-existing-browser/run-3e9hjng7/reload-resets-storage",
+      "checks": {
+        "search-matches": "pass",
+        "query-history": "pass",
+        "failed-save-draft": "pass",
+        "failed-save-feedback": "pass",
+        "failed-save-storage": "pass",
+        "retry-persists": "pass",
+        "retry-reload": "fail",
+        "composition-enter": "pass",
+        "ordinary-save": "pass",
+        "ordinary-reload": "fail",
+        "ordinary-enter": "pass",
+        "ordinary-enter-reload": "fail",
+        "history-back": "pass",
+        "history-forward": "pass",
+        "query-direct-entry": "pass",
+        "query-reload": "pass"
+      }
+    },
+    {
+      "control": "reordered",
+      "archive_path": "scope-v1/controls/issue-6-existing-browser/run-3e9hjng7/reordered",
+      "checks": {
+        "search-matches": "pass",
+        "query-history": "pass",
+        "failed-save-draft": "pass",
+        "failed-save-feedback": "pass",
+        "failed-save-storage": "pass",
+        "retry-persists": "pass",
+        "retry-reload": "pass",
+        "composition-enter": "pass",
+        "ordinary-save": "pass",
+        "ordinary-reload": "pass",
+        "ordinary-enter": "pass",
+        "ordinary-enter-reload": "pass",
+        "history-back": "pass",
+        "history-forward": "pass",
+        "query-direct-entry": "pass",
+        "query-reload": "pass"
+      }
+    },
+    {
+      "control": "repaired",
+      "archive_path": "scope-v1/controls/issue-6-existing-browser/run-3e9hjng7/repaired",
+      "checks": {
+        "search-matches": "pass",
+        "query-history": "pass",
+        "failed-save-draft": "pass",
+        "failed-save-feedback": "pass",
+        "failed-save-storage": "pass",
+        "retry-persists": "pass",
+        "retry-reload": "pass",
+        "composition-enter": "pass",
+        "ordinary-save": "pass",
+        "ordinary-reload": "pass",
+        "ordinary-enter": "pass",
+        "ordinary-enter-reload": "pass",
+        "history-back": "pass",
+        "history-forward": "pass",
+        "query-direct-entry": "pass",
+        "query-reload": "pass"
+      }
+    },
+    {
+      "control": "unavailable-shared-document",
+      "archive_path": "scope-v1/controls/issue-6-existing-browser/run-3e9hjng7/unavailable-shared-document",
+      "checks": {
+        "search-matches": "pass",
+        "query-history": "pass",
+        "failed-save-draft": "pass",
+        "failed-save-feedback": "pass",
+        "failed-save-storage": "pass",
+        "retry-persists": "pass",
+        "retry-reload": "pass",
+        "composition-enter": "pass",
+        "ordinary-save": "pass",
+        "ordinary-reload": "pass",
+        "ordinary-enter": "pass",
+        "ordinary-enter-reload": "pass",
+        "history-back": "fail",
+        "history-forward": "fail",
+        "query-direct-entry": "not-run",
+        "query-reload": "not-run"
+      }
+    },
+    {
+      "control": "unobserved-popstate",
+      "archive_path": "scope-v1/controls/issue-6-existing-browser/run-3e9hjng7/unobserved-popstate",
+      "checks": {
+        "search-matches": "pass",
+        "query-history": "pass",
+        "failed-save-draft": "pass",
+        "failed-save-feedback": "pass",
+        "failed-save-storage": "pass",
+        "retry-persists": "pass",
+        "retry-reload": "pass",
+        "composition-enter": "pass",
+        "ordinary-save": "pass",
+        "ordinary-reload": "pass",
+        "ordinary-enter": "pass",
+        "ordinary-enter-reload": "pass",
+        "history-back": "not-run",
+        "history-forward": "not-run",
+        "query-direct-entry": "pass",
+        "query-reload": "pass"
+      }
+    }
+  ],
+  "limits": [
+    "Control source/summary outputs are synthetic and are not native skill executions.",
+    "Scope product patches and content/type/mode inventories are retained; no missing raw product snapshot is invented.",
+    "Existing Chrome controls retained browser JSON/images; test sources preserve mutation definitions.",
+    "The separate root-symlink command/result is described in issue-6-evidence.md; no whole tool transcript was provided."
+  ]
+}

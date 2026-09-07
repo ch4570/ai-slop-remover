@@ -1,0 +1,5 @@
+--- before/settings.css
++++ after/settings.css
+@@ -1 +1 @@
+-.actions { margin-top: var(--space-6); }
++.actions { margin-top: var(--space-4); }

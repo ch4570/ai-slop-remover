@@ -1,89 +1,17 @@
 #!/usr/bin/env node
 // Optional maintainer driver: existing Chrome + Node 22+, no installed packages.
-import { spawn } from 'node:child_process';
-import { createServer } from 'node:http';
-import { access, mkdir, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { withBrowser } from './browser_harness.mjs';
 
-const [fixtureArg, outputArg] = process.argv.slice(2);
-if (!fixtureArg || !outputArg || process.argv.length !== 4 || typeof WebSocket === 'undefined') {
+const [fixture, outputArg] = process.argv.slice(2);
+if (!fixture || !outputArg || process.argv.length !== 4 || typeof WebSocket === 'undefined') {
   console.error('Usage: node scripts/run_browser_checks.mjs <fixture-copy> <evidence-directory> (Node 22+ and Chrome required)');
   process.exit(2);
 }
-const fixture = await realpath(fixtureArg);
 const output = path.resolve(outputArg);
 const source = await readFile(new URL('../evals/checks/search-editor.js', import.meta.url), 'utf8');
-const chromePaths = process.env.AI_SLOP_CHROME ? [process.env.AI_SLOP_CHROME] : [
-  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-  '/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser',
-];
-let executable;
-for (const candidate of chromePaths) {
-  try { await access(candidate); executable = candidate; break; } catch { /* Try an installed browser. */ }
-}
-if (!executable) throw new Error('Chrome unavailable; set AI_SLOP_CHROME to its executable. Browser checks not run.');
-const profile = await mkdtemp(path.join(tmpdir(), 'slop-browser-'));
-const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
-const server = createServer(async (request, response) => {
-  try {
-    const pathname = decodeURIComponent(new URL(request.url, 'http://127.0.0.1').pathname);
-    const requested = await realpath(path.join(fixture, pathname === '/' ? 'index.html' : pathname));
-    if (!requested.startsWith(fixture + path.sep)) throw new Error('Outside fixture');
-    const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8' };
-    response.writeHead(200, { 'Content-Type': types[path.extname(requested)] || 'text/plain', 'Cache-Control': 'no-store' });
-    response.end(await readFile(requested));
-  } catch {
-    response.writeHead(404); response.end('Not found');
-  }
-});
-let chrome, socket;
-const pending = new Map();
-let sequence = 0;
-const exceptions = [];
-try {
-  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-  const origin = `http://127.0.0.1:${server.address().port}`;
-  chrome = spawn(executable, ['--headless=new', '--remote-debugging-port=0', `--user-data-dir=${profile}`, '--no-first-run', '--no-default-browser-check', '--disable-background-networking', 'about:blank'], { stdio: 'ignore' });
-  let launchError;
-  chrome.on('error', error => { launchError = error; });
-  let debug;
-  for (let attempt = 0; attempt < 100; attempt += 1) {
-    if (launchError) throw launchError;
-    if (chrome.exitCode !== null) throw new Error('Chrome exited before the debugging endpoint was ready');
-    try { debug = (await readFile(path.join(profile, 'DevToolsActivePort'), 'utf8')).trim().split('\n'); break; } catch { await pause(100); }
-  }
-  if (!debug) throw new Error('Chrome debugging endpoint did not become ready');
-  socket = new WebSocket(`ws://127.0.0.1:${debug[0]}${debug[1]}`);
-  await new Promise((resolve, reject) => {
-    socket.addEventListener('open', resolve, { once: true });
-    socket.addEventListener('error', () => reject(new Error('Cannot connect to Chrome')), { once: true });
-  });
-  socket.addEventListener('message', event => {
-    const message = JSON.parse(event.data);
-    if (message.method === 'Runtime.exceptionThrown') exceptions.push(message.params.exceptionDetails);
-    if (!pending.has(message.id)) return;
-    const entry = pending.get(message.id); pending.delete(message.id); clearTimeout(entry.timer);
-    if (message.error) entry.reject(new Error(message.error.message)); else entry.resolve(message.result);
-  });
-  function call(method, params = {}, sessionId) {
-    const id = ++sequence;
-    return new Promise((resolve, reject) => {
-      const timer = setTimeout(() => { pending.delete(id); reject(new Error(`Chrome timeout: ${method}`)); }, 15000);
-      pending.set(id, { resolve, reject, timer });
-      socket.send(JSON.stringify({ id, method, params, ...(sessionId ? { sessionId } : {}) }));
-    });
-  }
-  const { targetId } = await call('Target.createTarget', { url: 'about:blank' });
-  const { sessionId } = await call('Target.attachToTarget', { targetId, flatten: true });
-  const page = (method, params) => call(method, params, sessionId);
-  const evaluate = async expression => {
-    const result = await page('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true });
-    if (result.exceptionDetails) throw new Error(JSON.stringify(result.exceptionDetails));
-    return result.result.value;
-  };
-  await page('Page.enable'); await page('Runtime.enable');
-  await page('Emulation.setDeviceMetricsOverride', { width: 1280, height: 900, deviceScaleFactor: 1, mobile: false });
+await withBrowser(fixture, output, async ({ origin, page, evaluate, call, screenshot, pause, exceptions }) => {
   const waitForFixture = async (previousTimeOrigin = null) => {
     for (let attempt = 0; attempt < 100; attempt += 1) {
       try {
@@ -120,10 +48,6 @@ try {
   await evaluate(source);
   let snapshot = await resetFixture();
   await mkdir(output, { recursive: true });
-  const screenshot = async name => {
-    const result = await page('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true });
-    await writeFile(path.join(output, name), Buffer.from(result.data, 'base64'));
-  };
   await screenshot('wide.png');
   const retry = await evaluate(`evaluateSearchEditor(${JSON.stringify(snapshot)})`);
   // Keep observations outside the page so reloads cannot discard earlier failures.
@@ -202,16 +126,4 @@ try {
   await writeFile(path.join(output, 'browser.json'), JSON.stringify(evidence, null, 2) + '\n');
   console.log(JSON.stringify({ output, passed: checks.filter(check => check.status === 'pass').length, failed: checks.filter(check => check.status === 'fail').length, notRun: checks.filter(check => check.status === 'not-run').length, exceptions: exceptions.length }));
   if (exceptions.length) process.exitCode = 1;
-} finally {
-  for (const entry of pending.values()) clearTimeout(entry.timer);
-  socket?.close();
-  if (chrome && chrome.exitCode === null && chrome.signalCode === null) {
-    const exited = new Promise(resolve => chrome.once('exit', resolve));
-    chrome.kill('SIGTERM');
-    await Promise.race([exited, pause(2000)]);
-    if (chrome.exitCode === null && chrome.signalCode === null) { chrome.kill('SIGKILL'); await Promise.race([exited, pause(2000)]); }
-  }
-  await new Promise(resolve => server.close(resolve));
-  // Chrome helpers can finish profile writes just after the browser exits.
-  await rm(profile, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
-}
+});

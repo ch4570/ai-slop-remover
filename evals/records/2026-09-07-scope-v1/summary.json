@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "verdict": "pass",
+  "expected_trials": 16,
+  "loaded_trials": 16,
+  "expected_pairs": 8,
+  "pairs": [
+    {
+      "case": "narrow-spacing",
+      "repeat": 1,
+      "verdict": "pass",
+      "improvements": [],
+      "regressions": [],
+      "candidate_failures": [],
+      "not_run": [],
+      "limits": "Recorded outcomes only; this comparison does not verify evidence truth or establish general UI quality."
+    },
+    {
+      "case": "narrow-spacing",
+      "repeat": 2,
+      "verdict": "pass",
+      "improvements": [],
+      "regressions": [],
+      "candidate_failures": [],
+      "not_run": [],
+      "limits": "Recorded outcomes only; this comparison does not verify evidence truth or establish general UI quality."
+    },
+    {
+      "case": "audit-read-only",
+      "repeat": 1,
+      "verdict": "pass",
+      "improvements": [],
+      "regressions": [],
+      "candidate_failures": [],
+      "not_run": [],
+      "limits": "Recorded outcomes only; this comparison does not verify evidence truth or establish general UI quality."
+    },
+    {
+      "case": "audit-read-only",
+      "repeat": 2,
+      "verdict": "pass",
+      "improvements": [],
+      "regressions": [],
+      "candidate_failures": [],
+      "not_run": [],
+      "limits": "Recorded outcomes only; this comparison does not verify evidence truth or establish general UI quality."
+    },
+    {
+      "case": "empty-state-copy-only",
+      "repeat": 1,
+      "verdict": "pass",
+      "improvements": [],
+      "regressions": [],
+      "candidate_failures": [],
+      "not_run": [],
+      "limits": "Recorded outcomes only; this comparison does not verify evidence truth or establish general UI quality."
+    },
+    {
+      "case": "empty-state-copy-only",
+      "repeat": 2,
+      "verdict": "pass",
+      "improvements": [],
+      "regressions": [],
+      "candidate_failures": [],
+      "not_run": [],
+      "limits": "Recorded outcomes only; this comparison does not verify evidence truth or establish general UI quality."
+    },
+    {
+      "case": "master-page-consistency",
+      "repeat": 1,
+      "verdict": "pass",
+      "improvements": [],
+      "regressions": [],
+      "candidate_failures": [],
+      "not_run": [],
+      "limits": "Recorded outcomes only; this comparison does not verify evidence truth or establish general UI quality."
+    },
+    {
+      "case": "master-page-consistency",
+      "repeat": 2,
+      "verdict": "pass",
+      "improvements": [],
+      "regressions": [],
+      "candidate_failures": [],
+      "not_run": [],
+      "limits": "Recorded outcomes only; this comparison does not verify evidence truth or establish general UI quality."
+    }
+  ],
+  "errors": [],
+  "missing": [],
+  "host_coverage": {
+    "installed-host-explicit": {
+      "status": "not-run",
+      "reason": "These native trials read assigned snapshots directly; installed host explicit invocation was not exercised."
+    },
+    "automatic-discovery": {
+      "status": "not-run",
+      "reason": "Host automatic discovery was not observed in these snapshot-direct native trials."
+    }
+  },
+  "limits": "Two repetitions per case are recorded outcomes, not general quality or causal improvement. Raw evidence truth and semantic/visual judgments require independent review. Host invocation/discovery remain not-run."
+}

@@ -1,0 +1,52 @@
+{
+  "narrow-spacing-v1": {
+    "schema": 1,
+    "id": "narrow-spacing-v1",
+    "fixture_id": "narrow-spacing",
+    "cases": {
+      "narrow-spacing": {
+        "allowed-scope": "behavior",
+        "spacing-and-state": "behavior",
+        "narrow-focus-review": "quality"
+      }
+    }
+  },
+  "audit-read-only-v1": {
+    "schema": 1,
+    "id": "audit-read-only-v1",
+    "fixture_id": "audit-read-only",
+    "cases": {
+      "audit-read-only": {
+        "product-files-unchanged": "behavior",
+        "audit-observation": "behavior",
+        "prioritized-diagnosis": "quality"
+      }
+    }
+  },
+  "empty-state-copy-only-v1": {
+    "schema": 1,
+    "id": "empty-state-copy-only-v1",
+    "fixture_id": "empty-state-copy-only",
+    "cases": {
+      "empty-state-copy-only": {
+        "locale-aria-contract": "behavior",
+        "search-and-names": "behavior",
+        "truthful-copy-and-name": "quality"
+      }
+    }
+  },
+  "master-page-consistency-v1": {
+    "schema": 1,
+    "id": "master-page-consistency-v1",
+    "fixture_id": "master-page-consistency",
+    "cases": {
+      "master-page-consistency": {
+        "allowed-scope": "behavior",
+        "design-record-matches": "behavior",
+        "shared-master-preserved": "behavior",
+        "compare-density-and-actions": "behavior",
+        "design-visual-review": "quality"
+      }
+    }
+  }
+}

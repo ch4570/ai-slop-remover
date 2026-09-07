@@ -1,0 +1,40 @@
+{
+  "archive_sha256": "9ff96da5265de930e31b0f37077afe5f703dd8b55427a22c5f365351869a72ee",
+  "extraction_directory": "/private/var/folders/dt/8hl_lk4517vfdrvql7_0n2b80000gn/T/lutriva-issue-delivery-mt6la1md/issue-6-integration-replay-6o7roc2u",
+  "inventory_files_checked": 1245,
+  "inventory_entries_checked": 1513,
+  "evaluator_commit_files_checked": 41,
+  "skill_commit_files_checked": {
+    "baseline": 49,
+    "candidate": 55
+  },
+  "metadata_correction_files_checked": 17,
+  "distinct_native_contexts": 16,
+  "pairs": 8,
+  "source_reports_reproduced": 16,
+  "product_diff_patches_reproduced": 16,
+  "result_evidence_paths_checked": 56,
+  "declared_review_image_files_checked": 52,
+  "summary_verdict": "pass",
+  "summary_exit_code": 0,
+  "summary_byte_identical": true,
+  "limits": "This integration verifies integrity and saved-result replay, not new agent/browser runs or new image-quality judgments.",
+  "archive_rebuild": {
+    "deterministic_rebuild": true,
+    "archive_sha256": "9ff96da5265de930e31b0f37077afe5f703dd8b55427a22c5f365351869a72ee",
+    "archive_bytes": 16786208
+  },
+  "actual_summary_command": {
+    "argv": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "-B",
+      "/private/var/folders/dt/8hl_lk4517vfdrvql7_0n2b80000gn/T/lutriva-issue-delivery-mt6la1md/issue-6-integration-replay-6o7roc2u/scope-v1/actual/snapshots/evaluator/scripts/summarize_scope_trials.py",
+      "/private/var/folders/dt/8hl_lk4517vfdrvql7_0n2b80000gn/T/lutriva-issue-delivery-mt6la1md/issue-6-integration-replay-6o7roc2u/scope-v1/actual/manifest.json",
+      "--output",
+      "/private/var/folders/dt/8hl_lk4517vfdrvql7_0n2b80000gn/T/lutriva-issue-delivery-mt6la1md/issue-6-integration-replay-6o7roc2u/summary.json"
+    ],
+    "returncode": 0,
+    "stdout": "{\n  \"schema\": 1,\n  \"verdict\": \"pass\",\n  \"expected_trials\": 16,\n  \"loaded_trials\": 16,\n  \"expected_pairs\": 8,\n  \"pairs\": [\n    {\n      \"case\": \"narrow-spacing\",\n      \"repeat\": 1,\n      \"verdict\": \"pass\",\n      \"improvements\": [],\n      \"regressions\": [],\n      \"candidate_failures\": [],\n      \"not_run\": [],\n      \"limits\": \"Recorded outcomes only; this comparison does not verify evidence truth or establish general UI quality.\"\n    },\n    {\n      \"case\": \"narrow-spacing\",\n      \"repeat\": 2,\n      \"verdict\": \"pass\",\n      \"improvements\": [],\n      \"regressions\": [],\n      \"candidate_failures\": [],\n      \"not_run\": [],\n      \"limits\": \"Recorded outcomes only; this comparison does not verify evidence truth or establish general UI quality.\"\n    },\n    {\n      \"case\": \"audit-read-only\",\n      \"repeat\": 1,\n      \"verdict\": \"pass\",\n      \"improvements\": [],\n      \"regressions\": [],\n      \"candidate_failures\": [],\n      \"not_run\": [],\n      \"limits\": \"Recorded outcomes only; this comparison does not verify evidence truth or establish general UI quality.\"\n    },\n    {\n      \"case\": \"audit-read-only\",\n      \"repeat\": 2,\n      \"verdict\": \"pass\",\n      \"improvements\": [],\n      \"regressions\": [],\n      \"candidate_failures\": [],\n      \"not_run\": [],\n      \"limits\": \"Recorded outcomes only; this comparison does not verify evidence truth or establish general UI quality.\"\n    },\n    {\n      \"case\": \"empty-state-copy-only\",\n      \"repeat\": 1,\n      \"verdict\": \"pass\",\n      \"improvements\": [],\n      \"regressions\": [],\n      \"candidate_failures\": [],\n      \"not_run\": [],\n      \"limits\": \"Recorded outcomes only; this comparison does not verify evidence truth or establish general UI quality.\"\n    },\n    {\n      \"case\": \"empty-state-copy-only\",\n      \"repeat\": 2,\n      \"verdict\": \"pass\",\n      \"improvements\": [],\n      \"regressions\": [],\n      \"candidate_failures\": [],\n      \"not_run\": [],\n      \"limits\": \"Recorded outcomes only; this comparison does not verify evidence truth or establish general UI quality.\"\n    },\n    {\n      \"case\": \"master-page-consistency\",\n      \"repeat\": 1,\n      \"verdict\": \"pass\",\n      \"improvements\": [],\n      \"regressions\": [],\n      \"candidate_failures\": [],\n      \"not_run\": [],\n      \"limits\": \"Recorded outcomes only; this comparison does not verify evidence truth or establish general UI quality.\"\n    },\n    {\n      \"case\": \"master-page-consistency\",\n      \"repeat\": 2,\n      \"verdict\": \"pass\",\n      \"improvements\": [],\n      \"regressions\": [],\n      \"candidate_failures\": [],\n      \"not_run\": [],\n      \"limits\": \"Recorded outcomes only; this comparison does not verify evidence truth or establish general UI quality.\"\n    }\n  ],\n  \"errors\": [],\n  \"missing\": [],\n  \"host_coverage\": {\n    \"installed-host-explicit\": {\n      \"status\": \"not-run\",\n      \"reason\": \"These native trials read assigned snapshots directly; installed host explicit invocation was not exercised.\"\n    },\n    \"automatic-discovery\": {\n      \"status\": \"not-run\",\n      \"reason\": \"Host automatic discovery was not observed in these snapshot-direct native trials.\"\n    }\n  },\n  \"limits\": \"Two repetitions per case are recorded outcomes, not general quality or causal improvement. Raw evidence truth and semantic/visual judgments require independent review. Host invocation/discovery remain not-run.\"\n}\n",
+    "stderr": ""
+  }
+}

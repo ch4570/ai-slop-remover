@@ -23,8 +23,9 @@ def digest(value):
     return isinstance(value, str) and bool(re.fullmatch(r"[0-9a-f]{64}", value)) and value != "0" * 64
 
 
-def validate(run, variant, evidence_root=None):
+def validate(run, variant, evidence_root=None, suite=None):
     """Validate declared evidence, not its truth; files resolve inside the run folder."""
+    suite = SUITE if suite is None else suite
     errors = []
     if not isinstance(run, dict):
         return [f"{variant}: result must be an object"]
@@ -33,7 +34,7 @@ def validate(run, variant, evidence_root=None):
         errors.append(f"{variant}: unexpected/missing fields: {sorted(set(run) ^ required)}")
     if type(run.get("schema")) is not int or run.get("schema") != 1:
         errors.append(f"{variant}: schema must be integer 1")
-    if run.get("suite") != SUITE["id"] or run.get("variant") != variant:
+    if run.get("suite") != suite["id"] or run.get("variant") != variant:
         errors.append(f"{variant}: incorrect suite or variant")
     if not isinstance(run.get("run_id"), str) or not IDENTIFIER.fullmatch(run["run_id"]):
         errors.append(f"{variant}: run_id must be a nonempty lowercase identifier")
@@ -43,7 +44,7 @@ def validate(run, variant, evidence_root=None):
     if not digest(run.get("task_sha256")):
         errors.append(f"{variant}: task_sha256 must be a nonzero SHA-256")
     fixture = run.get("fixture")
-    if not isinstance(fixture, dict) or set(fixture) != {"id", "sha256"} or fixture.get("id") != SUITE["fixture_id"] or not digest(fixture.get("sha256")):
+    if not isinstance(fixture, dict) or set(fixture) != {"id", "sha256"} or fixture.get("id") != suite["fixture_id"] or not digest(fixture.get("sha256")):
         errors.append(f"{variant}: fixture needs the original suite fixture id and SHA-256")
     settings = run.get("settings")
     if not isinstance(settings, dict) or not settings:
@@ -63,7 +64,7 @@ def validate(run, variant, evidence_root=None):
             continue
         case_id = case["id"]
         case_ids.append(case_id)
-        expected = SUITE["cases"].get(case_id, {})
+        expected = suite["cases"].get(case_id, {})
         checks = case["checks"]
         if not isinstance(checks, list):
             errors.append(f"{variant}/{case_id}: checks must be a list")
@@ -102,13 +103,13 @@ def validate(run, variant, evidence_root=None):
                         errors.append(f"{label}: evidence file is absent, empty, or outside result directory")
         if len(check_ids) != len(set(check_ids)) or set(check_ids) != set(expected):
             errors.append(f"{variant}/{case_id}: duplicate, missing, or unknown checks")
-    if len(case_ids) != len(set(case_ids)) or set(case_ids) != set(SUITE["cases"]):
+    if len(case_ids) != len(set(case_ids)) or set(case_ids) != set(suite["cases"]):
         errors.append(f"{variant}: duplicate, missing, or unknown cases")
     return errors
 
 
-def compare(baseline, candidate, baseline_root=None, candidate_root=None):
-    errors = validate(baseline, "baseline", baseline_root) + validate(candidate, "candidate", candidate_root)
+def compare(baseline, candidate, baseline_root=None, candidate_root=None, suite=None):
+    errors = validate(baseline, "baseline", baseline_root, suite) + validate(candidate, "candidate", candidate_root, suite)
     if errors:
         return {"verdict": "invalid", "errors": errors}
     for field in ("suite", "fixture", "task_sha256", "model", "settings"):
@@ -150,13 +151,25 @@ def load_result(path):
                       parse_constant=invalid_constant)
 
 
+def scope_suites():
+    return load_result(ROOT / "evals/checks/scope-suites.json")
+
+
+def select_suite(suite_id):
+    """Only the caller selects a pinned evaluator suite, never the result record."""
+    if suite_id == SUITE["id"]:
+        return SUITE
+    return scope_suites()[suite_id]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("baseline", type=Path)
     parser.add_argument("candidate", type=Path)
+    parser.add_argument("--suite", default=SUITE["id"], choices=[SUITE["id"]] + list(scope_suites()))
     args = parser.parse_args()
     try:
-        outcome = compare(load_result(args.baseline), load_result(args.candidate), args.baseline.parent, args.candidate.parent)
+        outcome = compare(load_result(args.baseline), load_result(args.candidate), args.baseline.parent, args.candidate.parent, select_suite(args.suite))
     except (OSError, UnicodeError, ValueError) as error:
         outcome = {"verdict": "invalid", "errors": [str(error)]}
     print(json.dumps(outcome, ensure_ascii=False, indent=2))
