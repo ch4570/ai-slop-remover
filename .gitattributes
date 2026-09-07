@@ -1,0 +1,5 @@
+# Release hashes cover checkout bytes, so keep text files on LF.
+* text=auto eol=lf
+
+# Binary assets must remain byte-for-byte identical.
+*.png binary
