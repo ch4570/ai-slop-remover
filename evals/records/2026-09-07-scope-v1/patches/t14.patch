@@ -1,0 +1,22 @@
+--- before/DESIGN.md
++++ after/DESIGN.md
+@@ -4,7 +4,13 @@
+ 비교 화면도 브랜드 역할, 열 내용, 행의 상세 보기, 키보드 포커스를 유지한다. 작은 화면에서는 표 영역 안에서 가로로 스크롤할 수 있다.
+ 
+ <!-- comparison-exception:start -->
+-현재 compare.html의 셀 위아래 간격도 16px이며 별도 밀도 예외가 없다.
++여러 주문의 같은 속성을 한 화면에서 더 많이 비교할 수 있도록 `compare.html`의 비교 표에만 밀도 예외를 적용한다. `compare.css`의 `.comparison-table th, .comparison-table td` 선택자에서 셀 위아래 여백을 공통 16px 대신 10px로 줄인다.
++
++```css
++.comparison-table th, .comparison-table td { padding-block: 10px; }
++```
++
++`master.html`은 공통 16px 기준을 유지한다. 브랜드, 글꼴, 버튼과 포커스, 행의 상세 보기 동작은 공통 기준을 따른다. 콘텐츠가 늘어 가독성이나 행 동작 접근성에 문제가 생기면 이 예외를 재검토한다.
+ <!-- comparison-exception:end -->
+ 
+ 새 예외를 다른 화면의 공통 토큰 변경으로 확대하지 않는다.
+--- before/compare.css
++++ after/compare.css
+@@ -1 +1 @@
+-.comparison-table th, .comparison-table td { padding-block: 16px; }
++.comparison-table th, .comparison-table td { padding-block: 10px; }

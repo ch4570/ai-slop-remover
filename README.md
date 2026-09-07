@@ -148,14 +148,25 @@ Selected ideas from UI UX Pro Max, Vercel, and getdesign.md inform the workflow.
 
 ## Check the work
 
-Version 2.1's bounded comparison found **no observed regression**: both the existing and revised guidance produced implementations that passed eight browser behavior checks and scoped visual/keyboard review. That single pair does not establish a general improvement in UI quality. [Full verification record](docs/verification.md).
+The retained four-case evaluation records **16 fresh native contexts and eight paired comparisons**, with a `pass` verdict, 0 observed check regressions and 0 improvements. It uses two repetitions per case and snapshot-direct invocation; it does not establish general skill superiority or host discovery. [Recorded runs, patches, limitations and archive](https://github.com/ch4570/lutriva/blob/main/evals/records/2026-09-07-scope-v1/README.md).
 
-The source includes 19 [behavioral case contracts](evals/skill-cases.json), a deliberately flawed synthetic UI, external browser checks, and a result comparator. Case validation is a static check; an executed trial needs separate evidence. Maintainers can follow `evals/README.md`. Developer evaluation tools are excluded from the installed skills.
+The earlier version 2.1's bounded comparison found **no observed regression**: both the existing and revised guidance produced implementations that passed eight browser behavior checks and scoped visual/keyboard review. That single pair does not establish a general improvement in UI quality. [Full verification record](docs/verification.md).
+
+The source includes 19 [behavioral case contracts](evals/skill-cases.json), a deliberately flawed synthetic UI, external browser checks, and a result comparator. Case validation is a static check; an executed trial needs separate evidence. Maintainers can follow the [evaluation procedure](https://github.com/ch4570/lutriva/blob/main/evals/README.md). Developer evaluation tools are excluded from the installed skills.
 
 <details>
 <summary>Contributor checks and portable export</summary>
 
-Run from a source checkout:
+Replay the retained scope comparison from a macOS/Linux source checkout (Python and standard archive tools; no new agent or browser run):
+
+```sh
+scope_replay="$(mktemp -d)"
+tar -xzf evals/records/2026-09-07-scope-v1/evidence.tar.gz -C "$scope_replay"
+python3 -B "$scope_replay/scope-v1/actual/snapshots/evaluator/scripts/summarize_scope_trials.py" \
+  "$scope_replay/scope-v1/actual/manifest.json"
+```
+
+Run the contributor checks from the same checkout:
 
 ```sh
 python3 -m unittest discover -s tests -q
@@ -177,7 +188,7 @@ After intentional release-file edits, run `python3 scripts/update_manifest.py`, 
 | Windows 2025 | 22 | 3.13 | Same checks, including actual npm command shims and filesystem behavior |
 | Ubuntu 24.04 + existing Chrome | 22 | 3.13 | Opt-in browser regression tests; retained evidence artifacts |
 
-The three runtime jobs explicitly report the 18 browser tests as skipped; the separate Chrome job executes them. The Python suite includes fresh Git clones with both `core.autocrlf=false` and `true`, hash checks and installs. The npm suite creates a real tarball, installs it offline, executes both command aliases, and tests Python selection, paths with spaces, dry-run and identical reinstall. CI pins `AI_SLOP_PYTHON` to the selected setup-python executable; a separate case also exercises automatic discovery. Tests that need symlinks require symlink privileges, including Developer Mode or elevation on Windows; CI does not suppress those failures.
+The three runtime jobs explicitly report browser suites as skipped; the separate Chrome job executes both search-editor and scope controls. The Python suite includes fresh Git clones with both `core.autocrlf=false` and `true`, hash checks and installs. The npm suite creates a real tarball, installs it offline, executes both command aliases, and tests Python selection, paths with spaces, dry-run and identical reinstall. CI pins `AI_SLOP_PYTHON` to the selected setup-python executable; a separate case also exercises automatic discovery. Tests that need symlinks require symlink privileges, including Developer Mode or elevation on Windows; CI does not suppress those failures.
 
 On Windows, use the selected `python` executable for the Python commands. These are the equivalents of the first and third checks above:
 
@@ -191,6 +202,7 @@ The browser driver requires an existing Chrome installation and Node 22+. To rep
 
 ```sh
 AI_SLOP_BROWSER_TESTS=1 python3 -m unittest discover -s tests -p test_browser_checks.py -v
+AI_SLOP_BROWSER_TESTS=1 python3 -m unittest discover -s tests -p test_scope_browser_checks.py -v
 ```
 
 Set `AI_SLOP_CHROME` to the browser executable if automatic detection fails, and `AI_SLOP_BROWSER_EVIDENCE` to retain evidence outside the temporary directory. Missing Chrome or failed observations fail the browser job. All checks use built-in runtime modules and install no project dependencies. Model-calling comparisons remain a separate, manual maintainer workflow in `evals/README.md`; CI does not claim model quality, visual review or actual OS IME coverage. See `docs/npm-release.md` for registry publication steps.

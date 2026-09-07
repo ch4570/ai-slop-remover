@@ -2,8 +2,14 @@
 
 `skill-cases.json` is a scenario catalog. Package validation confirms its structure
 and routes; it does **not** execute an agent or establish improved UI quality.
-The separate, runnable `search-editor-v3` suite exercises observable outcomes in a
-small local UI. Neither suite assigns a beauty score.
+The runnable `search-editor-v3` suite and four bounded scope suites exercise
+observable outcomes in small local UIs. They do not assign a beauty score.
+
+The [2026-09-07 scope record](records/2026-09-07-scope-v1/README.md) retains
+16 actual native executions, eight paired comparisons, readable diffs, and a
+checksummed archive with pinned replay tools. Its synthetic harness controls are
+recorded separately. The record documents a corrected parent-authored tool digest
+and retains the original metadata; no agent run was replaced by that correction.
 
 ## Controlled agent trial
 

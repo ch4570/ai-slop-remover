@@ -1,5 +1,30 @@
 # 검증 기록
 
+## 실제 범위 평가 (이슈 #6)
+
+검증일: 2026-09-07. 네 사례 × 두 스킬 snapshot × 두 반복을 **16개 새 Codex native context**에서 실행하고 8개 쌍을 비교했다. 최종 판정은 **`pass`**, 관찰된 개별 검사 회귀 0개·개선 0개다. [원본·실행 색인·16개 diff·해시와 재현 명령](https://github.com/ch4570/lutriva/blob/main/evals/records/2026-09-07-scope-v1/README.md)을 source 전용 기록으로 보존했다. 두 번의 반복으로 일반적인 스킬 우월성을 입증하지 않는다.
+
+| 사례 | 반복 | baseline | candidate | 관찰된 회귀 / 개선 |
+| --- | --- | --- | --- | --- |
+| `narrow-spacing` | 1 | `t01` pass | `t02` pass | 0 / 0 |
+| `narrow-spacing` | 2 | `t04` pass | `t03` pass | 0 / 0 |
+| `audit-read-only` | 1 | `t05` pass | `t06` pass | 0 / 0 |
+| `audit-read-only` | 2 | `t08` pass | `t07` pass | 0 / 0 |
+| `empty-state-copy-only` | 1 | `t09` pass | `t10` pass | 0 / 0 |
+| `empty-state-copy-only` | 2 | `t12` pass | `t11` pass | 0 / 0 |
+| `master-page-consistency` | 1 | `t13` pass | `t14` pass | 0 / 0 |
+| `master-page-consistency` | 2 | `t16` pass | `t15` pass | 0 / 0 |
+
+`master-page-consistency`는 초기 좁은 표의 버튼·포커스 오른쪽 잘림을 기존 제약으로 남겼다. 가로 스크롤 이후 행 접근과 포커스 보존을 확인한 제한된 통과다. `t16`의 스크롤 전 첫 Tab 전후 캡처 쌍과 ArrowRight만의 복구는 별도 미검증이며, 기존 가로 잘림 판단에는 불변 DOM·CSS·폭에 근거한 추론이 포함된다. 초기 접근성 결함이 해결됐다는 결과로 해석하지 않는다.
+
+baseline은 `78c0726`, candidate는 `69149804`의 스킬이며, 평가기 `7ae3d287`의 고정 snapshot 41개 파일이 해당 커밋과 일치했다. 사례별 TASK·fixture와 공통 prompt·도구 조건을 맞췄고 모델·reasoning은 같은 부모 runtime을 상속했다. 별도 child 모델 식별자와 비공개 sampling 값은 제공되지 않아 추정하지 않았다.
+
+브라우저 자료와 원본 이미지를 읽은 **독립 Codex native AI 검수**를 source·Chrome 검사와 구분했다. 실제 실행 조건은 macOS 15.5 arm64, Node 25.2.1, Python 3.14.7, Chrome 152.0.7977.82이며, 새 임시 프로필과 loopback 합성 제품을 사용했다. 실행은 `snapshot-direct`이고 설치된 호스트 명시 호출과 자동 발견은 각각 `not-run`이다. 실제 기기·OS IME·스크린리더는 검증하지 않았다.
+
+공통 도구 계약 SHA-256을 부모 metadata에 잘못 기록한 사실을 최종 대조에서 발견했다. 실제 파일과 초기 환경 기록을 근거로 정정하고 파생 result를 다시 수집했으며, 정정 전 invocation/settings/result와 변경 이유를 압축에 보존했다. 원래 launch/final·제품·snapshot은 보존했고 에이전트 재실행으로 간주하지 않는다. 전체 tool transcript는 제공되지 않았으며 final inventory는 중간 쓰기 부재를 증명하지 않는다.
+
+새 임시 폴더에서 archive 해시·inventory, 16개 고유 context·8쌍, 제품 전후 inventory·source report·16개 diff와 evidence 경로를 검증하고, 압축 안의 고정 집계기로 같은 summary 바이트를 재현했다. 재현은 저장한 증거의 집계이며 새로운 실행이나 품질 검수를 대신하지 않는다.
+
 ## 범위 평가 harness (이슈 #6)
 
 검증일: 2026-09-07. 네 독립 사례의 fixture·고정 TASK·허용 수정 범위와 외부 판정 기준을 추가했다. [실행 계약과 재현 명령](https://github.com/ch4570/lutriva/blob/main/evals/README.md#four-bounded-scope-trials-suite-version-1)에 source 검사, 브라우저 관찰, 별도 의미·화면 검수의 경계를 기록했다.
@@ -9,9 +34,9 @@
 - Chrome 연결부 추출 후 기존 18개 회귀 검사가 통과했다. 새 브라우저 대조군은 네 사례의 실제 저장·검색·행 동작, 계산된 스타일, 접근 가능한 이름을 수집한다. 화면 캡처의 존재를 시각 검수로 취급하지 않는다.
 - 필수 관찰이나 검수가 빠지면 `not-run`/`incomplete`로 남긴다. 이미 관찰한 구체적 실패는 나중의 관찰 누락으로 지우지 않는다. 반복 결과는 여덟 비교 쌍별로 표시하며 평균 점수로 회귀를 숨기지 않는다.
 
-이 절은 harness 검증 범위다. 실제 16개 native 실행과 8개 비교 결과는 별도 기록이 필요하며, harness 통과만으로 이슈 #6의 실행 평가가 완료되거나 스킬 품질이 개선되었다고 판단하지 않는다. snapshot을 직접 읽힌 실행은 `snapshot-direct`로 기록하고, 설치된 호스트의 명시적 호출과 자동 발견은 각각 미실행으로 구분한다. 현재 로컬 harness 검증은 macOS/Node 25.2.1/Python 3.14.7과 설치된 Chrome에서 수행했다. Node 20/Python 3.9 기본 런타임, Node 22 이상의 선택적 Chrome 검사와 기존 CI 행렬은 유지하며 새 의존성은 추가하지 않았다.
+이 절은 실제 스킬 실행과 분리한 합성 harness 검증이다. source/summary 20개·comparator 23개, 기존 Chrome 18개·scope Chrome 10개를 검증했다. 일반 Python 발견은 149개 중 Chrome 28개를 명시적으로 건너뛰었으며 npm CLI 8개가 통과했다. 실제 16개 실행과 8개 비교 결과는 위에 기록했다. harness 통과를 스킬 품질 개선 근거로 쓰지 않는다. snapshot을 직접 읽힌 실행은 `snapshot-direct`로 기록하고, 설치된 호스트의 명시적 호출과 자동 발견은 각각 미실행으로 구분한다. 현재 로컬 harness 검증은 macOS/Node 25.2.1/Python 3.14.7과 설치된 Chrome에서 수행했다. Node 20/Python 3.9 기본 런타임, Node 22 이상의 선택적 Chrome 검사와 기존 CI 행렬은 유지하며 새 의존성은 추가하지 않았다.
 
-## 2.2.0 브랜드와 CLI 호환성
+## 2.2.0 브랜드와 CLI 호환성 (릴리스 당시 검증)
 
 검증일: 2026-09-07. Lutriva 이름, README·배너, npm 패키지와 CLI 별칭을 반영했다. `skills/`의 지침은 2.1.0과 동일하다.
 
@@ -22,7 +47,7 @@
 
 화면 검수는 GitHub Markdown HTML에 로컬 미리보기 스타일을 적용한 결과다. 인증된 GitHub 애플리케이션 전체나 실제 휴대 기기를 검사한 것은 아니다. npm 게시, Windows 실행, 새 모델 비교 평가는 이번 검증에 포함하지 않았다. 아래 2.1.0 결과를 브랜드 변경의 UI 품질 향상 증거로 해석하지 않는다.
 
-## 2.1.0 스킬 보강
+## 2.1.0 스킬 보강 (릴리스 당시 검증)
 
 검증일: 2026-09-07. 기준 소스는 `78c0726`(2.0.0), 작업 브랜치는 `feature/design-continuity-2.1`이다.
 
