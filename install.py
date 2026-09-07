@@ -48,7 +48,7 @@ def unique_object(pairs):
 def read_json(path):
     try:
         return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique_object)
-    except (ValueError, UnicodeError, OSError) as exc:
+    except (ValueError, UnicodeError, OSError, RecursionError) as exc:
         raise BundleError("Cannot read JSON: " + str(path)) from exc
 
 
@@ -63,14 +63,19 @@ def safe_relative(name):
     return path
 
 
-def tree_files(root, ignore_metadata=False):
-    """Enumerate regular files without following links, including hidden files."""
+def tree_files(root, ignore_metadata=False, empty_directories=None):
+    """Enumerate regular files without links; optionally collect empty directories."""
+    def walk_error(error):
+        raise error
+
     result = set()
     if root.is_symlink() or not root.is_dir():
         raise BundleError("Expected a real directory: " + str(root))
-    for base, dirs, files in os.walk(root, followlinks=False):
+    for base, dirs, files in os.walk(root, followlinks=False, onerror=walk_error):
         if Path(base) != root and not dirs and not files:
-            raise BundleError("Unexpected empty directory: " + str(base))
+            if empty_directories is None:
+                raise BundleError("Unexpected empty directory: " + str(base))
+            empty_directories.add(Path(base).relative_to(root).as_posix())
         for name in dirs + files:
             path = Path(base) / name
             mode = path.lstat().st_mode
@@ -225,7 +230,7 @@ def check_no_symlink_ancestors(path):
             raise BundleError("Destination parent is not a directory: " + str(ancestor))
 
 
-def destination(args):
+def destination(args, check_links=True):
     if args.repo:
         repo = Path(args.repo).expanduser().resolve(strict=True)
         if not repo.is_dir():
@@ -233,7 +238,8 @@ def destination(args):
         result = repo / (".agents" if args.agent == "codex" else ".claude") / "skills" / NAME
     else:
         result = Path(os.path.abspath(os.path.expanduser(args.dest)))
-    check_no_symlink_ancestors(result)
+    if check_links:
+        check_no_symlink_ancestors(result)
     return result
 
 
@@ -261,6 +267,101 @@ def existing_is_identical(dest, expected, marker=MARKER):
     return True
 
 
+def read_installation_record(path, installer):
+    """Validate user-controlled receipt metadata before using its hash map."""
+    record = read_json(path)
+    if not isinstance(record, dict) or set(record) != {"schema", "installer", "version", "files"}:
+        raise BundleError("Invalid installation record")
+    if type(record["schema"]) is not int or record["schema"] != 1 or record["installer"] != installer:
+        raise BundleError("Unsupported installation record")
+    version = record["version"]
+    if not isinstance(version, str) or not re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+(?:-[A-Za-z0-9.-]+)?", version):
+        raise BundleError("Invalid installed version")
+    files = record["files"]
+    if not isinstance(files, dict) or "SKILL.md" not in files:
+        raise BundleError("Invalid recorded files")
+    folded, parents = set(), set()
+    for name, expected_hash in files.items():
+        relative = safe_relative(name)
+        if not relative.parts or relative.name in {MARKER, SET_MARKER}:
+            raise BundleError("Reserved recorded path")
+        if name.casefold() in folded:
+            raise BundleError("Case-colliding recorded paths")
+        folded.add(name.casefold())
+        parents.update(parent.as_posix().casefold() for parent in relative.parents)
+        if not isinstance(expected_hash, str) or not re.fullmatch(r"[0-9a-f]{64}", expected_hash):
+            raise BundleError("Invalid recorded SHA-256")
+    if folded & parents:
+        raise BundleError("Recorded file overlaps a directory")
+    return record
+
+
+def file_changes(previous, current):
+    changes = [("added", name) for name in current.keys() - previous.keys()]
+    changes += [("deleted", name) for name in previous.keys() - current.keys()]
+    changes += [("modified", name) for name in previous.keys() & current.keys() if previous[name] != current[name]]
+    return sorted(changes, key=lambda change: change[1])
+
+
+def report_status(root, dest, manifest, name, payload):
+    release = install_marker(manifest, payload, name)
+    installed_version = "unverified"
+    local_changes, release_changes = [], []
+    review = True
+    try:
+        check_destination(root, dest)
+        if not dest.exists():
+            status = "not installed"
+            installed_version, review = "none", False
+        else:
+            marker = MARKER if name == NAME else SET_MARKER
+            empty_directories = set()
+            actual_files = tree_files(dest, empty_directories=empty_directories)
+            if marker not in actual_files:
+                raise BundleError("Missing installation record")
+            record = read_installation_record(dest / marker, release["installer"])
+            # Read only paths enumerated from the checked destination tree;
+            # receipt paths are comparison keys, never file-read instructions.
+            actual = {
+                relative: sha256(dest.joinpath(*PurePosixPath(relative).parts).read_bytes())
+                for relative in actual_files - {marker}
+            }
+            local_changes = file_changes(record["files"], actual)
+            recorded_directories = {
+                parent.as_posix() for relative in record["files"]
+                for parent in PurePosixPath(relative).parents
+            }
+            local_changes += [("added directory", relative + "/") for relative in sorted(empty_directories - recorded_directories)]
+            release_changes = file_changes(record["files"], release["files"])
+            installed_version = record["version"]
+            labels = []
+            if release_changes:
+                labels.append("release content changed")
+            if local_changes:
+                labels.append("user modifications")
+            if labels:
+                status = "; ".join(labels)
+            elif installed_version != manifest["version"]:
+                status = "version only; skill contents identical"
+            else:
+                status, review = "identical installation", False
+    except (BundleError, OSError):
+        # Do not echo untrusted receipt contents or unsafe path metadata.
+        status = "unverifiable (ownership, installation record, or safe file access)"
+    print(name + ":")
+    print("  Path: " + str(dest))
+    print("  Installed version: {}; release version: {}".format(installed_version, manifest["version"]))
+    print("  Status: " + status)
+    if installed_version not in {"none", "unverified"}:
+        for label, changes in (("Local", local_changes), ("Release", release_changes)):
+            print("  " + label + " changes vs installation record:" + ("" if changes else " none"))
+            for action, relative in changes:
+                print("    " + action + ": " + json.dumps(relative, ensure_ascii=False))
+    if review:
+        print("  Review and back up before reinstalling: " + str(dest))
+    print()
+
+
 def install(root, dest, dry_run=False):
     manifest, packages = load_packages(root)
     if NAME not in packages:
@@ -268,10 +369,14 @@ def install(root, dest, dry_run=False):
     install_package(root, dest, manifest, NAME, packages[NAME], dry_run)
 
 
-def preflight(root, dest, manifest, name, payload):
+def check_destination(root, dest):
     check_no_symlink_ancestors(dest)
     if dest.resolve().is_relative_to(root.resolve()) or root.resolve().is_relative_to(dest.resolve()):
         raise BundleError("Destination must not overlap the source bundle")
+
+
+def preflight(root, dest, manifest, name, payload):
+    check_destination(root, dest)
     if dest.exists():
         marker = MARKER if name == NAME else SET_MARKER
         existing_is_identical(dest, install_marker(manifest, payload, name), marker)
@@ -325,12 +430,14 @@ def main():
     target.add_argument("--list", action="store_true", help="List verified skills and dependencies")
     parser.add_argument("--agent", choices=("codex", "claude"), help="Required with --repo")
     parser.add_argument("--skill", action="append", help="Select a skill; repeat to select more (includes dependencies)")
-    parser.add_argument("--dry-run", action="store_true", help="Verify and show destination without writing")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--dry-run", action="store_true", help="Verify and show destination without writing")
+    mode.add_argument("--status", action="store_true", help="Read-only diagnosis of all selected installations, versions, and changed paths")
     args = parser.parse_args()
     if bool(args.repo) != bool(args.agent):
         parser.error("Use --repo with --agent, or --dest without --agent")
-    if args.list and (args.skill or args.dry_run):
-        parser.error("--list cannot be combined with --skill or --dry-run")
+    if args.list and (args.skill or args.dry_run or args.status):
+        parser.error("--list cannot be combined with --skill, --dry-run, or --status")
     try:
         root = Path(__file__).resolve().parent
         manifest, packages = load_packages(root)
@@ -344,10 +451,15 @@ def main():
         if args.dest:
             if len(order) != 1 or len(selected) != 1:
                 raise BundleError("--dest requires one standalone skill; use --repo with --agent for dependencies")
-            targets = [(order[0], destination(args))]
+            targets = [(order[0], destination(args, check_links=not args.status))]
         else:
-            skill_root = destination(args).parent
+            skill_root = destination(args, check_links=not args.status).parent
             targets = [(name, skill_root / name) for name in order]
+        if args.status:
+            for name, dest in targets:
+                report_status(root, dest, manifest, name, packages[name])
+            print("Checked {} skills (including dependencies). No files changed.".format(len(targets)))
+            return 0
         # Detect every predictable conflict before creating any destination.
         for name, dest in targets:
             preflight(root, dest, manifest, name, packages[name])

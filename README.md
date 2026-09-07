@@ -81,6 +81,28 @@ python3 install.py --dest "/path/to/skills/ui-craft-bundle"
 
 Use `--repo --agent` for skills that depend on sibling packages. Identical installations are left alone. Modified or unowned directories are refused before new skills are copied; review and move old installations to a backup location before updating. User files are never overwritten automatically.
 
+Before reinstalling, inspect all selected skills and dependencies:
+
+```sh
+python3 install.py --repo "/path/to/project" --agent codex --status
+```
+
+The npm CLI accepts the same `--status` option. Add `--skill` to limit the selection, or use `--dest` for one standalone skill. The report shows each installation path, installed and release versions, and these states:
+
+| Status | Meaning |
+| --- | --- |
+| `not installed` | The destination does not exist. |
+| `identical installation` | The version, recorded files, and installed contents match. |
+| `version only; skill contents identical` | Only the release version differs, as with unchanged skills from 2.1.0 to 2.2.0. |
+| `release content changed` | The new release differs from the installation record. |
+| `user modifications` | Local files differ from the installation record. |
+| `release content changed; user modifications` | Both comparisons found changes, even if a local edit already matches the new release. |
+| `unverifiable` | Ownership, the installation record, or safe file access could not be verified. |
+
+Local and release changes list added, deleted, and modified relative file paths separately; extra empty directories are also listed. File contents are not printed. Existing installations that need attention include a path to review and back up before reinstalling. Damaged records, symlinks, and unsafe paths remain unverifiable while the report continues through the other skills.
+
+`--status` preserves files and modification times, and returns exit code 0 after a complete report, including conflicts or unverifiable installations. Invalid arguments return 2; bundle verification or project lookup failures return 1. It cannot be combined with `--dry-run` or `--list`. `--dry-run` and actual installation still refuse version differences, edits, and unowned destinations; diagnosis never enables automatic updates or overwrites.
+
 The installer leaves project code, `AGENTS.md`, `CLAUDE.md`, and global settings alone. The Python installer performs no network downloads. Hashes detect edited files; they do not authenticate the publisher. [Compatibility details](docs/naming.md#compatibility).
 
 </details>

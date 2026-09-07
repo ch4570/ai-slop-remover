@@ -86,6 +86,30 @@ test('selection forwards to dependency-aware installer and preserves argument er
   assert.equal(run(['--definitely-invalid']).status, 2);
 });
 
+test('status forwards selection, reports every dependency, and preserves user edits', (t) => {
+  const project = temporary(t);
+  const args = ['--repo', project, '--agent', 'codex', '--skill', 'ux-writing'];
+  const missing = run([...args, '--status']);
+  succeeded(missing);
+  assert.equal(missing.stdout.match(/Status: not installed/g)?.length, 2);
+  assert.deepEqual(readdirSync(project), []);
+  succeeded(run(args));
+  const entry = path.join(project, '.agents', 'skills', 'ui-craft-bundle', 'SKILL.md');
+  writeFileSync(entry, 'User customization');
+  const before = statSync(entry).mtimeMs;
+  const status = run([...args, '--status']);
+  succeeded(status);
+  assert.match(status.stdout, /ui-craft-bundle:\n[\s\S]*Status: user modifications/);
+  assert.match(status.stdout, /ux-writing:\n[\s\S]*Status: identical installation/);
+  assert.match(status.stdout, /modified: "SKILL.md"/);
+  assert.ok(status.stdout.includes('Review and back up before reinstalling: ' + path.dirname(entry)));
+  assert.equal(readFileSync(entry, 'utf8'), 'User customization');
+  assert.equal(statSync(entry).mtimeMs, before);
+  assert.equal(run(args).status, 1);
+  assert.equal(run([...args, '--status', '--dry-run']).status, 2);
+  assert.match(run(['--help']).stdout, /--status/);
+});
+
 test('npm tarball has exactly the release payload and equivalent installed command aliases', (t) => {
   const directory = temporary(t);
   // A parent `npm publish --dry-run` propagates its config to lifecycle tests.

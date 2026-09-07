@@ -18,11 +18,15 @@ Requires Python 3.9+ for the bundled, hash-verifying installer.
 Usage:
   lutriva --list
   lutriva [install] --repo <project> --agent codex|claude [--dry-run]
+  lutriva --repo <project> --agent codex|claude --status
   lutriva --repo <project> --agent codex --skill ux-writing
   lutriva --dest <exact-ui-craft-bundle-directory>
 
 Repeat --skill to select multiple skills and their dependencies.
 Project installs default to all seven skills. Existing files are never overwritten.
+Use --status to compare installed versions, release changes, and user edits without writing.
+It reports every selected skill and dependency, including unverifiable installations.
+--status and --dry-run cannot be combined; diagnostics do not authorize overwriting.
 The ai-slop-remover command remains available as a compatibility alias.
 Set AI_SLOP_PYTHON to an exact Python executable path if automatic detection fails.`);
   process.exit(0);

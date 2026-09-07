@@ -12,6 +12,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -214,6 +215,15 @@ class LegacyInstallerTests(InstallerTestCase):
         self.assert_success(self.run_installer("--dest", self.dest))
         self.assertEqual(snapshot(self.workspace), before)
 
+    def test_status_supports_legacy_bundle_records_without_writing(self):
+        self.assert_success(self.run_installer("--dest", self.dest))
+        before = snapshot(self.workspace)
+        result = self.run_installer("--dest", self.dest, "--status")
+        self.assert_success(result)
+        self.assertIn("Status: identical installation", result.stdout)
+        self.assertIn("Installed version: 1.0.0; release version: 1.0.0", result.stdout)
+        self.assertEqual(snapshot(self.workspace), before)
+
     def test_edited_destination_is_preserved(self):
         self.assert_success(self.run_installer("--dest", self.dest))
         (self.dest / "SKILL.md").write_text("User customization\n", encoding="utf-8")
@@ -374,6 +384,257 @@ class SkillSetInstallerTests(InstallerTestCase):
 
     def assert_repo_refused(self, *args):
         return self.assert_refused_without_changes("--repo", self.repo, "--agent", "codex", *args)
+
+    def status_repo(self, *args):
+        before = snapshot(self.workspace)
+        result = self.install_repo("--status", *args)
+        self.assert_success(result)
+        self.assertEqual(snapshot(self.workspace), before)
+        return result.stdout
+
+    def status_block(self, output, name):
+        return output.split(name + ":\n", 1)[1].split("\n\n", 1)[0]
+
+    def status_without_reading(self, forbidden):
+        before = snapshot(self.workspace)
+        api = runpy.run_path(str(self.bundle / "install.py"))
+        original_open = Path.open
+
+        def guarded_open(path, *args, **kwargs):
+            self.assertFalse(path.resolve().is_relative_to(forbidden), "Status opened an outside target: " + str(path))
+            return original_open(path, *args, **kwargs)
+
+        output = io.StringIO()
+        with mock.patch.object(Path, "open", guarded_open), mock.patch.object(sys, "argv", [
+            "install.py", "--repo", str(self.repo), "--agent", "codex", "--status",
+        ]), contextlib.redirect_stdout(output):
+            self.assertEqual(api["main"](), 0)
+        self.assertEqual(snapshot(self.workspace), before)
+        return output.getvalue()
+
+    def test_status_lists_missing_selection_and_dependencies_without_creating_directories(self):
+        output = self.status_repo("--skill", "ai-slop-refine", "--skill", "ai-slop-audit")
+        for name in (LEGACY_NAME, "ai-slop-audit", "ai-slop-refine"):
+            block = self.status_block(output, name)
+            self.assertIn("Status: not installed", block)
+            self.assertIn("Installed version: none; release version: 2.0.0", block)
+            self.assertIn(str(self.repo / ".agents" / "skills" / name), block)
+        self.assertNotIn("ui-copy:", output)
+        self.assertEqual(output.count("Status:"), 3)
+        self.assertIn("Checked 3 skills (including dependencies). No files changed.", output)
+
+    def test_status_reports_identical_installs_for_both_agents(self):
+        for agent in ("codex", "claude"):
+            with self.subTest(agent=agent):
+                args = ("--repo", self.repo, "--agent", agent)
+                self.assert_success(self.run_installer(*args))
+                before = snapshot(self.workspace)
+                result = self.run_installer(*args, "--status")
+                self.assert_success(result)
+                self.assertEqual(snapshot(self.workspace), before)
+                self.assertEqual(result.stdout.count("Status: identical installation"), len(self.dependencies))
+                self.assertNotIn("Review and back up", result.stdout)
+
+    def test_status_reports_2_1_to_2_2_as_version_only_while_install_still_refuses(self):
+        self.manifest["version"] = "2.1.0"
+        self.write_manifest()
+        self.assert_success(self.install_repo())
+        self.manifest["version"] = "2.2.0"
+        self.write_manifest()
+        output = self.status_repo()
+        for name in self.dependencies:
+            block = self.status_block(output, name)
+            self.assertIn("Installed version: 2.1.0; release version: 2.2.0", block)
+            self.assertIn("Status: version only; skill contents identical", block)
+            self.assertIn("Local changes vs installation record: none", block)
+            self.assertIn("Release changes vs installation record: none", block)
+            self.assertIn("Review and back up before reinstalling: " + str(self.repo / ".agents" / "skills" / name), block)
+        self.assert_repo_refused("--dry-run")
+        self.assert_repo_refused()
+
+    def test_status_compares_local_and_release_changes_independently_against_record(self):
+        self.assert_success(self.install_repo())
+        cases = (
+            ("ai-slop-audit", False, True, "release content changed"),
+            ("ai-slop-refine", True, False, "user modifications"),
+            ("ui-copy", True, True, "release content changed; user modifications"),
+        )
+        for name, local_change, release_change, status in cases:
+            dest = self.repo / ".agents" / "skills" / name
+            prefix = "skills/" + name + "/"
+            if release_change:
+                self.add_file(prefix + "SKILL.md", b"Shared revised contents\n")
+                self.add_file(prefix + "references/release.md", b"Release addition\n")
+                (self.bundle / prefix / "references/guide.md").unlink()
+                del self.manifest["files"][prefix + "references/guide.md"]
+            if local_change:
+                # Even when local bytes already equal the new release, both
+                # changed independently from the recorded installation.
+                (dest / "SKILL.md").write_bytes(b"Shared revised contents\n")
+                (dest / "references/guide.md").unlink()
+                (dest / "references/local-notes.md").write_bytes(b"Private user notes\n")
+        self.write_manifest()
+        output = self.status_repo()
+        for name, local_change, release_change, status in cases:
+            with self.subTest(skill=name):
+                block = self.status_block(output, name)
+                self.assertIn("Status: " + status, block)
+                local, release = block.split("  Release changes vs installation record:", 1)
+                for section, changed, added in (
+                    (local, local_change, "references/local-notes.md"),
+                    (release, release_change, "references/release.md"),
+                ):
+                    if changed:
+                        for action, path in (("added", added), ("deleted", "references/guide.md"), ("modified", "SKILL.md")):
+                            self.assertIn(action + ": " + json.dumps(path), section)
+                    else:
+                        self.assertIn("none", section)
+                self.assertIn("Review and back up before reinstalling: " + str(self.repo / ".agents" / "skills" / name), block)
+        self.assertNotIn("Private user notes", output)
+        self.assertNotIn("Shared revised contents", output)
+        self.assert_repo_refused()
+
+    def test_status_continues_after_first_unowned_destination(self):
+        dest = self.repo / ".agents" / "skills" / LEGACY_NAME
+        dest.mkdir(parents=True)
+        (dest / "SKILL.md").write_text("Private user skill\n", encoding="utf-8")
+        output = self.status_repo()
+        self.assertIn("Status: unverifiable", self.status_block(output, LEGACY_NAME))
+        for name in set(self.dependencies) - {LEGACY_NAME}:
+            self.assertIn("Status: not installed", self.status_block(output, name))
+        self.assertNotIn("Private user skill", output)
+        self.assert_repo_refused()
+
+    def test_status_treats_malformed_records_as_unverifiable_and_continues(self):
+        self.assert_success(self.install_repo())
+        marker = self.repo / ".agents" / "skills" / LEGACY_NAME / ".ui-craft-bundle-install.json"
+        original = json.loads(marker.read_text(encoding="utf-8"))
+        cases = ["{Private broken receipt", "[]", '{"schema": 1, "schema": 1}']
+        for field, value in (
+            ("schema", True), ("schema", 2), ("installer", "another-installer"),
+            ("version", "Private invalid version"), ("version", None),
+            ("files", []), ("files", {}), ("files", {"SKILL.md": "not-a-hash"}),
+            ("files", {"references/guide.md": "0" * 64}),
+        ):
+            record = dict(original, **{field: value})
+            cases.append(json.dumps(record))
+        for unsafe in ("../private.txt", "/private.txt", "references/../../private.txt", "a\\private.txt", "C:private.txt", "./private.txt", "."):
+            record = dict(original, files={**original["files"], unsafe: "0" * 64})
+            cases.append(json.dumps(record))
+        for files in (
+            {"skill.md": "0" * 64},
+            {".ui-craft-bundle-install.json": "0" * 64},
+            {"references": "0" * 64},
+        ):
+            cases.append(json.dumps(dict(original, files={**original["files"], **files})))
+        cases.extend((json.dumps({**original, "extra": "Private receipt field"}), json.dumps({key: value for key, value in original.items() if key != "installer"})))
+        for record in cases:
+            with self.subTest(record=record):
+                marker.write_text(record, encoding="utf-8")
+                output = self.status_repo()
+                self.assertIn("Status: unverifiable", self.status_block(output, LEGACY_NAME))
+                self.assertEqual(output.count("Status: identical installation"), len(self.dependencies) - 1)
+                self.assertNotIn("Private", output)
+
+    def test_status_continues_after_deeply_nested_receipt(self):
+        self.assert_success(self.install_repo())
+        marker = self.repo / ".agents" / "skills" / LEGACY_NAME / ".ui-craft-bundle-install.json"
+        marker.write_text("[" * 2000 + "0" + "]" * 2000, encoding="utf-8")
+        output = self.status_repo()
+        self.assertIn("Status: unverifiable", self.status_block(output, LEGACY_NAME))
+        self.assertEqual(output.count("Status:"), len(self.dependencies))
+        self.assertEqual(output.count("Status: identical installation"), len(self.dependencies) - 1)
+        refused = self.assert_repo_refused()
+        self.assertNotIn("Traceback", refused.stderr)
+
+    def test_status_reports_deletions_leaving_empty_directories_and_added_empty_directories(self):
+        self.assert_success(self.install_repo())
+        dest = self.repo / ".agents" / "skills" / LEGACY_NAME
+        (dest / "private-empty").mkdir()
+        block = self.status_block(self.status_repo(), LEGACY_NAME)
+        self.assertIn("Status: user modifications", block)
+        self.assertIn('added directory: "private-empty/"', block)
+        self.assertNotIn("deleted:", block)
+        (dest / "references/guide.md").unlink()
+        block = self.status_block(self.status_repo(), LEGACY_NAME)
+        self.assertIn("Status: user modifications", block)
+        self.assertIn('deleted: "references/guide.md"', block)
+        self.assertIn('added directory: "private-empty/"', block)
+        self.assertNotIn('added directory: "references/"', block)
+        self.assert_repo_refused()
+
+    def test_status_never_reads_files_addressed_by_forged_receipt_paths(self):
+        self.assert_success(self.install_repo())
+        marker = self.repo / ".agents" / "skills" / LEGACY_NAME / ".ui-craft-bundle-install.json"
+        outside = self.workspace / "private.txt"
+        outside.write_bytes(b"Sensitive contents that must not be opened\n")
+        record = json.loads(marker.read_text(encoding="utf-8"))
+        record["files"][os.path.relpath(outside, marker.parent)] = digest(outside.read_bytes())
+        marker.write_text(json.dumps(record), encoding="utf-8")
+        output = self.status_without_reading(outside)
+        self.assertIn("Status: unverifiable", output)
+        self.assertNotIn("Sensitive contents", output)
+
+    def test_status_marks_symlinks_unverifiable_without_reading_targets(self):
+        for location in ("destination", "parent", "marker", "file", "directory", "dangling"):
+            with self.subTest(location=location):
+                self.repo = self.workspace / ("project-" + location)
+                self.repo.mkdir()
+                self.assert_success(self.install_repo())
+                dest = self.repo / ".agents" / "skills" / LEGACY_NAME
+                target = {
+                    "destination": dest, "parent": dest.parent,
+                    "marker": dest / ".ui-craft-bundle-install.json",
+                    "file": dest / "SKILL.md", "directory": dest / "references",
+                    "dangling": dest,
+                }[location]
+                outside = self.workspace / ("outside-" + location)
+                target.rename(outside)
+                target.symlink_to(outside if location != "dangling" else self.workspace / "absent", target_is_directory=outside.is_dir())
+                output = self.status_without_reading(outside)
+                self.assertIn("Status: unverifiable", self.status_block(output, LEGACY_NAME))
+                self.assertEqual(output.count("Status:"), len(self.dependencies))
+                if location != "parent":
+                    self.assertEqual(output.count("Status: identical installation"), len(self.dependencies) - 1)
+                self.assert_repo_refused()
+
+    def test_status_marks_unreadable_subdirectories_unverifiable_instead_of_deleted(self):
+        self.assert_success(self.install_repo())
+        dest = self.repo / ".agents" / "skills" / LEGACY_NAME
+        api = runpy.run_path(str(self.bundle / "install.py"))
+        manifest, packages = api["load_packages"](self.bundle)
+        original_scandir = os.scandir
+
+        def guarded_scandir(path):
+            if Path(path) == dest / "references":
+                raise PermissionError("Cannot inspect fixture directory")
+            return original_scandir(path)
+
+        before = snapshot(self.workspace)
+        output = io.StringIO()
+        with mock.patch.object(os, "scandir", guarded_scandir), contextlib.redirect_stdout(output):
+            api["report_status"](self.bundle, dest, manifest, LEGACY_NAME, packages[LEGACY_NAME])
+        self.assertIn("Status: unverifiable", output.getvalue())
+        self.assertNotIn("deleted:", output.getvalue())
+        self.assertEqual(snapshot(self.workspace), before)
+
+    def test_status_is_mutually_exclusive_with_dry_run_and_list(self):
+        for args in (("--list", "--status"), ("--repo", self.repo, "--agent", "codex", "--status", "--dry-run")):
+            result = self.assert_refused_without_changes(*args)
+            self.assertEqual(result.returncode, 2)
+
+    def test_status_supports_exact_destination_and_preserves_overlap_safety(self):
+        self.assert_success(self.run_installer("--dest", self.dest, "--skill", "ui-copy"))
+        before = snapshot(self.workspace)
+        result = self.run_installer("--dest", self.dest, "--skill", "ui-copy", "--status")
+        self.assert_success(result)
+        self.assertIn("Status: identical installation", result.stdout)
+        self.assertEqual(snapshot(self.workspace), before)
+        for dest in (self.bundle / "new-skill", self.workspace):
+            result = self.run_installer("--dest", dest, "--status")
+            self.assert_success(result)
+            self.assertIn("Status: unverifiable", result.stdout)
+            self.assertEqual(snapshot(self.workspace), before)
 
     def test_default_installs_every_skill_for_each_agent(self):
         for agent, folder in (("codex", ".agents"), ("claude", ".claude")):
