@@ -25,6 +25,25 @@ Lutriva는 **Codex와 Claude Code**에서 제품 화면과 사용 흐름을 다�
 
 현재 화면과 사용 목적부터 살핍니다. 간격 하나를 고칠 때는 그 범위에 집중하고, 리디자인이 필요하면 흐름 전체를 봅니다. 색상·카드·글꼴은 실제 맥락으로 판단합니다.
 
+### AI-SLOP을 줄이는 방법과 공통 원칙
+
+[14가지 개선 방법](skills/ui-craft-bundle/references/anti-slop-methods.md)을 **증상 → 수정 방법 → 유지할 것·확인 방법**으로 정리했습니다. [웹·모바일 공통 UI/UX 원칙](skills/ui-craft-bundle/references/ux-foundations.md)과 함께, 필요한 작업에서만 읽도록 7개 스킬에 연결했습니다.
+
+| 관찰한 문제 | 적용하는 방법 |
+| --- | --- |
+| 큰 소개 영역과 반복 카드가 작업을 가림 | 실제 과업을 앞세우고 비교·탐색에 맞는 구조 선택 |
+| 모든 버튼·배지가 똑같이 강조됨 | 행동의 중요도, 의미에 따른 묶음, 글자·간격의 역할 정리 |
+| 업종 이름만 바꿔도 같은 화면이 됨 | 실제 데이터 관계·단위·용어·브랜드로 제품의 특성 표현 |
+| 옵션은 많고 현재 선택은 보이지 않음 | 자주 쓰는 행동과 현재 상태를 드러내고 보조 옵션을 단계적으로 공개 |
+| 아이콘·토스트만으로 조작과 결과를 설명함 | 알아볼 수 있는 컨트롤, 맥락 안의 피드백, 실제 상태에 맞는 문구 |
+| 오류가 나면 입력과 맥락을 잃음 | 재입력 줄이기, 초안 보존, 가능한 취소·수정·복구 제공 |
+| 데스크톱 축소본만 모바일로 제공함 | 공간에 맞는 구조, 터치 영역, 키보드·큰 글자·긴 한국어 확인 |
+| 움직임과 샘플 데이터에서만 완성도가 보임 | 불필요한 대기 줄이기, 모션 감소, 실제 길이·수량·실패 상태로 검증 |
+
+공통 원칙은 **기억에 의존하지 않는 선택, 일관된 용어와 위치, 정보 위계, 사용자 통제, 오류 예방·복구, 접근 가능한 조작**입니다. WCAG 2.2 기준과 Apple·Android 권장값은 단위와 예외를 구분합니다. NN/G, W3C, Apple, Android, GOV.UK 자료를 확인하고 [출처와 적용 범위](skills/ui-craft-bundle/references/sources.md)에 기록했습니다. 특정 색이나 카드 사용만으로 문제를 판정하지 않습니다.
+
+**[토스 기술 블로그의 디자인 글 8개](skills/ui-craft-bundle/references/toss-design.md)**도 직접 확인해 반영했습니다. 다음 행동이 예상되는 한국어 문구, 키보드가 열린 가입 흐름, 드래그 대체 조작, 실제 상태를 설명하는 모션, 모바일·PC별 정보 구조, 컴포넌트 확장과 명세, 초기 사용성 검증을 다룹니다. 원문의 관찰과 프로젝트에 적용할 판단·확인 방법을 구분하고, 필요한 작업에서 찾아 읽도록 연결했습니다.
+
 ## 빠른 시작
 
 npm 레지스트리 게시는 **아직 완료되지 않았습니다**. 지금은 소스를 받아 설치하세요. 저장소가 비공개인 동안에는 접근 권한이 필요합니다. Python 설치기는 **Python 3.9 이상**만 있으면 되며 별도 패키지나 API 키가 필요하지 않습니다.
@@ -57,10 +76,10 @@ npx --yes --package='git+https://github.com/ch4570/lutriva.git' -- lutriva --lis
 npx --yes --package='git+https://github.com/ch4570/lutriva.git' -- lutriva --repo "/path/to/project" --agent codex --dry-run
 ```
 
-이 명령은 기본 브랜치를 따라가며 저장소 접근 권한이 필요합니다. `--dry-run`을 빼면 설치합니다. npm에 `lutriva@2.2.0`이 게시된 후에는 다음 명령을 쓸 수 있습니다.
+이 명령은 기본 브랜치를 따라가며 저장소 접근 권한이 필요합니다. `--dry-run`을 빼면 설치합니다. npm에 `lutriva@2.3.0`이 게시된 후에는 다음 명령을 쓸 수 있습니다.
 
 ```sh
-npx lutriva@2.2.0 --repo "/path/to/project" --agent codex
+npx lutriva@2.3.0 --repo "/path/to/project" --agent codex
 ```
 
 같은 패키지에서 기존 `ai-slop-remover` CLI도 제공합니다. Python을 찾지 못하면 `AI_SLOP_PYTHON`에 실행 파일의 정확한 경로를 지정하세요. npm 런타임 의존성과 자동 postinstall 작업은 없습니다.
@@ -169,11 +188,25 @@ Jetpack Compose 일정 편집 화면을 다듬어줘.
 
 UI UX Pro Max, Vercel, getdesign.md에서 유용한 방법을 선별해 연결했습니다. [출처와 적용 범위](skills/ui-craft-bundle/references/sources.md).
 
+## 로컬에서 평가하고 발전시키기
+
+[로컬 평가·개선 게이트](skills/ui-craft-bundle/references/local-learning.md)는 공통 배포 스킬을 보존하면서 프로젝트별로 조건부 보조 규칙을 발전시킵니다. 외부 패키지가 필요 없는 Python CLI를 `ui-craft-bundle`에 포함했습니다.
+
+`사용 증거 → 개선 후보 → 같은 조건의 비교 → 회귀·다른 사례 검증 → 로컬 채택 → 문제 발생 시 이전 호환본 복귀`
+
+- **개선과 통과를 구분합니다.** 기존·후보가 모두 통과하면 `no-change`입니다. 실제 개선과 필수 검사 보존이 확인되어야 채택할 수 있습니다.
+- **각 프로젝트가 독립적입니다.** 저장 위치는 `.lutriva/local/`이며 설치 디렉터리·다른 프로젝트·다른 사용자에게 자동으로 규칙을 퍼뜨리지 않습니다.
+- **후보와 계획을 고정합니다.** 적용 범위를 정해 비교하고, 적격 후보를 명시적으로 채택하거나 되돌립니다. 기반·정책·활성 세대가 달라지면 새 후보로 평가해야 합니다.
+
+[CLI 안내](skills/ui-craft-bundle/references/local-learning-cli.md)에 `init`, `propose`, `evaluate`, `promote`, `rollback`, `status`, `context` 명령을 정리했습니다. 현재 `reviewed-local` 절차는 제출 기록·증거 해시·반복 개선·회귀 검사·별도 전이 fixture·신고한 실행 수와 시간을 확인합니다. 관찰의 진실성이나 검토자 독립성까지 인증하지는 않습니다. `context`가 반환한 규칙은 과업과 함께 명시적으로 제공해야 합니다.
+
+모델 실행, 자동 관찰·채택, 호스트 지침 주입, 권한으로 강제한 실험 격리는 아직 구현하지 않았습니다. [확장 구현 계약](skills/ui-craft-bundle/references/local-learning-contract.md)에서 현재 수동 CLI와 이후 자동화 범위를 구분합니다.
+
 ## 결과까지 확인합니다
 
 2.1의 제한된 비교에서 **관찰된 회귀는 없었습니다.** 기존 지침과 새 지침을 적용한 결과 모두 브라우저 동작 8개와 화면·키보드 검수를 통과했습니다. 단일 사례로 전반적인 UI 품질 향상을 입증한 것은 아닙니다. [검증 기록](docs/verification.md).
 
-소스에는 [행동 사례 계약 19개](evals/skill-cases.json), 결함을 심은 작은 UI, 외부 브라우저 검사, 결과 비교기가 있습니다. 사례 형식 검증과 실제 에이전트 실행 평가는 구분합니다. 유지보수자는 [평가 절차와 실제 실행 기록](https://github.com/ch4570/lutriva/blob/main/evals/README.md)을 참고하세요. 평가 개발 도구는 설치되는 스킬에서 제외합니다.
+소스에는 [행동 사례 계약 22개](evals/skill-cases.json), 결함을 심은 작은 UI, 외부 브라우저 검사, 결과 비교기가 있습니다. 사례 형식 검증과 실제 에이전트 실행 평가는 구분합니다. 유지보수자는 [평가 절차와 실제 실행 기록](https://github.com/ch4570/lutriva/blob/main/evals/README.md)을 참고하세요. 평가 개발 도구는 설치되는 스킬에서 제외합니다.
 
 <details>
 <summary>기여자용 검사와 ZIP 내보내기</summary>
@@ -184,7 +217,7 @@ UI UX Pro Max, Vercel, getdesign.md에서 유용한 방법을 선별해 연결�
 python3 -m unittest discover -s tests -q
 npm test
 npm run check
-python3 scripts/export_bundle.py --output dist/lutriva-2.2.0.zip
+python3 scripts/export_bundle.py --output dist/lutriva-2.3.0.zip
 npm pack --dry-run
 ```
 

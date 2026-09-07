@@ -2,6 +2,8 @@
 
 Give motion a job: show causality, preserve spatial continuity, reveal hierarchy, or acknowledge an action. Otherwise consider removing it.
 
+The motion case in [Toss design](toss-design.md) illustrates showing real work during a wait and separating intermediate outcomes from final conversion. Use it when deciding whether dynamic feedback helps the current task; preserve unknown progress honestly.
+
 Keep input feedback immediate. Never delay clicks, typing, or results to fit an animation. Durations are tunable starting points, not gates: roughly 100–180 ms for a small state transition and 180–280 ms for a panel can be reasonable on the web. Adapt to the existing system and platform.
 
 - Prefer existing CSS or platform animation for simple effects. Use installed motion libraries for useful interruptible layout changes.

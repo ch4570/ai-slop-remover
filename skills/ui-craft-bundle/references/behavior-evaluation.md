@@ -33,3 +33,9 @@ Use [behavior-trial.md](../assets/behavior-trial.md) when recording a trial. Exi
 - Keep manual visual judgments separate from executable checks and do not replace either with an agent's unsupported self-report.
 
 The source distribution includes a small evaluation harness for maintainers. Installed copies of this skill remain tool-independent and do not assume that harness or a browser is available in the user's project.
+
+## Learn locally from evaluated changes
+
+For a request to improve the skill itself, use the [local learning gate design](local-learning.md). It keeps the common installation unchanged and compares the current active local guidance against a scoped candidate. A complete passing comparison may still mean no observed improvement; adoption needs its own decision, relevant regression/transfer evidence, and compatibility checks.
+
+The [local CLI](local-learning-cli.md) provides its own plan/report schema, submitted-evidence decisions, explicit adoption/rollback, and scoped context output. It does not run models, authenticate observations, or inject rules into a host. The [broader implementation contract](local-learning-contract.md) describes future adapters around existing schema 1 results and automation; those proposed schemas are not interchangeable with the current CLI input.

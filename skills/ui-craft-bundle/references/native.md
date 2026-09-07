@@ -2,11 +2,13 @@
 
 Determine the platform from the project. Preserve Kotlin/Compose, Android Views/Java, SwiftUI/UIKit, React Native, or Flutter as found. Retain native navigation, input, permissions, insets, and accessibility behavior. Do not call a browser mockup a native implementation.
 
+Use [UX foundations](ux-foundations.md) for shared task principles, platform target sizes, and text-scaling checks. Share the user's intended outcome across platforms while retaining native units and conventions.
+
 ## Android
 
 - Use the current Compose/View system. Expose stable UI state and events; keep durable state in the existing owner. Choose `remember`, saveable state, and ViewModel by lifetime instead of keeping everything in a composable.
 - Expose meaningful semantics/descriptions for informative or actionable elements. Avoid redundant descriptions on decorative icons next to labeled text.
-- Maintain non-overlapping touch regions of at least 48 dp where Android guidance applies. Visible icons may be smaller than their target; check expanded regions for overlap.
+- Maintain non-overlapping touch regions using the Android guidance in [UX foundations](ux-foundations.md). Visible icons may be smaller than their target; check expanded regions for overlap.
 - Check system bars, IME, font scaling, back, failures, and recreation for the changed flow. Preserve drafts when promised.
 - Use available Compose semantics tests, Espresso/UI tests, previews, and emulator/device execution. A preview image does not prove taps, TalkBack, keyboard access, or persistence.
 

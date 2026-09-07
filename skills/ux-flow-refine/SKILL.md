@@ -19,8 +19,11 @@ Read [principles](reference/principles.md) first. Use the [KB index](reference/k
 
 For a specific defect, load only its [interaction recipe](../ui-craft-bundle/references/interaction-recipes.md): composition-safe input, history and Back/Forward, stable focus/scroll, loading feedback, retries, or autofill/paste. Translate the recipe into observable checks against the current router and state owner; do not paste framework-specific handlers into another platform.
 
+For keyboard-obscured forms or inaccessible reordering, the form and drag cases in [Toss design](../ui-craft-bundle/references/toss-design.md) explain useful design decisions. Preserve correction paths and focus; reverse-order forms and automatic focus advance are optional, context-dependent choices.
+
 ## Repair outcomes and continuity
 
+- Use [UX foundations](../ui-craft-bundle/references/ux-foundations.md) when a flow needs decisions about recognition, disclosure, error prevention, user control, or input access. Reducing steps is useful only when people retain the information and control needed to complete the task.
 - Make feedback immediate without artificial delays. Keep input responsive while work is pending. Prevent accidental duplicate operations using the existing interaction and request model.
 - Keep the final state consistent with the latest user intent. Prevent stale responses and animation completion callbacks from overwriting newer state; use existing cancellation, request identity, or state mechanisms.
 - Preserve editable drafts on failure, end pending when the operation resolves, and provide a working recovery path. Return focus and reading position appropriately after dialogs and navigation.

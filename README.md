@@ -25,6 +25,25 @@ Formerly **AI Slop Remover**. The river otter represents the experience we aim f
 
 Start with the task and the existing screen. A spacing fix should stay a spacing fix; a product redesign can go deeper. Colors, cards, and fonts are judged in context.
 
+### Methods and shared UX principles
+
+[Fourteen anti-slop methods](skills/ui-craft-bundle/references/anti-slop-methods.md) connect **symptom → intervention → preservation and recheck**. All seven skills route to this catalog and the [web/mobile UX foundations](skills/ui-craft-bundle/references/ux-foundations.md) only when the task needs them.
+
+| Observed problem | Useful intervention |
+| --- | --- |
+| Large introductions and repeated cards displace work | Put the task first; choose structures for comparison or browsing |
+| Every button and badge competes for attention | Assign emphasis, meaningful groups, and type/spacing roles |
+| Changing the industry name leaves the same screen | Express real data relationships, units, vocabulary, and brand |
+| Many options obscure the current selection | Keep frequent actions and current state visible; disclose secondary options |
+| Icons and toasts carry all the meaning | Use recognizable controls, contextual feedback, and state-specific copy |
+| Errors discard input and context | Reduce re-entry, retain drafts, and provide supported edit/cancel/recovery |
+| Mobile is a shrunken desktop | Adapt structure; check targets, keyboard access, large text, and localization |
+| Only animations and sample data make it look finished | Remove unnecessary waiting; check reduced motion and realistic edge states |
+
+Shared principles cover recognition, consistent terms and location, hierarchy, user control, error prevention/recovery, and accessible input. WCAG 2.2 criteria remain distinct from Apple and Android recommendations, including their units and exceptions. The guidance draws on NN/G, W3C, Apple, Android, and GOV.UK; [sources and adoption boundaries](skills/ui-craft-bundle/references/sources.md) explain the scope. A color or card is not a defect by itself.
+
+[Eight design articles from the official Toss technology blog](skills/ui-craft-bundle/references/toss-design.md) also inform the skills: predictable Korean copy, keyboard-aware forms, non-drag operation, meaningful motion, mobile/desktop structure, component extensions and specifications, and early usability validation. Each case separates the author's observations from the proposed application and recheck, with routes from the relevant workflows.
+
 ## Quick start
 
 The npm registry release is **pending**. Use a source checkout now; access to this repository is required while it is private. The Python installer needs **Python 3.9+**, with no third-party packages or API keys.
@@ -57,10 +76,10 @@ npx --yes --package='git+https://github.com/ch4570/lutriva.git' -- lutriva --lis
 npx --yes --package='git+https://github.com/ch4570/lutriva.git' -- lutriva --repo "/path/to/project" --agent codex --dry-run
 ```
 
-These commands follow the default branch and require repository access. Remove `--dry-run` to install. After `lutriva@2.2.0` is published to npm, the shorter command will be:
+These commands follow the default branch and require repository access. Remove `--dry-run` to install. After `lutriva@2.3.0` is published to npm, the shorter command will be:
 
 ```sh
-npx lutriva@2.2.0 --repo "/path/to/project" --agent codex
+npx lutriva@2.3.0 --repo "/path/to/project" --agent codex
 ```
 
 The same package also exposes the compatible `ai-slop-remover` CLI. Set `AI_SLOP_PYTHON` to an exact Python executable path when needed. There are no npm runtime dependencies or automatic postinstall steps.
@@ -146,13 +165,27 @@ Shared references keep the work coherent: [design memory](skills/ui-craft-bundle
 
 Selected ideas from UI UX Pro Max, Vercel, and getdesign.md inform the workflow. [Sources and adoption boundaries](skills/ui-craft-bundle/references/sources.md).
 
+## Evaluate and improve locally
+
+The [local learning gate](skills/ui-craft-bundle/references/local-learning.md) keeps the shared installation intact while each project develops small, conditional rules. A dependency-free Python CLI is included with `ui-craft-bundle`.
+
+`Evidence → candidate → comparable trials → regression and transfer checks → local adoption → rollback on related failure`
+
+- Equal baseline/candidate passes mean `no-change`, not improvement. Adoption requires observed improvement and preservation of required outcomes.
+- Storage is `.lutriva/local/`, outside installed skill directories, with no automatic cross-project or cross-user propagation.
+- Freeze a scoped candidate and comparison plan, submit evidence, then explicitly adopt an eligible version or roll back. Changed base files, policy, or active generation require a new candidate.
+
+Follow the [CLI guide](skills/ui-craft-bundle/references/local-learning-cli.md) for `init`, `propose`, `evaluate`, `promote`, `rollback`, `status`, and `context`. The current `reviewed-local` workflow validates submitted records, evidence hashes, repeated improvement, regression checks, a distinct transfer fixture, and declared run/time limits. It cannot authenticate the observations or reviewer independence. Rules returned by `context` must be supplied explicitly with the task.
+
+Model execution, automatic observation/adoption, host instruction injection, and enforced experiment isolation remain unimplemented. The [broader implementation contract](skills/ui-craft-bundle/references/local-learning-contract.md) separates these future capabilities from the current manual CLI.
+
 ## Check the work
 
 The retained four-case evaluation records **16 fresh native contexts and eight paired comparisons**, with a `pass` verdict, 0 observed check regressions and 0 improvements. It uses two repetitions per case and snapshot-direct invocation; it does not establish general skill superiority or host discovery. [Recorded runs, patches, limitations and archive](https://github.com/ch4570/lutriva/blob/main/evals/records/2026-09-07-scope-v1/README.md).
 
 The earlier version 2.1's bounded comparison found **no observed regression**: both the existing and revised guidance produced implementations that passed eight browser behavior checks and scoped visual/keyboard review. That single pair does not establish a general improvement in UI quality. [Full verification record](docs/verification.md).
 
-The source includes 19 [behavioral case contracts](evals/skill-cases.json), a deliberately flawed synthetic UI, external browser checks, and a result comparator. Case validation is a static check; an executed trial needs separate evidence. Maintainers can follow the [evaluation procedure](https://github.com/ch4570/lutriva/blob/main/evals/README.md). Developer evaluation tools are excluded from the installed skills.
+The source includes 22 [behavioral case contracts](evals/skill-cases.json), a deliberately flawed synthetic UI, external browser checks, and a result comparator. Case validation is a static check; an executed trial needs separate evidence. Maintainers can follow the [evaluation procedure](https://github.com/ch4570/lutriva/blob/main/evals/README.md). Developer evaluation tools are excluded from the installed skills.
 
 <details>
 <summary>Contributor checks and portable export</summary>
@@ -173,7 +206,7 @@ python3 -m unittest discover -s tests -q
 npm test
 npm run check
 npm run check:js
-python3 scripts/export_bundle.py --output dist/lutriva-2.2.0.zip
+python3 scripts/export_bundle.py --output dist/lutriva-2.3.0.zip
 npm pack --dry-run
 ```
 

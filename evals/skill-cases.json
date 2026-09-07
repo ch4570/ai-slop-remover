@@ -344,6 +344,62 @@
         "Removing necessary comparison data to create visual emptiness.",
         "Replacing every card across the product without a task-based reason."
       ]
+    },
+    {
+      "id": "disclosure-preserves-decisions",
+      "prompt": "예약 설정 화면을 단순하게 정리해줘. 자주 쓰는 날짜·인원 외에 고급 옵션이 많아. 이미 선택한 옵션과 추가 요금, 입력 오류도 있어.",
+      "expected_skills": [
+        "ai-slop-remover",
+        "ui-visual-refine",
+        "ux-flow-refine"
+      ],
+      "assertions": [
+        "Inspect actual fields, selected options, charges, and validation before choosing disclosure.",
+        "Keep frequent actions, current choices, material consequences, and errors understandable while moving suitable secondary options.",
+        "Recheck opening, editing, closing, validation, and retained values with the existing controls and relevant input paths."
+      ],
+      "forbidden": [
+        "Hiding active settings, charges, or required errors solely to create a minimal surface.",
+        "Imposing a fixed option count or one-question-per-page workflow without task evidence.",
+        "Adding unsupported settings or claiming measured task-speed gains from appearance."
+      ]
+    },
+    {
+      "id": "platform-target-criteria",
+      "prompt": "$ui-slop-audit 같은 제품의 웹과 iOS, Android 아이콘 버튼이 모두 24 크기로 보여. 각 플랫폼에서 어떻게 판단할지 코드 기준으로 진단만 해줘. 기기나 스크린샷은 없어.",
+      "expected_skills": [
+        "ui-slop-audit"
+      ],
+      "assertions": [
+        "Inspect actual hit regions and semantics rather than judging the visible glyph size alone.",
+        "Distinguish WCAG 2.2 AA 24 CSS px with applicable exceptions from Apple 44 pt and Android 48 dp recommendations.",
+        "Keep the audit read-only and identify unverified rendering, adjacent-target operation, and assistive-technology behavior."
+      ],
+      "forbidden": [
+        "Treating CSS px, pt, and dp as interchangeable or prescribing one universal minimum.",
+        "Declaring a violation solely from an icon dimension without inspecting its interaction region.",
+        "Claiming full conformance or device verification from code alone."
+      ]
+    },
+    {
+      "id": "simplification-keeps-affordances",
+      "prompt": "브랜드와 카드 구조는 유지하면서 이 편집 화면의 AI 느낌을 줄여줘. 라벨과 테두리가 많고, 보조 동작은 hover에서만 보여. 좁은 화면과 큰 글자도 지원해야 해.",
+      "expected_skills": [
+        "ai-slop-remover",
+        "ui-visual-refine",
+        "ux-flow-refine",
+        "ui-quality-gate"
+      ],
+      "assertions": [
+        "Identify which labels, borders, and groupings communicate actions or object relationships before removing emphasis.",
+        "Preserve the requested brand and card structure while making necessary actions accessible without hover.",
+        "Verify affected accessible names, focus, narrow-screen actions, text scaling, and editing outcomes; disclose unavailable checks."
+      ],
+      "forbidden": [
+        "Removing useful labels or all boundaries to satisfy a minimalist aesthetic.",
+        "Replacing the brand or every card with a new preset despite the explicit constraint.",
+        "Hiding overflow globally or shrinking text to conceal large-text failures."
+      ]
     }
   ]
 }

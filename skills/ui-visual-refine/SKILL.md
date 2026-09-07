@@ -19,6 +19,7 @@ Read [principles](reference/principles.md) first. Use the [KB index](reference/k
 
 ## Refine in task order
 
+- For broad visual cleanup, select a relevant [anti-slop method](../ui-craft-bundle/references/anti-slop-methods.md) with its tradeoff and observable recheck. Use [UX foundations](../ui-craft-bundle/references/ux-foundations.md) when grouping, text scaling, contrast, or target-size decisions need criteria; keep platform units and exceptions distinct.
 - Put the main object and primary action where the task needs them. Use position, grouping, type roles, weight, contrast, and density before adding decorative components.
 - Remove unsupported decoration and duplicated wrappers when they obscure content. Reuse existing tokens and primitives before adding abstractions; do not add dependencies without explicit authorization.
 - Change repeated cards into rows, tables, or another structure only when comparison or scanning benefits and the request permits structural edits. Keep meaningful cards and established patterns.

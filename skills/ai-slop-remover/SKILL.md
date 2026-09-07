@@ -29,6 +29,10 @@ Read the selected sibling `SKILL.md` and follow it in this session. Skill routin
 
 For a broad implementation request, diagnose briefly, fix the highest-impact task problem, apply the relevant visual/flow/copy work, and verify. Do not run every specialist for every change. A review may recommend a handoff but does not authorize edits.
 
+For broad AI-slop cleanup, use [anti-slop methods](../ui-craft-bundle/references/anti-slop-methods.md) to turn observed symptoms into scoped interventions and rechecks. Use [UX foundations](../ui-craft-bundle/references/ux-foundations.md) when choosing shared usability principles or platform-specific accessibility criteria. Read the relevant sections only; the catalog is not a mandatory checklist for a local fix.
+
+When the user requests Toss design guidance, select the relevant [Toss case](../ui-craft-bundle/references/toss-design.md). Apply its product reasoning and recheck, while preserving the current brand, stack, and platform conventions.
+
 Use [pattern selection](../ui-craft-bundle/references/pattern-selection.md) when structure or density is undecided, and [interaction recipes](../ui-craft-bundle/references/interaction-recipes.md) for a concrete input/navigation/feedback defect. A large visual rollout may first use the existing preview or [component specimen](../ui-craft-bundle/assets/component-specimen.md); a local correction does not need a new preview app.
 
 The installer places these skills together with [UI Craft Bundle](../ui-craft-bundle/SKILL.md), the shared platform and design reference package. If a sibling is unavailable, disclose the missing package and apply the relevant steps here using available project tools. Do not auto-install dependencies or fabricate a successful handoff.
@@ -49,6 +53,8 @@ Exercise the scoped journey and inspect actual rendered output using available, 
 Report changed files, the friction removed, preserved/changed user behavior, checks actually run, and limitations. Distinguish implementation, build checks, visual inspection, and interaction tests. If a browser, emulator, backend, or reference is unavailable, state which checks were not run and continue useful checks; never claim observed visual quality or successful interactions without evidence.
 
 For substantial changes, record the final token mappings and justified page exceptions in the existing design record so the next screen can reuse them. When comparing skill versions, follow [behavior evaluation](../ui-craft-bundle/references/behavior-evaluation.md); a successful package test or one repaired fixture cannot establish general design improvement.
+
+When the user asks to evaluate and improve the skill itself within a local project, use the [local learning gate](../ui-craft-bundle/references/local-learning.md) and its [manual CLI](../ui-craft-bundle/references/local-learning-cli.md). Separate product QA from adoption of a scoped rule. Recording requires explicit CLI use; ordinary UI work does not enable automatic observation, load local rules, or authorize edits to installed skill files.
 
 ## Example
 

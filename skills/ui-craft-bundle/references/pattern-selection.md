@@ -16,6 +16,8 @@ Load this when a screen's structure is generic, the task is changing, or several
 
 These are candidates, not automatic mappings. A small record set may need a plain list; an existing accessible table may need only hierarchy and content corrections. Preserve working affordances unless changing them helps the scoped task.
 
+For ambiguous desktop/mobile density or disclosure decisions, consult the platform-context and internal-tool cases in [Toss design](toss-design.md). Validate information order and default expansion with the actual task before polishing appearance. More hidden information is not automatically simpler.
+
 ## Use outside references deliberately
 
 For each unresolved design question, describe one observable outcome and the relevant product or platform constraint. Search one concern at a time; use a detected stack only when implementation details matter. A focused query such as "comparison table narrow screen" is more useful than a list of aesthetic adjectives. Do not include private data in external searches.

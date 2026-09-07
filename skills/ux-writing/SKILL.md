@@ -18,6 +18,8 @@ Read [principles](reference/principles.md) first. Use the [KB index](reference/k
 
 ## Write for the state
 
+When wording depends on recognition, visible choices, or error prevention, consult the relevant [UX foundations](../ui-craft-bundle/references/ux-foundations.md). Use those principles to clarify existing behavior; a copy-only request does not authorize adding a disclosure, confirmation flow, or recovery control.
+
 - **Action:** use a concrete verb and an object when needed. Keep repeated labels consistent with the same operation. Avoid vague “Continue” when the next effect needs explanation; keep it when the context makes the sequence clear.
 - **Field help:** explain the requirement or consequence where the user needs it. Do not use placeholder text as the only label.
 - **Pending:** describe work that is actually underway. Never add fake percentages, artificial wait time, or unsupported completion estimates.
@@ -28,6 +30,8 @@ Read [principles](reference/principles.md) first. Use the [KB index](reference/k
 - **Confirmation:** make the real consequence clear, especially for destructive actions. Preserve existing consent, disclosures, and necessary warnings. Avoid manipulative opt-outs, fake urgency, and promised undo that is not implemented.
 
 For Korean, use familiar product terms and natural verbs. Follow the existing polite tone; reduce repeated “해당”, unnecessary nominalization, and stiff translated phrases when meaning improves. Preserve established terminology. Keep useful recovery detail even when shortening text. Treat examples in the KB as generic patterns requiring product confirmation.
+
+For a concrete Korean writing reference, use the copy case in [Toss design](../ui-craft-bundle/references/toss-design.md). Check that labels predict the immediate next action, remove subtitles that merely repeat the title, and retain meaningful conditions. Adapt the reasoning to the product's voice; do not impose Toss's casual tone.
 
 Use the product's recorded voice and vocabulary when a design/product document exists. Reference-site wording is inspiration, not authority: do not import English Title Case, ampersands, or a brand's tone into every locale. For a new writing convention, update the existing record only within the authorized scope.
 
