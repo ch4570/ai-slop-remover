@@ -38,11 +38,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ch4570/ai-slop-remover.git"
+    "url": "git+https://github.com/ch4570/lutriva.git"
   },
-  "homepage": "https://github.com/ch4570/ai-slop-remover#readme",
+  "homepage": "https://github.com/ch4570/lutriva#readme",
   "bugs": {
-    "url": "https://github.com/ch4570/ai-slop-remover/issues"
+    "url": "https://github.com/ch4570/lutriva/issues"
   },
   "keywords": [
     "agent-skills",

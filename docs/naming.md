@@ -39,7 +39,7 @@ The project and CLI gain a new identity. Existing installed skills keep their na
 | npm package | `lutriva` — registry publication pending |
 | Preferred CLI | `lutriva` |
 | Compatible CLI | `ai-slop-remover`, provided by the same npm package |
-| GitHub repository | `ch4570/ai-slop-remover` |
+| GitHub repository | `ch4570/lutriva` |
 | Skill entry point | `$ai-slop-remover` in Codex; `/ai-slop-remover` in Claude Code |
 | All seven skill IDs | Unchanged |
 | Python selection | Existing `AI_SLOP_PYTHON` environment variable |
@@ -57,4 +57,4 @@ If an older npm package providing `ai-slop-remover` is already installed globall
 
 The package manifest targets `lutriva@2.2.0`. Neither `lutriva` nor the previous package name `ai-slop-remover-skills` had an npm registry entry when checked on 2026-09-07. Registry commands in the README are explicitly marked as pending. Use a source checkout or the Git-backed npm command for the current version; repository access is required while it is private.
 
-The exact-name check is a point-in-time observation, not a name reservation. The repository URL and historical release files retain their existing names.
+The exact-name check is a point-in-time observation, not a name reservation. The repository URL now uses `ch4570/lutriva`; historical release files retain their existing names.

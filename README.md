@@ -30,7 +30,7 @@ Start with the task and the existing screen. A spacing fix should stay a spacing
 The npm registry release is **pending**. Use a source checkout now; access to this repository is required while it is private. The Python installer needs **Python 3.9+**, with no third-party packages or API keys.
 
 ```sh
-git clone https://github.com/ch4570/ai-slop-remover.git lutriva
+git clone https://github.com/ch4570/lutriva.git lutriva
 cd lutriva
 python3 install.py --repo "/path/to/project" --agent codex --dry-run
 python3 install.py --repo "/path/to/project" --agent codex
@@ -53,8 +53,8 @@ Refresh skill discovery or restart the host after installation. **Install in the
 The npm package and preferred command are `lutriva`. The npm wrapper requires **Node.js 20+ and Python 3.9+**. Run the repository version with npm and Git before registry publication:
 
 ```sh
-npx --yes --package='git+https://github.com/ch4570/ai-slop-remover.git' -- lutriva --list
-npx --yes --package='git+https://github.com/ch4570/ai-slop-remover.git' -- lutriva --repo "/path/to/project" --agent codex --dry-run
+npx --yes --package='git+https://github.com/ch4570/lutriva.git' -- lutriva --list
+npx --yes --package='git+https://github.com/ch4570/lutriva.git' -- lutriva --repo "/path/to/project" --agent codex --dry-run
 ```
 
 These commands follow the default branch and require repository access. Remove `--dry-run` to install. After `lutriva@2.2.0` is published to npm, the shorter command will be:
