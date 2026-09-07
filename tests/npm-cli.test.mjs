@@ -201,7 +201,8 @@ test('npm tarball has exactly the release payload and equivalent installed comma
     assert.equal(state.automatic_execution, false);
   }
   const policy = JSON.parse(readFileSync(path.join(project, '.lutriva', 'local', 'policy.json'), 'utf8'));
-  assert.equal(realpathSync(policy.base), realpathSync(installedSkills));
+  // Python expands Windows 8.3 names; resolve both spellings with the native API.
+  assert.equal(realpathSync.native(policy.base), realpathSync.native(installedSkills));
   const installationStatus = spawnSync(process.execPath, [packagedCli, '--repo', project, '--agent', 'codex', '--skill', 'ux-writing', '--status'], {
     cwd: consumer, encoding: 'utf8', timeout: 15000,
   });
