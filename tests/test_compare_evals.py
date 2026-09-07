@@ -71,6 +71,30 @@ class CompareEvaluationTests(unittest.TestCase):
         self.candidate["cases"][0]["checks"].pop()
         self.invalid()
 
+    def test_each_storage_check_is_required_in_both_runs(self):
+        for check_id in ("failed-save-storage", "retry-reload", "ordinary-reload", "ordinary-enter-reload"):
+            with self.subTest(check_id=check_id):
+                self.baseline, self.candidate = result("baseline"), result("candidate")
+                for run in (self.baseline, self.candidate):
+                    checks = run["cases"][0]["checks"]
+                    self.assertIn(check_id, {check["id"] for check in checks})
+                    checks[:] = [check for check in checks if check["id"] != check_id]
+                self.invalid()
+
+    def test_old_suite_cannot_claim_current_pass(self):
+        self.baseline["suite"] = self.candidate["suite"] = "search-editor-v1"
+        self.invalid()
+
+    def test_example_tracks_the_current_suite_without_claiming_observations(self):
+        example = json.loads((ROOT / "evals/examples/result-template.json").read_text(encoding="utf-8"))
+        self.assertEqual(example["suite"], self.candidate["suite"])
+        self.assertEqual(len(example["cases"]), len(self.candidate["cases"]))
+        for sample, actual in zip(example["cases"], self.candidate["cases"]):
+            self.assertEqual(sample["id"], actual["id"])
+            self.assertEqual([(check["id"], check["kind"]) for check in sample["checks"]],
+                             [(check["id"], check["kind"]) for check in actual["checks"]])
+            self.assertEqual({check["status"] for check in sample["checks"]}, {"not-run"})
+
     def test_duplicate_or_empty_cases_are_invalid(self):
         self.candidate["cases"].append(copy.deepcopy(self.candidate["cases"][0]))
         self.invalid()
