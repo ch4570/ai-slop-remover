@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Verify preserved evidence archives against exact file inventories without extraction; reject unexpected metadata, changed bytes and invalid archive members.
+- Aggregate interrupted navigation and scope observations without erasing concrete failures; make search collection errors return 1 while preserving scope's documented record-only exit contract.
 - Capture keyboard-focus evidence in viewport mode; keep full-page overviews separate after a scoped trial exposed hidden focus clipping in full-page captures.
 - Reject local proposal plans whose required baseline/candidate runs exceed the configured run budget; compare reported decimal durations without floating-point boundary drift.
 - Preserve finalized browser observations across same-batch exceptions and navigation, reject out-of-phase or duplicate streamed records, and keep unobserved checks explicit.

@@ -65,6 +65,7 @@ class ScopeBrowserTests(unittest.TestCase):
                 self.assertEqual(set(checks.values()), {'pass'}, self.browser)
                 self.assertEqual(set(self.source.values()), {'pass'})
                 self.assertEqual(self.browser['observations']['exceptions'], [])
+                self.assertEqual(self.browser['observations']['collectionErrors'], [])
                 for name in scope.IMAGES[case]:
                     self.assertGreater((self.output / 'images' / name).stat().st_size, 0)
                 self.assertEqual(self.browser['observations']['layout']['width'], 375)
@@ -139,6 +140,7 @@ class ScopeBrowserTests(unittest.TestCase):
             path.write_text(path.read_text().replace("localStorage.setItem('display-name', field.value);", "localStorage.setItem('display-name', 'unrelated replacement');"))
         checks = self.run_product('lost-setting', 'narrow-spacing', mutate)
         self.assertEqual(checks['spacing-and-state'], 'fail')
+        self.assertEqual(self.browser['observations']['collectionErrors'], [])
 
     def test_broken_aria_link_is_observed(self):
         def mutate(product):
@@ -202,6 +204,19 @@ class ScopeBrowserTests(unittest.TestCase):
         facts = json.loads(self.browser['checks'][0]['evidence']['text'])
         self.assertTrue(any(not fact['matches'] for fact in facts['facts']))
         self.assertIn('Fixture did not finish loading', facts['error'])
+        self.assertEqual(self.browser['observations']['collectionErrors'], [
+            'Observation spacing-and-state: Error: Fixture did not finish loading'])
+
+    def test_initial_navigation_failure_is_in_collection_error_summary(self):
+        def mutate(product):
+            with (product / 'app.js').open('a') as file:
+                file.write("\ndocument.querySelector('main').remove();\n")
+        checks = self.run_product('unavailable-initial-document', 'audit-read-only', mutate)
+        self.assertEqual(checks['audit-observation'], 'not-run')
+        facts = json.loads(self.browser['checks'][0]['evidence']['text'])
+        self.assertEqual(facts['facts'], [])
+        self.assertEqual(self.browser['observations']['collectionErrors'], [
+            'Observation audit-observation: Error: Fixture did not finish loading'])
 
 
 if __name__ == '__main__':

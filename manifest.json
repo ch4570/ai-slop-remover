@@ -43,14 +43,14 @@
     }
   },
   "files": {
-    "CHANGELOG.md": "137dc8224bbe1df82f3a01a748eaf8cc97596b9dc487b02c1bc1f1ceffba3ca2",
+    "CHANGELOG.md": "1890f691241ffe01e438dc5c16287a6d79c14df010551c43b8563ea611d284e6",
     "LICENSE": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d",
     "README.ko.md": "421d0af45b1aa0ca25309a3e2448750e3667ca205b02844deef50d62da28bf47",
     "README.md": "149e3d72d7e97e54190c296109a035c7b4c449b4b5a5b86867ccde697cf2c9a5",
     "docs/assets/README.md": "97146aa13cf3e5916f3af906f81bc84411be8bb1b7ecca3967ebe920ea07ed6f",
     "docs/assets/lutriva-hero.png": "72e6ab0cd1c9f6fb3c2e0528ff29f713ed166e4dba5d0c2d75cc869800fa2942",
     "docs/naming.md": "79523a26ecf2372d19c8f96609eab96b0597b79fb9a8ae2cc285820a30ddf12a",
-    "docs/verification.md": "c9bca1ef9c7b6d4d2597d08076717a2e36b218b3f42741e7fe6fbe7cf1660294",
+    "docs/verification.md": "958b270e7b96d09e0abc5ea0113fcffae44df7140534fca8078472b58615f824",
     "evals/skill-cases.json": "9f3c114775f4d72e6700a00be91b7a00374d64bc75b81a38dfc6aa19852f7183",
     "install.py": "63c5260e1ee961a3c5d73465edec1aef71e9c2bd53451f18fba2d7af16a1f408",
     "skills/ai-slop-remover/LICENSE": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d",

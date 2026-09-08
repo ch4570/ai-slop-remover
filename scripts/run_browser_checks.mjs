@@ -101,11 +101,25 @@ const observe = async ({ origin: browserOrigin, page, evaluate, call, addBinding
   // Preserve concrete failures and distinguish unavailable observations while
   // later checks run independently, outside the navigated document.
   const observeNavigation = async (id, observe) => {
-    try { checks.push(await observe()); }
-    catch (error) {
-      checks.push({ id, kind: 'behavior', status: 'not-run',
-        reason: 'Navigation observation did not complete: ' + String(error) });
+    let check;
+    try {
+      check = await observe();
+      if (id === 'history-back' || id === 'history-forward') {
+        // A concrete mismatch can coexist with a later timeout/read error.
+        // A trusted event at the wrong entry is only a behavior failure.
+        const { navigations } = JSON.parse(check.evidence.text);
+        for (const step of navigations) {
+          const errors = [step.trustedPopstate === false ? step.reason : null, step.observationError].filter(Boolean);
+          if (errors.length) collectionErrors.push('Navigation ' + id + ': ' + errors.join(' '));
+        }
+      }
     }
+    catch (error) {
+      collectionErrors.push('Navigation ' + id + ': ' + String(error));
+      check ??= { id, kind: 'behavior', status: 'not-run',
+        reason: 'Navigation observation did not complete: ' + String(error) };
+    }
+    checks.push(check);
   };
   let entries;
   await observeNavigation('history-back', async () => {

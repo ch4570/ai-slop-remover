@@ -205,7 +205,12 @@ class BrowserCheckTests(unittest.TestCase):
                                                "  event.stopImmediatePropagation();\n"
                                                "  queueMicrotask(() => window.dispatchEvent("
                                                "new PopStateEvent('popstate', { state: event.state })));"))
-        checks = self.run_fixture("unobserved-popstate", source)
+        checks = self.run_fixture("unobserved-popstate", source, allow_exceptions=True)
+        self.assertEqual(self.driver_returncode, 1)
+        self.assertEqual(self.observed['exceptions'], [])
+        self.assertEqual(len(self.observed['collectionErrors']), 4)
+        self.assertTrue(all('Trusted popstate observation timeout' in error
+                            for error in self.observed['collectionErrors']))
         for check_id in ("history-back", "history-forward"):
             self.assertEqual(checks.get(check_id), "not-run", checks)
         for check_id in ("query-direct-entry", "query-reload", "ordinary-enter-reload"):
@@ -220,14 +225,62 @@ class BrowserCheckTests(unittest.TestCase):
                     self.assertIn("timeout", navigation["reason"].lower())
                     self.assertTrue(navigation["stateMatches"])
 
+    def test_history_failure_before_state_read_error_keeps_both_observations(self):
+        source = repaired_source() + """
+let observedTraversals = 0;
+window.addEventListener('popstate', () => {
+  observedTraversals += 1;
+  if (observedTraversals === 1) el('count').textContent = 'stale count';
+  if (observedTraversals === 2) Object.defineProperty(el('count'), 'textContent', {
+    configurable: true,
+    get() {
+      delete this.textContent;
+      throw new Error('Synthetic history state read failure');
+    },
+  });
+});
+"""
+        checks = self.run_fixture('history-fail-then-read-error', source, allow_exceptions=True)
+        self.assert_failed(checks, 'history-back')
+        self.assertEqual({status for key, status in checks.items() if key != 'history-back'}, {'pass'})
+        history = next(check for check in self.observed['checks'] if check['id'] == 'history-back')
+        steps = json.loads(history['evidence']['text'])['navigations']
+        self.assertFalse(steps[0]['stateMatches'])
+        self.assertIn('Synthetic history state read failure', steps[1]['observationError'])
+        self.assertEqual(self.observed['exceptions'], [])
+        self.assertEqual(self.observed['collectionErrors'], [
+            'Navigation history-back: Error: Synthetic history state read failure'])
+        self.assertEqual(self.driver_returncode, 1)
+
+    def test_trusted_wrong_history_entry_is_behavior_failure_not_collection_error(self):
+        source = repaired_source() + """
+const originalPushState = history.pushState.bind(history);
+history.pushState = (state, title, url) => originalPushState(
+  state?.searchEditorEntry === undefined ? state : { ...state, searchEditorEntry: 99 }, title, url);
+"""
+        checks = self.run_fixture('trusted-wrong-history-entry', source)
+        self.assert_failed(checks, 'history-back', 'history-forward')
+        self.assertEqual(self.observed['collectionErrors'], [])
+        self.assertEqual(self.driver_returncode, 0)
+        for check in self.observed['checks']:
+            if check['id'] in ('history-back', 'history-forward'):
+                steps = json.loads(check['evidence']['text'])['navigations']
+                self.assertTrue(all(step['trustedPopstate'] for step in steps))
+                self.assertTrue(any(not step['completed'] for step in steps))
+
     def test_unavailable_shared_document_keeps_prior_failures(self):
         source = replace_once(repaired_source(), POPSTATE, "")
         source += "\nif (new URL(location.href).searchParams.get('q') === '긴 한국어') el('save').remove();\n"
-        checks = self.run_fixture("unavailable-shared-document", source)
+        checks = self.run_fixture("unavailable-shared-document", source, allow_exceptions=True)
         self.assert_failed(checks, "history-back", "history-forward")
         for check_id in ("query-direct-entry", "query-reload"):
             self.assertEqual(checks.get(check_id), "not-run", checks)
         self.assertEqual(checks["ordinary-enter-reload"], "pass", checks)
+        self.assertEqual(self.driver_returncode, 1)
+        self.assertEqual(self.observed['exceptions'], [])
+        self.assertEqual(self.observed['collectionErrors'], [
+            'Navigation query-direct-entry: Error: Fixture did not finish loading',
+            'Navigation query-reload: Error: Fixture did not finish loading'])
         for check in self.observed["checks"]:
             if check["id"] in ("query-direct-entry", "query-reload"):
                 self.assertIn("Fixture did not finish loading", check["reason"])

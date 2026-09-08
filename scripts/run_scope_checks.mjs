@@ -31,6 +31,7 @@ async function observe(id, callback) {
     await callback((matches, detail) => { failed ||= !matches; facts.push({ matches, detail }); });
     checks.set(id, { id, kind: 'behavior', status: failed ? 'fail' : 'pass', evidence: { path: 'browser.json', text: JSON.stringify(facts) } });
   } catch (error) {
+    observations.collectionErrors.push('Observation ' + id + ': ' + String(error));
     checks.set(id, { id, kind: 'behavior', status: failed ? 'fail' : 'not-run',
       ...(failed ? {} : { reason: 'Browser observation did not complete: ' + String(error) }),
       evidence: { path: 'browser.json', text: JSON.stringify({ facts, error: String(error) }) } });
