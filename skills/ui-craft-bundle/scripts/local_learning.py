@@ -412,6 +412,9 @@ def propose(args, root, policy, active, digest):
     probe = evaluate(plan, {}, root)
     plan_errors = [e for e in probe.get("errors", []) + probe.get("missing", []) if str(e).startswith("plan")]
     require(not plan_errors, "Invalid plan: " + "; ".join(plan_errors))
+    required_runs = 2 * (len(plan["target_pairs"]) + len(plan["transfer_pairs"]))
+    require(required_runs <= policy["max_runs"],
+            "Plan requires " + str(required_runs) + " runs, but max_runs allows " + str(policy["max_runs"]))
     path = root / "candidates" / cid
     path.mkdir()
     (path / "rules.md").write_bytes(payload)

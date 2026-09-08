@@ -214,6 +214,12 @@ preserves completed checks and marks every remaining required behavior check
 `not-run` with the collection error. `collectionErrors` records the interruption
 and the driver exits 1. A failure after all behavior checks finish does not erase
 those observations or establish that the missing image review passed.
+The batched search/save evaluators publish each finalized pass/fail before
+continuing, so a later exception or document navigation in that same batch cannot
+erase an earlier observation. This does not change the sixteen suite criteria or
+turn provisional history observations into final results. Collection validates
+record shape, active batch and duplicate IDs; it does not authenticate a hostile
+page or establish evaluator independence.
 Read `browser.json` and actually inspect the images before writing the two quality
 verdicts. Exit zero means evidence collection finished, not that every check passed;
 use the comparator as the result gate. It installs no browser or packages and does

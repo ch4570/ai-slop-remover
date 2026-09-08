@@ -54,7 +54,7 @@ export async function withBrowser(fixtureArg, outputArg, observe) {
     }
   });
   let chrome, socket;
-  const pending = new Map();
+  const pending = new Map(), bindings = new Map();
   let sequence = 0;
   const exceptions = [];
   try {
@@ -78,6 +78,10 @@ export async function withBrowser(fixtureArg, outputArg, observe) {
     socket.addEventListener('message', event => {
       const message = JSON.parse(event.data);
       if (message.method === 'Runtime.exceptionThrown') exceptions.push(message.params.exceptionDetails);
+      if (message.method === 'Runtime.bindingCalled') {
+        const binding = bindings.get(message.params.name);
+        if (binding?.sessionId === message.sessionId) binding.receive(message.params.payload);
+      }
       if (!pending.has(message.id)) return;
       const entry = pending.get(message.id); pending.delete(message.id); clearTimeout(entry.timer);
       if (message.error) entry.reject(new Error(message.error.message)); else entry.resolve(message.result);
@@ -93,6 +97,12 @@ export async function withBrowser(fixtureArg, outputArg, observe) {
     const { targetId } = await call('Target.createTarget', { url: 'about:blank' });
     const { sessionId } = await call('Target.attachToTarget', { targetId, flatten: true });
     const page = (method, params) => call(method, params, sessionId);
+    const addBinding = async (name, receive) => {
+      if (bindings.has(name)) throw new Error(`Page binding already registered: ${name}`);
+      bindings.set(name, { sessionId, receive });
+      try { await page('Runtime.addBinding', { name }); }
+      catch (error) { bindings.delete(name); throw error; }
+    };
     const evaluate = async expression => {
       const result = await page('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true });
       if (result.exceptionDetails) throw new Error(JSON.stringify(result.exceptionDetails));
@@ -105,7 +115,7 @@ export async function withBrowser(fixtureArg, outputArg, observe) {
       const result = await page('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true });
       await writeFile(path.join(output, name), Buffer.from(result.data, 'base64'));
     };
-    return await observe({ origin, page, evaluate, call, screenshot, pause, exceptions });
+    return await observe({ origin, page, evaluate, call, addBinding, screenshot, pause, exceptions });
   } finally {
     for (const entry of pending.values()) clearTimeout(entry.timer);
     socket?.close();

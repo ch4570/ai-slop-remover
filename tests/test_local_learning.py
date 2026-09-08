@@ -248,6 +248,36 @@ class LocalLearningLifecycleTests(unittest.TestCase):
         self.propose(code=2)
         self.assertEqual(self.active()["generation"], 0)
 
+    def test_proposal_run_budget_matches_all_planned_baseline_candidate_runs(self):
+        for max_runs, transfer_count, required_runs in ((5, 1, 6), (6, 2, 8),
+                                                       (6, 1, 6), (8, 2, 8)):
+            with self.subTest(max_runs=max_runs, transfer_count=transfer_count):
+                self.project = self.root / ("runs-" + str(max_runs) + "-transfers-" + str(transfer_count))
+                self.project.mkdir()
+                self.local = self.project / ".lutriva" / "local"
+                self.cli("init", "--project", self.project, "--base", self.base,
+                         "--max-runs", max_runs)
+                transfer_ids = ["x" + str(index + 1) for index in range(transfer_count)]
+                self.spec["transfer_pairs"] = transfer_ids
+                self.spec["transfer_contexts"] = {
+                    pair_id: dict(self.spec["context"], fixture_sha256=hashlib.sha256(
+                        ("synthetic transfer fixture " + pair_id).encode("utf-8")).hexdigest())
+                    for pair_id in transfer_ids
+                }
+                self.write_json(self.spec_path, self.spec)
+                pointer_before = (self.local / "active.json").read_bytes()
+                candidates_before = list((self.local / "candidates").iterdir())
+                if required_runs > max_runs:
+                    result = self.propose(code=2)
+                    self.assertEqual(result["error"], "Plan requires " + str(required_runs)
+                                     + " runs, but max_runs allows " + str(max_runs))
+                    self.assertEqual(list((self.local / "candidates").iterdir()), candidates_before)
+                else:
+                    proposal = self.propose()
+                    evaluation = self.evaluate(proposal)
+                    self.assertEqual(evaluation["decision"]["verdict"], "eligible")
+                self.assertEqual((self.local / "active.json").read_bytes(), pointer_before)
+
     def test_existing_writer_lock_blocks_mutation_without_removing_the_lock(self):
         self.initialize()
         lock = self.local / ".lock"

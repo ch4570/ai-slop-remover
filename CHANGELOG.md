@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Reject local proposal plans whose required baseline/candidate runs exceed the configured run budget; compare reported decimal durations without floating-point boundary drift.
+- Preserve finalized browser observations across same-batch exceptions and navigation, reject out-of-phase or duplicate streamed records, and keep unobserved checks explicit.
+- Reserve fresh browser evidence areas to prevent interrupted or concurrent collections from mixing artifacts; keep scope aggregation running with explicit errors for malformed host records.
+- Use platform-default virtual environments in npm checks for macOS framework Python compatibility. Retain scoped trial evidence separately from claims of general skill improvement.
+
 ## 2.4.0 — 2026-09-08
 
 - Add practical color composition and layout composition references: semantic color pairs, neighboring surfaces, area and emphasis, content width, alignment anchors, grouping, and responsive recomposition.

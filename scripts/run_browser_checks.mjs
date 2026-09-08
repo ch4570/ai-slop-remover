@@ -17,10 +17,33 @@ const suite = JSON.parse(await readFile(new URL('../evals/checks/suite.json', im
 const required = Object.entries(suite.cases['search-editor']).filter(([, kind]) => kind === 'behavior').map(([id]) => id);
 const checks = [], collectionErrors = [], focusOrder = [];
 let browser = null, origin = null, layout = null, narrowState = null, exceptions = [];
-const observe = async ({ origin: browserOrigin, page, evaluate, call, screenshot, pause, exceptions: browserExceptions }) => {
+const observe = async ({ origin: browserOrigin, page, evaluate, call, addBinding, screenshot, pause, exceptions: browserExceptions }) => {
   origin = browserOrigin;
   exceptions = browserExceptions;
   browser = (await call('Browser.getVersion')).product;
+  let activeCheckIds = new Set();
+  // Binding events reach the driver before the evaluation response, even when
+  // the originating document is destroyed before its batch can return.
+  await addBinding('__lutrivaRecordCheck', payload => {
+    try {
+      const check = JSON.parse(payload);
+      if (!check || !required.includes(check.id) || !activeCheckIds.has(check.id) || check.kind !== 'behavior' ||
+          !['pass', 'fail'].includes(check.status) || typeof check.evidence?.text !== 'string') {
+        throw new Error('Invalid completed behavior observation.');
+      }
+      if (checks.some(previous => previous.id === check.id)) throw new Error(`Duplicate behavior observation: ${check.id}`);
+      checks.push(check);
+    } catch (error) {
+      collectionErrors.push('Cannot collect streamed behavior observation: ' + String(error));
+    }
+  });
+  const publishCheck = 'check => globalThis.__lutrivaRecordCheck(JSON.stringify(check))';
+  const evaluateBatch = async (name, snapshot, ids) => {
+    // Startup and other phases cannot publish observations for this batch.
+    activeCheckIds = new Set(ids);
+    try { return await evaluate(`${name}(${JSON.stringify(snapshot)}, ${publishCheck})`); }
+    finally { activeCheckIds.clear(); }
+  };
   const waitForFixture = async (previousTimeOrigin = null) => {
     for (let attempt = 0; attempt < 100; attempt += 1) {
       try {
@@ -58,13 +81,12 @@ const observe = async ({ origin: browserOrigin, page, evaluate, call, screenshot
   let snapshot = await resetFixture();
   await mkdir(output, { recursive: true });
   await screenshot('wide.png');
-  const retry = await evaluate(`evaluateSearchEditor(${JSON.stringify(snapshot)})`);
-  // Keep observations outside the page so reloads cannot discard earlier failures.
-  checks.push(...retry.checks);
+  const retry = await evaluateBatch('evaluateSearchEditor', snapshot, [
+    'search-matches', 'query-history', 'failed-save-draft', 'failed-save-feedback', 'failed-save-storage', 'retry-persists',
+  ]);
   checks.push(await observeSavedReload('retry-reload', retry.expected));
   snapshot = await resetFixture();
-  const ordinary = await evaluate(`evaluateOrdinarySave(${JSON.stringify(snapshot)})`);
-  checks.push(...ordinary.checks);
+  const ordinary = await evaluateBatch('evaluateOrdinarySave', snapshot, ['composition-enter', 'ordinary-save']);
   checks.push(await observeSavedReload('ordinary-reload', ordinary.expected));
   snapshot = await resetFixture();
   const enter = await evaluate(`prepareOrdinaryEnter(${JSON.stringify(snapshot)})`);

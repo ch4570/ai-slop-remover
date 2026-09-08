@@ -1,0 +1,490 @@
+{
+  "schema": 1,
+  "baseline_commit": "fb256bc",
+  "files": {
+    "batch-after-json/invalid-stream-records.json": {
+      "bytes": 15589,
+      "sha256": "04dda0459631fc7b30bca4312dd56219d280eece5ae6c8cbd84a2d39e88e369c"
+    },
+    "batch-after-json/save-batch-interruption-False-False.json": {
+      "bytes": 12944,
+      "sha256": "34a11fb6caef5bebd48966a14a6d48053ce915310a5aed3cdb7270eb06d0b04f"
+    },
+    "batch-after-json/save-batch-interruption-False-True.json": {
+      "bytes": 12952,
+      "sha256": "4a39ed5e268670aaf5f83265ee305997679cb65a0c9a7b55660577ddadcf6dc1"
+    },
+    "batch-after-json/save-batch-interruption-True-False.json": {
+      "bytes": 6923,
+      "sha256": "83a98b21414928724746039f4d338c18958778a14d4bf6d5187432ef97052c8d"
+    },
+    "batch-after-json/save-batch-interruption-True-True.json": {
+      "bytes": 6922,
+      "sha256": "74bb41a13d909324563f7e92f52ab3eb9e8e90c89206fe250d3a3afd0d72371b"
+    },
+    "batch-after-json/search-batch-exception-False.json": {
+      "bytes": 15261,
+      "sha256": "2afdb43c327abe4668a3e5c4ebdb28478ab835656cd26f335f0474833e94b89d"
+    },
+    "batch-after-json/search-batch-exception-True.json": {
+      "bytes": 15258,
+      "sha256": "e5ed4d75c082d929a77bf869d4baf69b9948e9e8ba5332c9136ff4d3354faf62"
+    },
+    "batch-after-json/search-batch-navigation.json": {
+      "bytes": 4246,
+      "sha256": "3139d1ad92f0bef7f2777d6ef0294d3e42c43926879f604d51e5ad15743ea8bb"
+    },
+    "batch-after-json/stream-before-first-batch.json": {
+      "bytes": 5349,
+      "sha256": "dbccfe49e40a0ba42a427a25129cd3ba9b1be9474a9a325e407fbc5d1e3bb620"
+    },
+    "batch-before-json/save-batch-interruption-False-False.json": {
+      "bytes": 13585,
+      "sha256": "616b62f03833e5c15bed73a9ce282ebc20e26bbb3acc633f00c56d5c1f2af18f"
+    },
+    "batch-before-json/save-batch-interruption-False-True.json": {
+      "bytes": 13595,
+      "sha256": "da2f45c805bf99d07eda561db8d5f947498c550a913c5eb53abb8893faf29406"
+    },
+    "batch-before-json/save-batch-interruption-True-False.json": {
+      "bytes": 6895,
+      "sha256": "a45226971bbe6858d85b7dc4e085c4593bb5ea58897412b1f913cae7c4530de7"
+    },
+    "batch-before-json/save-batch-interruption-True-True.json": {
+      "bytes": 6895,
+      "sha256": "bfc93ac062cd2e1c3262d153e117f50db2bd76c1ba4441fb53c83e4006fb825d"
+    },
+    "batch-before-json/search-batch-exception-False.json": {
+      "bytes": 15984,
+      "sha256": "4d470bc64500fd3a3ceb5b2a93dc6a143e54c995875e6c3afeb5bf5884d58e94"
+    },
+    "batch-before-json/search-batch-exception-True.json": {
+      "bytes": 15984,
+      "sha256": "f66ee37d016c8bff4bf23826e091bda7972ee7261286f1dd645ccddf46e64ed4"
+    },
+    "batch-before-json/search-batch-navigation.json": {
+      "bytes": 3863,
+      "sha256": "5ff66556ca43ffd50e853c358c7f456e085c25e392aa8715cfaef55436772880"
+    },
+    "browser-after-evidence/.browser-evidence-started": {
+      "bytes": 83,
+      "sha256": "11ff2af7a141cd95f885460516b8ddabf0a3fc03bccefff3de8e8cd3f881735b"
+    },
+    "browser-after-evidence/browser.json": {
+      "bytes": 15245,
+      "sha256": "dd111582a4e0a51699d092cfd6e3936db86f9eb7265cfb9d2fec3023462aeee1"
+    },
+    "browser-after-evidence/wide.png": {
+      "bytes": 33658,
+      "sha256": "1fb3e757c1d9b2a307c28a32cc486293ee40216e7353636b09f47a82bd9eef17"
+    },
+    "browser-after-tools/evals/checks/search-editor.js": {
+      "bytes": 13235,
+      "sha256": "7107c1bf1d117cdf3f23310f18c3878b550da1563a67c700da8f74284b208d94"
+    },
+    "browser-after-tools/evals/checks/suite.json": {
+      "bytes": 804,
+      "sha256": "9e2604db0651db9e4add493b2833a334f5648becf5bafe39c87bec8dab460d4b"
+    },
+    "browser-after-tools/evals/fixtures/search-editor/app.js": {
+      "bytes": 2930,
+      "sha256": "42def92da308a6902926c183118580935949cf75147b7a5e3a7b3895e0742731"
+    },
+    "browser-after-tools/evals/fixtures/search-editor/DESIGN.md": {
+      "bytes": 780,
+      "sha256": "0c79d3e8d2b3222e7912e80259ec8d01210be0b647ec9a961ca6d228380b27ac"
+    },
+    "browser-after-tools/evals/fixtures/search-editor/index.html": {
+      "bytes": 1185,
+      "sha256": "15ea414c12230dc401802a5f70e66919ff511150c2a083ab328814d1e84eb786"
+    },
+    "browser-after-tools/evals/fixtures/search-editor/style.css": {
+      "bytes": 1516,
+      "sha256": "3fa63d7ad2c54f2a65340417d9afcf0951b2c77f8dd6ac7ffb575bb5914cc8ef"
+    },
+    "browser-after-tools/evals/fixtures/search-editor/TASK.md": {
+      "bytes": 901,
+      "sha256": "0c3f88b7779245cedbe0ed74d9516a9700edbd6b9b1723b8918199323aab8bb0"
+    },
+    "browser-after-tools/scripts/browser_harness.mjs": {
+      "bytes": 7653,
+      "sha256": "e6b07cdaee451ce8d93ea7b3b373c3395a56ed606df965184ec76578b9a9e5fd"
+    },
+    "browser-after-tools/scripts/run_browser_checks.mjs": {
+      "bytes": 10292,
+      "sha256": "32171a5eeb071429aaccb4ffd4ea8f919202b093b8332b67fdbbf7735148801d"
+    },
+    "browser-after-tools/tests/test_browser_checks.py": {
+      "bytes": 25254,
+      "sha256": "8f9bebb2654e24b0b002904be337b2c5253353d7eadaf21e66344a8d024b968a"
+    },
+    "browser-before-evidence/.browser-evidence-started": {
+      "bytes": 83,
+      "sha256": "11ff2af7a141cd95f885460516b8ddabf0a3fc03bccefff3de8e8cd3f881735b"
+    },
+    "browser-before-evidence/browser.json": {
+      "bytes": 16001,
+      "sha256": "b0daa7a2be6c4f1a4419c06a247e0d289db02dea5863f41f0c5e906539c0e56a"
+    },
+    "browser-before-evidence/wide.png": {
+      "bytes": 33658,
+      "sha256": "1fb3e757c1d9b2a307c28a32cc486293ee40216e7353636b09f47a82bd9eef17"
+    },
+    "browser-before-tools/evals/checks/search-editor.js": {
+      "bytes": 13006,
+      "sha256": "cb22301eafa220b61bd24e27ae00a63875be368e2402994ff166235652f28c8c"
+    },
+    "browser-before-tools/evals/checks/suite.json": {
+      "bytes": 804,
+      "sha256": "9e2604db0651db9e4add493b2833a334f5648becf5bafe39c87bec8dab460d4b"
+    },
+    "browser-before-tools/scripts/browser_harness.mjs": {
+      "bytes": 7085,
+      "sha256": "96f0036bb2d1419ced1bdb58cee2c710f3f221f0598cfceee9e06a127bb12ab4"
+    },
+    "browser-before-tools/scripts/run_browser_checks.mjs": {
+      "bytes": 9032,
+      "sha256": "433213afeaab9624d007e43e16bcde0908800b2c72a4f3d14833f8f7b943e009"
+    },
+    "browser-intermediate-evidence/.browser-evidence-started": {
+      "bytes": 83,
+      "sha256": "11ff2af7a141cd95f885460516b8ddabf0a3fc03bccefff3de8e8cd3f881735b"
+    },
+    "browser-intermediate-evidence/browser.json": {
+      "bytes": 15229,
+      "sha256": "c5eff8ac4a935cd9a15744e44a7f57b595511bd4f95db8c7826ce13d27a668cd"
+    },
+    "browser-intermediate-evidence/wide.png": {
+      "bytes": 33658,
+      "sha256": "1fb3e757c1d9b2a307c28a32cc486293ee40216e7353636b09f47a82bd9eef17"
+    },
+    "browser-product/app.js": {
+      "bytes": 3092,
+      "sha256": "89269367ff637753f5cab637015e7527159ec1f0a91e86cc895631ac879c4711"
+    },
+    "browser-product/DESIGN.md": {
+      "bytes": 780,
+      "sha256": "0c79d3e8d2b3222e7912e80259ec8d01210be0b647ec9a961ca6d228380b27ac"
+    },
+    "browser-product/index.html": {
+      "bytes": 1185,
+      "sha256": "15ea414c12230dc401802a5f70e66919ff511150c2a083ab328814d1e84eb786"
+    },
+    "browser-product/style.css": {
+      "bytes": 1516,
+      "sha256": "3fa63d7ad2c54f2a65340417d9afcf0951b2c77f8dd6ac7ffb575bb5914cc8ef"
+    },
+    "browser-product/TASK.md": {
+      "bytes": 901,
+      "sha256": "0c3f88b7779245cedbe0ed74d9516a9700edbd6b9b1723b8918199323aab8bb0"
+    },
+    "cli-after-tools/skills/ui-craft-bundle/scripts/learning_gate.py": {
+      "bytes": 25165,
+      "sha256": "baeca8bcbcf2df6024468812ecf65307a85cfeaec174b296829cd082e9b0c0c4"
+    },
+    "cli-after-tools/skills/ui-craft-bundle/scripts/local_learning.py": {
+      "bytes": 31800,
+      "sha256": "114461273303a066739f6631675104a0c4ffc14b3c1f4190f1f411ef6f2885a8"
+    },
+    "cli-after-tools/tests/test_local_learning.py": {
+      "bytes": 39205,
+      "sha256": "2f6c58c2924f680b6706b548b44d518ba5f2621a0a50129c65c0c2d8f8931043"
+    },
+    "cli-budget-after.txt": {
+      "bytes": 113,
+      "sha256": "e24265c41fd2a22dfa27f6aa38e269e9804aeb73febfe3e260d3468070e11539"
+    },
+    "cli-budget-before.txt": {
+      "bytes": 5726,
+      "sha256": "84b8c59d78659c4f41ccf4dc8515773d3efb005ea8248bbfdc4b93737fa4fc46"
+    },
+    "cli-workflow-before.json": {
+      "bytes": 147775,
+      "sha256": "7f7e1058dd23b01372f26b12a83b6c310106967ead325e64ecfbc9616a2fc0b6"
+    },
+    "EVIDENCE.md": {
+      "bytes": 6757,
+      "sha256": "618eb102712889a2a0e1e11dfe85ea8c07b4f51ab45b0bcb65edfb0fc80fbb26"
+    },
+    "native-audit/agent-report.md": {
+      "bytes": 4045,
+      "sha256": "021424c3835b826217677e5f59f724ed9c9c638f5041ae068b3d54aecabf818f"
+    },
+    "native-audit/DESIGN.md": {
+      "bytes": 695,
+      "sha256": "299d36f3bbc1581eddc74893dbde215146cc65fcdfe6c283f1b511163fa97c2f"
+    },
+    "native-audit/ProfileEditor.kt": {
+      "bytes": 3976,
+      "sha256": "98d5922db2b2e6434526bcfd3a610bc97b69e74efb06ecdf9884d7b2f74b7555"
+    },
+    "native-audit/skills/ai-slop-remover/agents/openai.yaml": {
+      "bytes": 316,
+      "sha256": "c0816bebb1903d69c9e754898a4f466d5e0b715ce8ae8c1734117aea6dbe1c9a"
+    },
+    "native-audit/skills/ai-slop-remover/LICENSE": {
+      "bytes": 1085,
+      "sha256": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d"
+    },
+    "native-audit/skills/ai-slop-remover/reference/kb/INDEX.md": {
+      "bytes": 239,
+      "sha256": "713804249440784d1ae4244ecdc8a951fa9c0ada1817369f378ab9b4700d3f16"
+    },
+    "native-audit/skills/ai-slop-remover/reference/kb/routing-and-evidence.md": {
+      "bytes": 1889,
+      "sha256": "b1d06e945c861cdcaaa0ce7079da332f32c8b133e52d054f80d086bbb9103661"
+    },
+    "native-audit/skills/ai-slop-remover/reference/principles.md": {
+      "bytes": 952,
+      "sha256": "3b6052f88ecab7fae1498b90f2659c625c12cd40d30d6d1fbce25fae8c753e46"
+    },
+    "native-audit/skills/ai-slop-remover/SKILL.md": {
+      "bytes": 7932,
+      "sha256": "ebbd5f18d2989ee8883b9fae8ce410f519c8ec52fb2cf1ea9d202582db7d8e1e"
+    },
+    "native-audit/skills/ui-craft-bundle/agents/openai.yaml": {
+      "bytes": 274,
+      "sha256": "6ee786f921f495298e4a955859fd6ea1e94252f6bdef8c054dc59c157dc2c173"
+    },
+    "native-audit/skills/ui-craft-bundle/assets/behavior-trial.md": {
+      "bytes": 960,
+      "sha256": "2f3c3f90996c5a29cda1dc57918ca94567b1ab934e5cb734f65c28d34b9fdec6"
+    },
+    "native-audit/skills/ui-craft-bundle/assets/bundle-guide.ko.md": {
+      "bytes": 1672,
+      "sha256": "990ef2b96dc0a41b80490294b63b2c69589d8369c367ac81da05a32455097554"
+    },
+    "native-audit/skills/ui-craft-bundle/assets/component-specimen.md": {
+      "bytes": 3168,
+      "sha256": "cbb0b23bb633b0a4c7b5936f02f62b0eee090e134ff42907f6ad77d73ae581ac"
+    },
+    "native-audit/skills/ui-craft-bundle/assets/design-contract.md": {
+      "bytes": 2018,
+      "sha256": "c62d13393ca52dceec8b8007fefbd781a18af1f0c3f984569c86153f672bb5d9"
+    },
+    "native-audit/skills/ui-craft-bundle/assets/LICENSE": {
+      "bytes": 1085,
+      "sha256": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d"
+    },
+    "native-audit/skills/ui-craft-bundle/assets/verification-note.md": {
+      "bytes": 509,
+      "sha256": "5671e40355566b80f70c960f35092c3bac1c240ff09cb20d64e1a7a724358d5a"
+    },
+    "native-audit/skills/ui-craft-bundle/references/anti-slop-methods.md": {
+      "bytes": 9864,
+      "sha256": "11a25d914f368956bffad69821ed80a58b6ab19a9a6fe64b2b4c233097f2bdea"
+    },
+    "native-audit/skills/ui-craft-bundle/references/art-direction.md": {
+      "bytes": 3726,
+      "sha256": "bdd4c5488aa89578c84d5fabc89d2f80370210828bfbc28c3790586810401b0c"
+    },
+    "native-audit/skills/ui-craft-bundle/references/behavior-evaluation.md": {
+      "bytes": 4432,
+      "sha256": "7cd18ba9920bf622433a78a00443f46fe227a654b6696339019a3f71e3da75a6"
+    },
+    "native-audit/skills/ui-craft-bundle/references/color-composition.md": {
+      "bytes": 8455,
+      "sha256": "e0c6e00d59ea8484a885a25189ccd278d88d1eafb28e0e764837abe8007f7260"
+    },
+    "native-audit/skills/ui-craft-bundle/references/design-memory.md": {
+      "bytes": 4660,
+      "sha256": "45109b7537908e7eeae7a0fb7d005aaf139fdedb180ccbdf22bf23db277dbee5"
+    },
+    "native-audit/skills/ui-craft-bundle/references/interaction-design.md": {
+      "bytes": 3262,
+      "sha256": "bd2193c4909870ca8c59e3fbaafbd3aef495dce8dd6b5b4d25dc798f9a462dc6"
+    },
+    "native-audit/skills/ui-craft-bundle/references/interaction-recipes.md": {
+      "bytes": 8223,
+      "sha256": "818b59f583ef9c9aec681e8a7acea4c4da554c6c3343778831fbb516350b5d93"
+    },
+    "native-audit/skills/ui-craft-bundle/references/layout-composition.md": {
+      "bytes": 7703,
+      "sha256": "891dfff297ab79561c7e51e487f6d89bc7762c787b2cf979d885f6e289e6e9f5"
+    },
+    "native-audit/skills/ui-craft-bundle/references/local-learning-cli.md": {
+      "bytes": 13112,
+      "sha256": "3686be2e72c52e6e02776d8ea6dc3473fa8ee76f840aef0319f8c94c6befffc8"
+    },
+    "native-audit/skills/ui-craft-bundle/references/local-learning-contract.md": {
+      "bytes": 19773,
+      "sha256": "e1c6b744a8b2943db133887a9918fb2ca195a141717d36b7b59075ec1e156e54"
+    },
+    "native-audit/skills/ui-craft-bundle/references/local-learning.md": {
+      "bytes": 16865,
+      "sha256": "65e63fb2b25e4436cf7902826eeb336782f316958e6545afca44d29d8b022c13"
+    },
+    "native-audit/skills/ui-craft-bundle/references/motion.md": {
+      "bytes": 1807,
+      "sha256": "43d7b49413a19d5c08bcdf848b4ab8d965a361ac8402a9d23f23c8295c9f29fa"
+    },
+    "native-audit/skills/ui-craft-bundle/references/native.md": {
+      "bytes": 2515,
+      "sha256": "a55f8263200357fd3046bf4c527d72a2bf2906757d0b08a49700a6b8a56d128f"
+    },
+    "native-audit/skills/ui-craft-bundle/references/pattern-selection.md": {
+      "bytes": 4770,
+      "sha256": "e1ff4c2e974505c509a6f5f78c2e0c6f2cefd0f9b781b9d5df7babb5015d24bc"
+    },
+    "native-audit/skills/ui-craft-bundle/references/sources.md": {
+      "bytes": 9913,
+      "sha256": "ac2c4d77f248ddca808bea79597e7c8be4bb95c59de9bb1eb3dfd70b00b7e035"
+    },
+    "native-audit/skills/ui-craft-bundle/references/toss-design.md": {
+      "bytes": 9898,
+      "sha256": "7f60fb3bcba3698a965bee3cf2525d462ca323b8409e80d53b7d24f9184fc58c"
+    },
+    "native-audit/skills/ui-craft-bundle/references/ux-foundations.md": {
+      "bytes": 8840,
+      "sha256": "cb116b8faf294edd77d5eeb6207b71098edeef1ee499030fef04950474e45c62"
+    },
+    "native-audit/skills/ui-craft-bundle/references/verification.md": {
+      "bytes": 3326,
+      "sha256": "f978162c6edd1cd1922d914682afc5e053680e0b95e1150ecbb736d2b0eaddd8"
+    },
+    "native-audit/skills/ui-craft-bundle/references/web.md": {
+      "bytes": 2891,
+      "sha256": "70610ef3558b2935dde1573c138ae2f154dcf3d05f8d00a6fed63aa398da86cc"
+    },
+    "native-audit/skills/ui-craft-bundle/scripts/learning_gate.py": {
+      "bytes": 25165,
+      "sha256": "baeca8bcbcf2df6024468812ecf65307a85cfeaec174b296829cd082e9b0c0c4"
+    },
+    "native-audit/skills/ui-craft-bundle/scripts/local_learning.py": {
+      "bytes": 31560,
+      "sha256": "5073283f15b17aafa57143e73018ce6b6b1c6bbede05d74dd89e91ddb11cd9ea"
+    },
+    "native-audit/skills/ui-craft-bundle/SKILL.md": {
+      "bytes": 7252,
+      "sha256": "c75d67192c474cd1d2a2cc870effb65568686c67648cbbb771a97d333ae22239"
+    },
+    "native-audit/skills/ui-quality-gate/agents/openai.yaml": {
+      "bytes": 320,
+      "sha256": "e35206901f2364bfc328c5010322060f8f417ba8830840b4da14d87ac220dd22"
+    },
+    "native-audit/skills/ui-quality-gate/LICENSE": {
+      "bytes": 1085,
+      "sha256": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d"
+    },
+    "native-audit/skills/ui-quality-gate/reference/kb/evidence-verdict.md": {
+      "bytes": 2426,
+      "sha256": "6684115bb5d10f602370ce91598ef4ab5e6b210dd6cdfa39e9d7333154e9b577"
+    },
+    "native-audit/skills/ui-quality-gate/reference/kb/INDEX.md": {
+      "bytes": 160,
+      "sha256": "1a9030352f2e55d4f3f8a27fc2bb54cdd39df80cc6f3d5ad843f620d8cf36bd3"
+    },
+    "native-audit/skills/ui-quality-gate/reference/principles.md": {
+      "bytes": 817,
+      "sha256": "f359cbdf61377a9e258833978aa0b713eb2502dc56f11cc6ddd7020ca8ee368d"
+    },
+    "native-audit/skills/ui-quality-gate/SKILL.md": {
+      "bytes": 7549,
+      "sha256": "a2e19b9191cca4d108ec7d007d6162ea97521adbf93618e9fb2836bd57cad89d"
+    },
+    "native-audit/skills/ui-slop-audit/agents/openai.yaml": {
+      "bytes": 302,
+      "sha256": "4648438145524fd0fe144335cd798bafe106d05b6a23515f032a77f36086dbc3"
+    },
+    "native-audit/skills/ui-slop-audit/LICENSE": {
+      "bytes": 1085,
+      "sha256": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d"
+    },
+    "native-audit/skills/ui-slop-audit/reference/kb/evidence-priority.md": {
+      "bytes": 1791,
+      "sha256": "af5fd8a9862aea25220d76433a702191cacae82c7f3c085f797a45a82aeed581"
+    },
+    "native-audit/skills/ui-slop-audit/reference/kb/INDEX.md": {
+      "bytes": 153,
+      "sha256": "5192d60198c12b91a03badf602b9aab83f3041c628f1ec07e57e55aadb9b24ba"
+    },
+    "native-audit/skills/ui-slop-audit/reference/principles.md": {
+      "bytes": 723,
+      "sha256": "a5e1d5f171b95be2a3040ca57a0c7871f8ac278756d2c4ea4aa33e40f57112b3"
+    },
+    "native-audit/skills/ui-slop-audit/SKILL.md": {
+      "bytes": 4720,
+      "sha256": "1ff1fdc904180e745f46083e2bbc00db632633167f054be81155854969941b3c"
+    },
+    "native-audit/skills/ui-visual-refine/agents/openai.yaml": {
+      "bytes": 335,
+      "sha256": "105c150e1882713bde0efbd943b8b12f2180fa745d5a5261dc9e5e659dedf16a"
+    },
+    "native-audit/skills/ui-visual-refine/LICENSE": {
+      "bytes": 1085,
+      "sha256": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d"
+    },
+    "native-audit/skills/ui-visual-refine/reference/kb/hierarchy-scope.md": {
+      "bytes": 1874,
+      "sha256": "b8f1501736984f70cc2ea4f0e47d78f13686d14429c61edc0bfdf4393a72cf55"
+    },
+    "native-audit/skills/ui-visual-refine/reference/kb/INDEX.md": {
+      "bytes": 178,
+      "sha256": "a750375eba206195e218c4b7e18fb32dc744566a8fd4d33e118b282b9260bed9"
+    },
+    "native-audit/skills/ui-visual-refine/reference/principles.md": {
+      "bytes": 715,
+      "sha256": "d45496c1989367c7f362c047ac3d055c87f7e81891a21074a43a992d5e859b2b"
+    },
+    "native-audit/skills/ui-visual-refine/SKILL.md": {
+      "bytes": 6410,
+      "sha256": "d29879dee0c772a5d7e78dc49f1f15b58f79009ff235ccaf83682566ec645be4"
+    },
+    "native-audit/skills/ux-flow-refine/agents/openai.yaml": {
+      "bytes": 326,
+      "sha256": "e2235f3946dea0496f179e8e6f8573286c403b708a16a4b651dfea5152266ed3"
+    },
+    "native-audit/skills/ux-flow-refine/LICENSE": {
+      "bytes": 1085,
+      "sha256": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d"
+    },
+    "native-audit/skills/ux-flow-refine/reference/kb/INDEX.md": {
+      "bytes": 175,
+      "sha256": "e528760a22e0d35ba98930727b19359ab540c8c9996e6aec5e2b1b308bf7efb1"
+    },
+    "native-audit/skills/ux-flow-refine/reference/kb/state-recovery.md": {
+      "bytes": 1948,
+      "sha256": "59fa0df2fdc211a4296e91465319bec87ea025abbf7fa9a1ae00be7abb03106e"
+    },
+    "native-audit/skills/ux-flow-refine/reference/principles.md": {
+      "bytes": 816,
+      "sha256": "da73a3d3f80235c4ebcd2e9a8bc8e6e03464a4094c66f4741778828c8d282a8b"
+    },
+    "native-audit/skills/ux-flow-refine/SKILL.md": {
+      "bytes": 5716,
+      "sha256": "47a53df610b7d4522c5775d809eb718c6c44de43dc7c15d47eba4396fac6f1f9"
+    },
+    "native-audit/skills/ux-writing/agents/openai.yaml": {
+      "bytes": 324,
+      "sha256": "9aa5a7f69b3ad25751efb83ceefac5365bbbeee010db65f1f341a106cbc717f1"
+    },
+    "native-audit/skills/ux-writing/LICENSE": {
+      "bytes": 1085,
+      "sha256": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d"
+    },
+    "native-audit/skills/ux-writing/reference/kb/INDEX.md": {
+      "bytes": 199,
+      "sha256": "602248a9f6d93b9fc95022961088abf93fd3017d8f2be2e1e578608e68953381"
+    },
+    "native-audit/skills/ux-writing/reference/kb/truthful-state-copy.md": {
+      "bytes": 2489,
+      "sha256": "7b3b3fd3e03d1c8bdf7827e9d58dba743414093a03b8aab529c268f46a401797"
+    },
+    "native-audit/skills/ux-writing/reference/principles.md": {
+      "bytes": 727,
+      "sha256": "2c5445965a1be520ae2b704a6d2d6e223bf014bff3a7843fa459345bed0e701c"
+    },
+    "native-audit/skills/ux-writing/SKILL.md": {
+      "bytes": 5530,
+      "sha256": "2a37701c87929b12e6c58fb808c5ad14c81e24e9325f7e1a6181b5391f21436c"
+    },
+    "native-audit/TASK.md": {
+      "bytes": 957,
+      "sha256": "a5cd8ce0696acf4903ffb9a18752329553c5c7d1691bf827120e775a3b079c73"
+    },
+    "stream-startup-before-guard.json": {
+      "bytes": 3697,
+      "sha256": "c1240f3c635d3e878a7433ec63b2d29dc828f62c68e917754512b0d67182a180"
+    }
+  }
+}

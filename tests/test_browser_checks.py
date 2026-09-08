@@ -65,6 +65,7 @@ class BrowserCheckTests(unittest.TestCase):
             capture_output=True, text=True, timeout=90,
         )
         self.assertIn(run.returncode, (0, 1) if allow_exceptions else (0,), run.stdout + run.stderr)
+        self.driver_returncode = run.returncode
         self.assertTrue((output / "browser.json").is_file(), run.stdout + run.stderr)
         observed = json.loads((output / "browser.json").read_text(encoding="utf-8"))
         self.observed = observed
@@ -224,6 +225,91 @@ class BrowserCheckTests(unittest.TestCase):
         for check in self.observed["checks"]:
             if check["status"] == "not-run":
                 self.assertIn("Fixture did not finish loading", check["reason"])
+
+    def assert_interrupted_batch(self, checks, completed, navigation=False):
+        self.assertTrue(self.observed["collectionErrors"])
+        if navigation:
+            self.assertRegex(" ".join(self.observed["collectionErrors"]),
+                             r"(?i)context|navigat|promise was collected")
+        self.assertEqual({check_id: status for check_id, status in checks.items() if status != "not-run"},
+                         completed)
+        for check in self.observed["checks"]:
+            if check["id"] in completed:
+                self.assertTrue(json.loads(check["evidence"]["text"]))
+            else:
+                self.assertIn(self.observed["collectionErrors"][0], check["reason"])
+
+    def test_search_batch_exception_keeps_completed_pass_and_fail(self):
+        for matches in (True, False):
+            with self.subTest(matches=matches):
+                source = repaired_source() + "\nel('query').addEventListener('input', () => {\n"
+                source += "  if (el('query').value !== '배송 확인') return;\n"
+                if not matches:
+                    source += "  el('notes').replaceChildren();\n"
+                source += "  el('count').remove();\n});\n"
+                checks = self.run_fixture(f"search-batch-exception-{matches}", source, allow_exceptions=True)
+                self.assert_interrupted_batch(checks, {"search-matches": "pass" if matches else "fail"})
+                self.assertIn("textContent", self.observed["collectionErrors"][0])
+
+    def test_search_batch_navigation_keeps_completed_pass_and_fail(self):
+        source = (ROOT / "evals/fixtures/search-editor/app.js").read_text(encoding="utf-8")
+        source += "\nel('title').addEventListener('input', () => {\n"
+        source += "  if (el('title').value === '실패해도 남아야 하는 초안') location.href = 'about:blank';\n});\n"
+        checks = self.run_fixture("search-batch-navigation", source, allow_exceptions=True)
+        self.assert_interrupted_batch(checks, {"search-matches": "pass", "query-history": "fail"}, navigation=True)
+
+    def test_save_batch_interruption_keeps_completed_composition(self):
+        for navigation in (False, True):
+            for composing in (True, False):
+                with self.subTest(navigation=navigation, composing=composing):
+                    source = repaired_source()
+                    if not composing:
+                        source = replace_once(source, "if (event.key === 'Enter' && !event.isComposing) {",
+                                              "if (event.key === 'Enter') {")
+                    source += "\nel('title').addEventListener('input', () => {\n"
+                    source += "  if (el('title').value !== '저장 성공 확인') return;\n"
+                    source += "  location.href = 'about:blank';\n" if navigation else "  el('body').remove();\n"
+                    source += "});\n"
+                    checks = self.run_fixture(f"save-batch-interruption-{navigation}-{composing}", source,
+                                              allow_exceptions=True)
+                    completed = {check_id: "pass" for check_id in (
+                        "search-matches", "query-history", "failed-save-draft", "failed-save-feedback",
+                        "failed-save-storage", "retry-persists", "retry-reload")}
+                    completed["composition-enter"] = "pass" if composing else "fail"
+                    self.assert_interrupted_batch(checks, completed, navigation=navigation)
+
+    def test_invalid_stream_records_cannot_replace_completed_observations(self):
+        source = repaired_source() + "\nel('query').addEventListener('input', () => {\n"
+        source += "  if (el('query').value !== '') return;\n"
+        source += "  globalThis.__lutrivaRecordCheck('invalid JSON');\n"
+        source += "  for (const status of ['not-run', 'fail']) globalThis.__lutrivaRecordCheck(JSON.stringify({\n"
+        source += "    id: 'search-matches', kind: 'behavior', status, evidence: { text: '{}' }\n  }));\n"
+        source += "  globalThis.__lutrivaRecordCheck(JSON.stringify({ id: 'ordinary-save', kind: 'behavior',\n"
+        source += "    status: 'pass', evidence: { text: '{}' } }));\n});\n"
+        checks = self.run_fixture("invalid-stream-records", source, allow_exceptions=True)
+        self.assertEqual(set(checks.values()), {"pass"}, checks)
+        self.assertEqual(self.driver_returncode, 1)
+        self.assertEqual(self.observed["exceptions"], [])
+        errors = self.observed["collectionErrors"]
+        self.assertEqual(len(errors), 4, errors)
+        self.assertTrue(all("Cannot collect streamed behavior observation" in error for error in errors), errors)
+        self.assertIn("Invalid completed behavior observation", errors[1])
+        self.assertIn("Duplicate behavior observation: search-matches", errors[2])
+        self.assertIn("Invalid completed behavior observation", errors[3])
+        search = next(check for check in self.observed["checks"] if check["id"] == "search-matches")
+        self.assertEqual(json.loads(search["evidence"]["text"])["query"], "배송 확인")
+        ordinary = next(check for check in self.observed["checks"] if check["id"] == "ordinary-save")
+        self.assertEqual(json.loads(ordinary["evidence"]["text"])["targetId"], 2)
+
+    def test_stream_records_outside_a_batch_cannot_invent_completed_observations(self):
+        source = repaired_source() + "\nglobalThis.__lutrivaRecordCheck(JSON.stringify({\n"
+        source += "  id: 'ordinary-save', kind: 'behavior', status: 'pass', evidence: { text: '{}' }\n}));\n"
+        source += "el('save').remove();\n"
+        checks = self.run_fixture("stream-before-first-batch", source, allow_exceptions=True)
+        self.assertEqual(set(checks.values()), {"not-run"}, checks)
+        self.assertEqual(self.driver_returncode, 1)
+        self.assertIn("Invalid completed behavior observation", self.observed["collectionErrors"][0])
+        self.assertIn("Fixture did not finish loading", self.observed["collectionErrors"][1])
 
     def test_unavailable_initial_document_records_every_required_check(self):
         source = repaired_source() + "\nel('save').remove();\n"

@@ -25,6 +25,8 @@ python3 "$lutriva_cli" propose --project "$learning_project" \
 
 `propose`가 출력한 `candidate_id`, `plan`, `plan_sha256`를 보존한다. 후보에는 현재 호환 활성 규칙과 새 규칙을 함께 고정한다. 기존 규칙을 대체하려면 `spec.replaces`에 활성 규칙 ID를 지정한다. 제안 뒤 규칙·계획 파일을 직접 고치지 말고 변경이 필요하면 새 후보를 만든다.
 
+계획한 비교 쌍마다 baseline과 candidate 실행이 하나씩 필요하다. `propose`는 이 최소 실행 수가 정책의 `max_runs`를 넘으면 후보를 만들기 전에 거부한다. 대상 2쌍과 전이 1쌍은 6회, 전이 2쌍이면 8회가 필요하다. 예산과 전이 범위는 실행 전에 함께 정한다.
+
 ## 제안 입력: spec.json
 
 알 수 없는 필드와 중복 JSON 키는 거부한다. 다음 필드는 모두 필수이며 `replaces`만 선택 사항이다.
