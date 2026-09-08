@@ -256,7 +256,7 @@ def existing_is_identical(dest, expected, marker=MARKER):
     if not dest.is_dir() or not (dest / marker).is_file():
         raise BundleError("Destination already exists and is not an owned installation: " + str(dest))
     actual_files = tree_files(dest)
-    installed = read_json(dest / marker)
+    installed = read_installation_record(dest / marker, expected["installer"])
     if installed != expected:
         raise BundleError("Destination has a different or edited installation; no files changed: " + str(dest))
     if actual_files != set(expected["files"]) | {marker}:

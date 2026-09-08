@@ -216,6 +216,21 @@ class LegacyInstallerTests(InstallerTestCase):
         self.assert_success(self.run_installer("--dest", self.dest))
         self.assertEqual(snapshot(self.workspace), before)
 
+    def test_malformed_numeric_receipt_is_refused_without_writing(self):
+        self.assert_success(self.run_installer("--dest", self.dest))
+        marker = self.dest / ".ui-craft-bundle-install.json"
+        original = json.loads(marker.read_text(encoding="utf-8"))
+        for schema in (True, 1.0):
+            for mode in ((), ("--dry-run",)):
+                with self.subTest(schema=json.dumps(schema), mode=mode):
+                    marker.write_text(json.dumps(dict(original, schema=schema)), encoding="utf-8")
+                    before = snapshot(self.workspace)
+                    status = self.run_installer("--dest", self.dest, "--status")
+                    self.assert_success(status)
+                    self.assertIn("Status: unverifiable", status.stdout)
+                    self.assertEqual(snapshot(self.workspace), before)
+                    self.assert_refused_without_changes("--dest", self.dest, *mode)
+
     def test_status_supports_legacy_bundle_records_without_writing(self):
         self.assert_success(self.run_installer("--dest", self.dest))
         before = snapshot(self.workspace)
@@ -512,7 +527,7 @@ class SkillSetInstallerTests(InstallerTestCase):
         original = json.loads(marker.read_text(encoding="utf-8"))
         cases = ["{Private broken receipt", "[]", '{"schema": 1, "schema": 1}']
         for field, value in (
-            ("schema", True), ("schema", 2), ("installer", "another-installer"),
+            ("schema", True), ("schema", 1.0), ("schema", 2), ("installer", "another-installer"),
             ("version", "Private invalid version"), ("version", None),
             ("files", []), ("files", {}), ("files", {"SKILL.md": "not-a-hash"}),
             ("files", {"references/guide.md": "0" * 64}),
@@ -728,6 +743,29 @@ class SkillSetInstallerTests(InstallerTestCase):
         source.write_text("Keep user edit\n", encoding="utf-8")
         self.assert_repo_refused("--skill", "ai-slop-refine")
         self.assertEqual(self.installed_names(), {LEGACY_NAME})
+
+    def test_malformed_numeric_receipts_prevent_all_new_installations(self):
+        for name, marker_name in (
+            (LEGACY_NAME, ".ui-craft-bundle-install.json"),
+            ("ui-copy", ".ai-slop-remover-install.json"),
+        ):
+            for schema in (True, 1.0):
+                for mode in ((), ("--dry-run",)):
+                    with self.subTest(skill=name, schema=json.dumps(schema), mode=mode):
+                        # Each case starts with only one owned installation;
+                        # a missed preflight refusal must not be masked by a
+                        # sibling copied during an earlier failing case.
+                        self.repo = self.workspace / (name + "-" + json.dumps(schema) + ("-dry" if mode else "-install"))
+                        self.repo.mkdir()
+                        self.assert_success(self.install_repo("--skill", name))
+                        marker = self.repo / ".agents" / "skills" / name / marker_name
+                        record = json.loads(marker.read_text(encoding="utf-8"))
+                        record["schema"] = schema
+                        marker.write_text(json.dumps(record), encoding="utf-8")
+                        status = self.status_repo()
+                        self.assertIn("Status: unverifiable", self.status_block(status, name))
+                        self.assert_repo_refused(*mode)
+                        self.assertEqual(self.installed_names(), {name})
 
     def test_added_file_in_new_skill_is_never_removed_or_overwritten(self):
         self.assert_success(self.install_repo("--skill", "ui-copy"))
