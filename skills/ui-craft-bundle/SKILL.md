@@ -22,6 +22,8 @@ Turn a user's product task into a distinctive, usable screen whose controls work
 | Choose common UX principles and platform-specific checks | [ux-foundations.md](references/ux-foundations.md) |
 | Apply Toss design research to copy, forms, motion, or product structure | [toss-design.md](references/toss-design.md) |
 | New screen or visual redesign | [art-direction.md](references/art-direction.md) |
+| Choose palette roles and balance color across a screen | [color-composition.md](references/color-composition.md) |
+| Compose page hierarchy, alignment, spacing, and responsive regions | [layout-composition.md](references/layout-composition.md) |
 | Reuse or update design decisions across screens | [design-memory.md](references/design-memory.md) |
 | Choose a task-appropriate layout or density | [pattern-selection.md](references/pattern-selection.md) |
 | Search, editing, selection, gestures, async actions | [interaction-design.md](references/interaction-design.md) |

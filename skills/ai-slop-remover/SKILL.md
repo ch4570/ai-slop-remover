@@ -22,7 +22,7 @@ Read the selected sibling `SKILL.md` and follow it in this session. Skill routin
 | Requested outcome | Skill | Handoff |
 | --- | --- | --- |
 | Understand what feels generic or confusing | [ui-slop-audit](../ui-slop-audit/SKILL.md) | Observed element, effect on the user's task, scoped correction |
-| Improve hierarchy, layout, density, and typography | [ui-visual-refine](../ui-visual-refine/SKILL.md) | Prioritized finding, existing tokens, retained behavior |
+| Improve color composition, layout, hierarchy, density, and typography | [ui-visual-refine](../ui-visual-refine/SKILL.md) | Prioritized finding, existing tokens, retained behavior |
 | Make inputs, feedback, transitions, and recovery feel natural | [ux-flow-refine](../ux-flow-refine/SKILL.md) | Trigger, state change, persistence, failure path |
 | Make labels, instructions, errors, and empty states clear | [ux-writing](../ux-writing/SKILL.md) | Actual action and consequence, existing product vocabulary |
 | Check an implemented result | [ui-quality-gate](../ui-quality-gate/SKILL.md) | Changed surface, intended journey, real checks and evidence |

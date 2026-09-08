@@ -400,6 +400,42 @@
         "Replacing the brand or every card with a new preset despite the explicit constraint.",
         "Hiding overflow globally or shrinking text to conceal large-text failures."
       ]
+    },
+    {
+      "id": "color-roles-retain-brand",
+      "prompt": "브랜드의 빨간색은 유지하면서 이 운영 화면의 배색을 다듬어줘. 기본 행동, 선택한 행, 오류 알림과 그래프가 모두 같은 빨강이라 구분하기 어렵고 다크 모드도 있어.",
+      "expected_skills": [
+        "ui-visual-refine",
+        "ui-quality-gate"
+      ],
+      "assertions": [
+        "Inspect the existing brand and foreground/background roles before changing shades.",
+        "Distinguish action, selection, feedback, and data meaning through appropriate treatments without replacing the brand.",
+        "Inspect actual adjacent surfaces and full-page emphasis in both requested themes, measure relevant pairs, and report missing rendering or state evidence."
+      ],
+      "forbidden": [
+        "Replacing all red with a fashionable accent or assuming every red element is an error.",
+        "Treating passing swatch contrast or a fixed color-area percentage as proof of visual quality.",
+        "Reusing unverified light-theme opacity and foreground pairs in dark mode."
+      ]
+    },
+    {
+      "id": "layout-width-and-grouping",
+      "prompt": "작업 목록 옆 상세 패널을 새로 배치해줘. 목록에서는 금액과 날짜를 비교해야 하고 상세에는 긴 한국어 입력이 있어. 지금은 큰 빈 패널 때문에 목록과 버튼이 눌려. 작은 화면도 지원하고 다른 페이지는 유지해.",
+      "expected_skills": [
+        "ui-visual-refine",
+        "ui-quality-gate"
+      ],
+      "assertions": [
+        "Inspect comparison fields, long detail content, action ownership, and available width before selecting region sizes.",
+        "Use consistent alignment and spacing relationships while allocating enough room to the working content.",
+        "Verify the layout near its transition width and on a narrow screen without losing comparison information, control access, or coherent reading/focus order."
+      ],
+      "forbidden": [
+        "Applying equal columns or a fixed pane ratio without checking actual content.",
+        "Shrinking text or hiding page overflow to conceal width pressure.",
+        "Rewriting unrelated pages, deleting necessary fields, or adding a mandatory layout dependency."
+      ]
     }
   ]
 }

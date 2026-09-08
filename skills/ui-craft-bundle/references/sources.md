@@ -1,5 +1,9 @@
 # Research, upstream options, and provenance
 
+## Color and layout composition
+
+The [color composition](color-composition.md) and [layout composition](layout-composition.md) references were researched on 2026-09-08. They add role-based foreground/background pairing, whole-screen color emphasis, content-driven width allocation, alignment anchors, and relational spacing to the visual workflow. Their source notes link the inspected Radix, Carbon, NN/G, and Material pages and separate system-specific choices from Lutriva's synthesis. They do not prescribe an external palette, grid, dependency, or measured aesthetic improvement.
+
 ## UI/UX research integrated in this bundle
 
 The [anti-slop methods](anti-slop-methods.md) and [UX foundations](ux-foundations.md) were researched on 2026-09-07. They contain original decision aids and checks, with direct links beside the relevant guidance. Their practical examples are Lutriva's synthesis, not copied manuals or measured claims of improvement.

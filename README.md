@@ -42,6 +42,8 @@ Start with the task and the existing screen. A spacing fix should stay a spacing
 
 Shared principles cover recognition, consistent terms and location, hierarchy, user control, error prevention/recovery, and accessible input. WCAG 2.2 criteria remain distinct from Apple and Android recommendations, including their units and exceptions. The guidance draws on NN/G, W3C, Apple, Android, and GOV.UK; [sources and adoption boundaries](skills/ui-craft-bundle/references/sources.md) explain the scope. A color or card is not a defect by itself.
 
+For weak palettes or awkward placement, [color composition](skills/ui-craft-bundle/references/color-composition.md) connects semantic color pairs with neighboring surfaces, occupied area, and emphasis. [Layout composition](skills/ui-craft-bundle/references/layout-composition.md) turns the task into content widths, alignment anchors, grouped spacing, and responsive arrangements. The visual skill checks them together in the actual page, preserving the product's brand rather than imposing a fixed palette or grid.
+
 [Eight design articles from the official Toss technology blog](skills/ui-craft-bundle/references/toss-design.md) also inform the skills: predictable Korean copy, keyboard-aware forms, non-drag operation, meaningful motion, mobile/desktop structure, component extensions and specifications, and early usability validation. Each case separates the author's observations from the proposed application and recheck, with routes from the relevant workflows.
 
 ## Quick start
@@ -76,10 +78,10 @@ npx --yes --package='git+https://github.com/ch4570/lutriva.git' -- lutriva --lis
 npx --yes --package='git+https://github.com/ch4570/lutriva.git' -- lutriva --repo "/path/to/project" --agent codex --dry-run
 ```
 
-These commands follow the default branch and require repository access. Remove `--dry-run` to install. After `lutriva@2.3.0` is published to npm, the shorter command will be:
+These commands follow the default branch and require repository access. Remove `--dry-run` to install. After `lutriva@2.4.0` is published to npm, the shorter command will be:
 
 ```sh
-npx lutriva@2.3.0 --repo "/path/to/project" --agent codex
+npx lutriva@2.4.0 --repo "/path/to/project" --agent codex
 ```
 
 The same package also exposes the compatible `ai-slop-remover` CLI. Set `AI_SLOP_PYTHON` to an exact Python executable path when needed. There are no npm runtime dependencies or automatic postinstall steps.
@@ -155,7 +157,7 @@ Claude Code uses `/` in place of `$`. The same workflow supports native projects
 | --- | --- |
 | [`ai-slop-remover`](skills/ai-slop-remover/SKILL.md) | Connect diagnosis, scoped improvements, and verification |
 | [`ui-slop-audit`](skills/ui-slop-audit/SKILL.md) | Read-only findings with evidence and user impact |
-| [`ui-visual-refine`](skills/ui-visual-refine/SKILL.md) | Hierarchy, layout, density, type, and responsive detail |
+| [`ui-visual-refine`](skills/ui-visual-refine/SKILL.md) | Color composition, layout, hierarchy, density, type, and responsive detail |
 | [`ux-flow-refine`](skills/ux-flow-refine/SKILL.md) | State, feedback, motion, and failure recovery |
 | [`ux-writing`](skills/ux-writing/SKILL.md) | Action labels, instructions, errors, and empty states |
 | [`ui-quality-gate`](skills/ui-quality-gate/SKILL.md) | Read-only checks of the implemented journey |
@@ -206,7 +208,7 @@ python3 -m unittest discover -s tests -q
 npm test
 npm run check
 npm run check:js
-python3 scripts/export_bundle.py --output dist/lutriva-2.3.0.zip
+python3 scripts/export_bundle.py --output dist/lutriva-2.4.0.zip
 npm pack --dry-run
 ```
 
