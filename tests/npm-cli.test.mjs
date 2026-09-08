@@ -69,7 +69,9 @@ test('list exposes every skill with detected Python and an explicit executable p
 
   const environment = path.join(temporary(t), 'python environment');
   const python = process.env.AI_SLOP_PYTHON || (process.platform === 'win32' ? 'python' : 'python3');
-  succeeded(spawnSync(python, ['-m', 'venv', '--without-pip', '--copies', environment], {
+  // Use venv's platform default: Apple's framework Python requires symlinks,
+  // while Windows defaults to copies. Both exercise the configured path.
+  succeeded(spawnSync(python, ['-m', 'venv', '--without-pip', environment], {
     encoding: 'utf8', timeout: 30000,
   }));
   const executable = path.join(environment, process.platform === 'win32' ? 'Scripts/python.exe' : 'bin/python');

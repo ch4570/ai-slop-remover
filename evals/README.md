@@ -209,10 +209,23 @@ direct shared-URL navigation, and page reloads, and
 records 1280px, 375px error-state, and keyboard-focus images. It seeds again before
 collecting the narrow error-state images so a broken save cannot prevent that
 separate observation. Each check's evidence retains its expected/observed records.
+If collection stops during a save, reload, or image observation, `browser.json`
+preserves completed checks and marks every remaining required behavior check
+`not-run` with the collection error. `collectionErrors` records the interruption
+and the driver exits 1. A failure after all behavior checks finish does not erase
+those observations or establish that the missing image review passed.
 Read `browser.json` and actually inspect the images before writing the two quality
 verdicts. Exit zero means evidence collection finished, not that every check passed;
 use the comparator as the result gate. It installs no browser or packages and does
 not connect to the user's existing browser profile.
+
+Use a new browser evidence area for each collection. Both drivers reserve it with
+`.browser-evidence-started`; existing browser JSON, image paths, or that marker
+cause exit 2 before collection, with existing artifacts preserved. This also
+prevents concurrent collectors and interrupted attempts from mixing evidence.
+Scope outputs may already contain `prepare` metadata and `product/`; only their
+`browser.json`, `images/`, and collection marker are reserved. Choose a new output
+path when repeating collection, including after an unavailable-browser result.
 
 To verify the checker itself, opt in to the dependency-free Chrome regression
 tests (ordinary Python discovery skips them):

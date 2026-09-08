@@ -2,7 +2,7 @@
 // Evaluator-owned bounded browser observations. Semantic/visual verdicts stay human-owned.
 import { lstat, mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { withBrowser } from './browser_harness.mjs';
+import { claimBrowserEvidence, withBrowser } from './browser_harness.mjs';
 
 const suites = JSON.parse(await readFile(new URL('../evals/checks/scope-suites.json', import.meta.url), 'utf8'));
 const [caseId, fixture, outputArg] = process.argv.slice(2);
@@ -17,6 +17,8 @@ if (process.argv.length !== 5 || !suites[caseId + '-v1'] || !fixture || !outputA
   process.exit(2);
 }
 const output = path.resolve(outputArg);
+try { await claimBrowserEvidence(output, ['images']); }
+catch (error) { console.error(String(error)); process.exit(2); }
 await mkdir(path.join(output, 'images'), { recursive: true });
 const checks = new Map(required[caseId].map(id => [id, { id, kind: 'behavior', status: 'not-run', reason: 'Installed Chrome observation has not completed.' }]));
 const observations = { images: [], focus: [], collectionErrors: [] };

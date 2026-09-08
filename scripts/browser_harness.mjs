@@ -1,9 +1,30 @@
 // Installed Chrome transport only; adapters own readiness, seeds and assertions.
 import { spawn } from 'node:child_process';
 import { createServer } from 'node:http';
-import { access, mkdir, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
+import { access, lstat, mkdir, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+
+export async function claimBrowserEvidence(outputArg, imagePaths) {
+  const output = path.resolve(outputArg);
+  const marker = '.browser-evidence-started';
+  const reused = () => new Error(`Browser evidence already exists or collection has started at ${output}; use a new output path. Existing artifacts were preserved.`);
+  // Check only the adapter's browser artifacts; prepared scope metadata may exist.
+  for (const name of ['browser.json', ...imagePaths, marker]) {
+    try { await lstat(path.join(output, name)); }
+    catch (error) { if (error.code === 'ENOENT') continue; throw error; }
+    throw reused();
+  }
+  await mkdir(output, { recursive: true });
+  try {
+    // Exclusive creation admits one collector. Keep the marker after interruption
+    // and completion so neither an unfinished nor a completed run can be reused.
+    await writeFile(path.join(output, marker), 'Browser evidence collection started. Use a new output path for another collection.\n', { flag: 'wx' });
+  } catch (error) {
+    if (error.code === 'EEXIST') throw reused();
+    throw error;
+  }
+}
 
 export async function withBrowser(fixtureArg, outputArg, observe) {
   if (typeof WebSocket === 'undefined') throw new Error('Browser checks require Node 22+ with WebSocket.');

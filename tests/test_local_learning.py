@@ -316,6 +316,22 @@ class LocalLearningLifecycleTests(unittest.TestCase):
         self.assertEqual(self.active()["generation"], 0)
         self.assertEqual(self.context()["rules"], [])
 
+    def test_decimal_exact_budget_can_be_evaluated_and_promoted(self):
+        self.cli("init", "--project", self.project, "--base", self.base,
+                 "--max-seconds", "600.06")
+        proposal = self.propose()
+
+        def record_durations(report):
+            for pair in report["pairs"]:
+                for variant in ("baseline", "candidate"):
+                    pair[variant]["duration_seconds"] = 100.01
+
+        evaluation = self.evaluate(proposal, mutate=record_durations)
+        self.assertEqual(evaluation["decision"]["verdict"], "eligible")
+        self.promote(evaluation)
+        self.assertEqual(self.active()["generation"], 1)
+        self.assertEqual(len(self.context()["rules"]), 1)
+
     def test_candidate_failure_rejects_and_cannot_be_promoted(self):
         self.initialize()
         evaluation = self.evaluate(

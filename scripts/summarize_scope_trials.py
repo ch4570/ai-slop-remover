@@ -26,7 +26,9 @@ def summarize(manifest, root):
     host = manifest.get("host_coverage", {})
     for mode in ("installed-host-explicit", "automatic-discovery"):
         coverage = host.get(mode, {}) if isinstance(host, dict) else {}
-        if coverage.get("status") != "not-run" or not meaningful(coverage.get("reason"), 12):
+        if not isinstance(coverage, dict):
+            errors.append(mode + ": host coverage must be an object")
+        elif coverage.get("status") != "not-run" or not meaningful(coverage.get("reason"), 12):
             errors.append(mode + ": snapshot-direct trials do not establish this host coverage")
     trials = manifest.get("trials", [])
     if not isinstance(trials, list):

@@ -15,6 +15,12 @@ QUERY_FROM_URL = "el('query').value = new URL(location.href).searchParams.get('q
 POPSTATE = "window.addEventListener('popstate', () => {\n  " + QUERY_FROM_URL + "\n  renderNotes();\n});"
 
 
+def evidence_snapshot(root):
+    return {str(path.relative_to(root)): (path.is_dir(), path.stat().st_mtime_ns,
+                                        None if path.is_dir() else path.read_bytes())
+            for path in [root, *root.rglob('*')]}
+
+
 def replace_once(source, before, after):
     if source.count(before) != 1:
         raise AssertionError(f"Fixture changed; expected one mutation site: {before!r}")
@@ -78,6 +84,63 @@ class BrowserCheckTests(unittest.TestCase):
     def test_repaired_control_passes(self):
         checks = self.run_fixture("repaired", repaired_source())
         self.assertEqual(set(checks.values()), {"pass"}, checks)
+
+    def test_existing_browser_artifacts_are_preserved(self):
+        env = {**os.environ, "AI_SLOP_CHROME": str(self.root / "absent-chrome")}
+        for artifact in ("browser.json", "wide.png", "narrow.png", "keyboard.png"):
+            with self.subTest(artifact=artifact):
+                output = self.evidence / ("existing-" + artifact)
+                output.mkdir()
+                (output / artifact).write_bytes(b"Previous collection evidence must survive unchanged.")
+                before = evidence_snapshot(output)
+                run = subprocess.run(["node", str(ROOT / "scripts/run_browser_checks.mjs"),
+                                      str(ROOT / "evals/fixtures/search-editor"), str(output)],
+                                     capture_output=True, text=True, timeout=30, env=env)
+                self.assertEqual(run.returncode, 2, run.stdout + run.stderr)
+                self.assertIn("new output path", run.stderr)
+                self.assertEqual(before, evidence_snapshot(output))
+
+    def test_started_collection_reserves_output_exclusively(self):
+        output = self.evidence / 'interrupted-collection'
+        script = f"import {{ claimBrowserEvidence }} from {json.dumps((ROOT / 'scripts/browser_harness.mjs').as_uri())};\n"
+        script += "const results = await Promise.allSettled([0, 1].map(() => claimBrowserEvidence(process.argv[1], ['wide.png', 'narrow.png', 'keyboard.png'])));\n"
+        script += "console.log(JSON.stringify(results.map(result => ({ status: result.status, reason: String(result.reason || '') }))));\n"
+        run = subprocess.run(['node', '--input-type=module', '--eval', script, str(output)],
+                             capture_output=True, text=True, timeout=30)
+        self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
+        attempts = json.loads(run.stdout)
+        self.assertEqual(sorted(attempt['status'] for attempt in attempts), ['fulfilled', 'rejected'])
+        self.assertIn('new output path', next(attempt['reason'] for attempt in attempts if attempt['status'] == 'rejected'))
+        # The reserving process exits before writing browser evidence. Both drivers
+        # must still reject this interrupted output without changing its artifacts.
+        self.assertFalse((output / 'browser.json').exists())
+        before = evidence_snapshot(output)
+        env = {**os.environ, 'AI_SLOP_CHROME': str(self.root / 'absent-chrome')}
+        for arguments in ([str(ROOT / 'scripts/run_browser_checks.mjs'), str(ROOT / 'evals/fixtures/search-editor')],
+                          [str(ROOT / 'scripts/run_scope_checks.mjs'), 'narrow-spacing', str(ROOT / 'evals/fixtures/narrow-spacing/product')]):
+            run = subprocess.run(['node', *arguments, str(output)], capture_output=True, text=True, timeout=30, env=env)
+            self.assertEqual(run.returncode, 2, run.stdout + run.stderr)
+            self.assertIn('new output path', run.stderr)
+            self.assertEqual(before, evidence_snapshot(output))
+
+    def test_unavailable_browser_uses_a_fresh_output_and_preserves_failed_runs(self):
+        env = {**os.environ, 'AI_SLOP_CHROME': str(self.root / 'absent-chrome')}
+        output = self.evidence / 'fresh-unavailable-browser'
+        command = ['node', str(ROOT / 'scripts/run_browser_checks.mjs'), str(ROOT / 'evals/fixtures/search-editor')]
+        run = subprocess.run([*command, str(output)], capture_output=True, text=True, timeout=30, env=env)
+        self.assertEqual(run.returncode, 1, run.stdout + run.stderr)
+        browser = json.loads((output / 'browser.json').read_text())
+        self.assertEqual({check['status'] for check in browser['checks']}, {'not-run'})
+        self.assertTrue(browser['collectionErrors'])
+        before = evidence_snapshot(output)
+        run = subprocess.run([*command, str(output)], capture_output=True, text=True, timeout=30, env=env)
+        self.assertEqual(run.returncode, 2, run.stdout + run.stderr)
+        self.assertEqual(before, evidence_snapshot(output))
+        fresh = self.evidence / 'another-fresh-unavailable-browser'
+        run = subprocess.run([*command, str(fresh)], capture_output=True, text=True, timeout=30, env=env)
+        self.assertEqual(run.returncode, 1, run.stdout + run.stderr)
+        self.assertTrue((fresh / 'browser.json').is_file())
+        self.assertEqual(before, evidence_snapshot(output))
 
     def test_record_order_does_not_change_integrity(self):
         source = replace_once(repaired_source(), SAVE, SAVE[:-1] + ".reverse();")
@@ -147,6 +210,33 @@ class BrowserCheckTests(unittest.TestCase):
         for check in self.observed["checks"]:
             if check["id"] in ("query-direct-entry", "query-reload"):
                 self.assertIn("Fixture did not finish loading", check["reason"])
+
+    def test_unavailable_save_reload_keeps_prior_failures_and_missing_checks(self):
+        source = replace_once(repaired_source(), "history.replaceState({}, '', url);",
+                              "history.pushState({}, '', url);")
+        source += "\nif (notes.find(note => note.id === 1).title !== initialNotes[0].title) el('save').remove();\n"
+        checks = self.run_fixture("unavailable-save-reload", source, allow_exceptions=True)
+        self.assert_failed(checks, "query-history")
+        for check_id in ("search-matches", "failed-save-draft", "failed-save-feedback", "failed-save-storage", "retry-persists"):
+            self.assertEqual(checks[check_id], "pass", checks)
+        self.assertEqual(sum(status == "not-run" for status in checks.values()), 10, checks)
+        self.assertTrue(self.observed["collectionErrors"])
+        for check in self.observed["checks"]:
+            if check["status"] == "not-run":
+                self.assertIn("Fixture did not finish loading", check["reason"])
+
+    def test_unavailable_initial_document_records_every_required_check(self):
+        source = repaired_source() + "\nel('save').remove();\n"
+        checks = self.run_fixture("unavailable-initial-document", source, allow_exceptions=True)
+        self.assertEqual(set(checks.values()), {"not-run"}, checks)
+        self.assertTrue(self.observed["collectionErrors"])
+
+    def test_image_state_failure_keeps_completed_behavior_observations(self):
+        source = repaired_source()
+        source += "\nel('editor').addEventListener('submit', () => { if (innerWidth < 400) location.href = 'about:blank'; });\n"
+        checks = self.run_fixture("unavailable-image-state", source, allow_exceptions=True)
+        self.assertEqual(set(checks.values()), {"pass"}, checks)
+        self.assertTrue(self.observed["collectionErrors"])
 
     def test_delayed_earlier_input_cannot_replace_the_final_query(self):
         source = replace_once(repaired_source(), "history.replaceState({}, '', url);",

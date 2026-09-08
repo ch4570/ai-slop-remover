@@ -83,7 +83,7 @@ python3 "$lutriva_cli" evaluate --project "$learning_project" \
 
 출력의 `decision`에서 `verdict`, `improvements`, `regressions`, `missing`, `errors`, `limitation`을 확인한다. 같은 사전 지정 검사가 두 대상 비교에서 모두 `fail → pass`로 바뀌고, 필수 검사와 전이·반례 보존 및 검토 조건이 충족돼야 `eligible`이다. 양쪽 통과는 `no-change`; 후보 실패·계획 위반은 `rejected`; 실행·증거·검토 부족은 `incomplete`다. `eligible`도 아직 활성화된 상태는 아니다.
 
-`max_runs`와 `max_seconds`는 **제출된 보고서의 실행 수와 시간 합계**를 검사한다. 실행기를 중단하거나 보고하지 않은 비용·여러 후보의 누적 사이클 예산을 강제하지 않는다. 실행 예산은 실제 비교를 수행하는 쪽에서도 지켜야 한다.
+`max_runs`와 `max_seconds`는 **제출된 보고서의 실행 수와 시간 합계**를 검사한다. 해석된 숫자의 십진 표현을 기준으로 시간을 합산하므로 `100.01`초 6회는 `600.06`초 예산에 정확히 들어맞으며, 작은 실제 초과도 허용하지 않는다. 실행기를 중단하거나 보고하지 않은 비용·여러 후보의 누적 사이클 예산을 강제하지 않는다. 실행 예산은 실제 비교를 수행하는 쪽에서도 지켜야 한다.
 
 ## 채택·조회·복귀
 
