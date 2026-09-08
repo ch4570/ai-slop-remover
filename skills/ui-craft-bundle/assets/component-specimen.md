@@ -20,6 +20,7 @@ Keep only affected rows. Include realistic long text from supported languages: f
 
 - **Keyboard:** traverse changed controls, activate the relevant action, and inspect visible focus and its return where applicable.
 - **Content and surfaces:** inspect supported themes, composed backgrounds, long labels, and the layout at the width where it is most constrained. Measure contrast if reporting a ratio.
+- **Composition:** inspect the consuming page as well as isolated controls. Compare surface areas and color emphasis, selected/error/action distinctions, shared alignment edges, and the space left for the primary task. Swatches alone cannot reveal a visually dominant sidebar or a cramped work region.
 - **Motion:** compare the changed transition with reduced motion enabled; preserve information and interaction in both modes. Record not applicable when no motion changes.
 - **Integration:** after the specimen is satisfactory, exercise a consuming screen's primary journey. A preview's mocked states do not establish real data persistence, failure recovery, or navigation behavior.
 

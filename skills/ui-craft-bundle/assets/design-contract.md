@@ -9,6 +9,8 @@ Use the project's existing design document and page-exception structure. For sma
 - Existing stack, components, constraints:
 - Layout and density rationale:
 - Type, spacing, surface hierarchy, visual signature:
+- Color roles and actual foreground/background pairs; where strong emphasis belongs:
+- Primary/supporting regions, shared alignment anchors, and content-driven sizing/adaptation:
 - Reference observations, if actually inspected:
 
 ## Reusable decisions

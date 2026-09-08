@@ -55,6 +55,6 @@ If an older npm package providing `ai-slop-remover` is already installed globall
 
 ## Distribution
 
-The package manifest targets `lutriva@2.3.0`. Neither `lutriva` nor the previous package name `ai-slop-remover-skills` had an npm registry entry when checked on 2026-09-07. Registry commands in the README are explicitly marked as pending. Use a source checkout or the Git-backed npm command for the current version; repository access is required while it is private.
+The package manifest targets `lutriva@2.4.0`. Neither `lutriva` nor the previous package name `ai-slop-remover-skills` had an npm registry entry when checked on 2026-09-07. Registry commands in the README are explicitly marked as pending. Use a source checkout or the Git-backed npm command for the current version; repository access is required while it is private.
 
 The exact-name check is a point-in-time observation, not a name reservation. The repository URL now uses `ch4570/lutriva`; historical release files retain their existing names.

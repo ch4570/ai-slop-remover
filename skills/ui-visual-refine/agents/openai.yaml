@@ -1,4 +1,4 @@
 interface:
   display_name: "UI Visual Refine"
-  short_description: "브랜드와 동작을 지키면서 화면의 위계·간격·밀도와 반응형 구조를 정리"
-  default_prompt: "$ui-visual-refine로 이 화면의 브랜드와 동작을 유지하면서 필요한 부분의 위계와 간격을 정리해줘."
+  short_description: "브랜드와 동작을 지키면서 배색·배치·위계·간격과 반응형 구조를 다듬기"
+  default_prompt: "$ui-visual-refine로 이 화면의 브랜드와 동작을 유지하면서 배색과 배치, 위계를 다듬고 실제 화면으로 확인해줘."

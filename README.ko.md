@@ -42,6 +42,8 @@ Lutriva는 **Codex와 Claude Code**에서 제품 화면과 사용 흐름을 다�
 
 공통 원칙은 **기억에 의존하지 않는 선택, 일관된 용어와 위치, 정보 위계, 사용자 통제, 오류 예방·복구, 접근 가능한 조작**입니다. WCAG 2.2 기준과 Apple·Android 권장값은 단위와 예외를 구분합니다. NN/G, W3C, Apple, Android, GOV.UK 자료를 확인하고 [출처와 적용 범위](skills/ui-craft-bundle/references/sources.md)에 기록했습니다. 특정 색이나 카드 사용만으로 문제를 판정하지 않습니다.
 
+**배색과 배치**도 구체적인 판단 순서로 다룹니다. [배색 구성](skills/ui-craft-bundle/references/color-composition.md)은 색의 역할과 전경·배경 조합, 인접 면, 색이 차지하는 면적과 강조를 함께 봅니다. [배치 구성](skills/ui-craft-bundle/references/layout-composition.md)은 실제 콘텐츠에 필요한 폭, 공통 정렬선, 그룹별 간격, 좁은 화면의 재배치를 다룹니다. 시각 스킬은 기존 브랜드를 유지하면서 실제 화면에서 두 구성을 함께 확인합니다.
+
 **[토스 기술 블로그의 디자인 글 8개](skills/ui-craft-bundle/references/toss-design.md)**도 직접 확인해 반영했습니다. 다음 행동이 예상되는 한국어 문구, 키보드가 열린 가입 흐름, 드래그 대체 조작, 실제 상태를 설명하는 모션, 모바일·PC별 정보 구조, 컴포넌트 확장과 명세, 초기 사용성 검증을 다룹니다. 원문의 관찰과 프로젝트에 적용할 판단·확인 방법을 구분하고, 필요한 작업에서 찾아 읽도록 연결했습니다.
 
 ## 빠른 시작
@@ -76,10 +78,10 @@ npx --yes --package='git+https://github.com/ch4570/lutriva.git' -- lutriva --lis
 npx --yes --package='git+https://github.com/ch4570/lutriva.git' -- lutriva --repo "/path/to/project" --agent codex --dry-run
 ```
 
-이 명령은 기본 브랜치를 따라가며 저장소 접근 권한이 필요합니다. `--dry-run`을 빼면 설치합니다. npm에 `lutriva@2.3.0`이 게시된 후에는 다음 명령을 쓸 수 있습니다.
+이 명령은 기본 브랜치를 따라가며 저장소 접근 권한이 필요합니다. `--dry-run`을 빼면 설치합니다. npm에 `lutriva@2.4.0`이 게시된 후에는 다음 명령을 쓸 수 있습니다.
 
 ```sh
-npx lutriva@2.3.0 --repo "/path/to/project" --agent codex
+npx lutriva@2.4.0 --repo "/path/to/project" --agent codex
 ```
 
 같은 패키지에서 기존 `ai-slop-remover` CLI도 제공합니다. Python을 찾지 못하면 `AI_SLOP_PYTHON`에 실행 파일의 정확한 경로를 지정하세요. npm 런타임 의존성과 자동 postinstall 작업은 없습니다.
@@ -178,7 +180,7 @@ Jetpack Compose 일정 편집 화면을 다듬어줘.
 | --- | --- |
 | [`ai-slop-remover`](skills/ai-slop-remover/SKILL.md) | 진단부터 개선·검수까지 필요한 스킬 연결 |
 | [`ui-slop-audit`](skills/ui-slop-audit/SKILL.md) | 근거와 사용자 영향을 중심으로 읽기 전용 진단 |
-| [`ui-visual-refine`](skills/ui-visual-refine/SKILL.md) | 레이아웃·위계·밀도·타이포·반응형 조정 |
+| [`ui-visual-refine`](skills/ui-visual-refine/SKILL.md) | 배색·배치·위계·밀도·타이포·반응형 조정 |
 | [`ux-flow-refine`](skills/ux-flow-refine/SKILL.md) | 상태·피드백·모션·실패 복구 개선 |
 | [`ux-writing`](skills/ux-writing/SKILL.md) | 버튼·안내·오류·빈 상태 문구 개선 |
 | [`ui-quality-gate`](skills/ui-quality-gate/SKILL.md) | 구현 결과의 화면과 동작을 읽기 전용 검수 |
@@ -217,7 +219,7 @@ UI UX Pro Max, Vercel, getdesign.md에서 유용한 방법을 선별해 연결�
 python3 -m unittest discover -s tests -q
 npm test
 npm run check
-python3 scripts/export_bundle.py --output dist/lutriva-2.3.0.zip
+python3 scripts/export_bundle.py --output dist/lutriva-2.4.0.zip
 npm pack --dry-run
 ```
 

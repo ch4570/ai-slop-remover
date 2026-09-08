@@ -1,0 +1,141 @@
+{
+  "case": "maru-delivery-color-layout",
+  "repetitions": 1,
+  "agent_contexts": 2,
+  "invocation": "snapshot-direct",
+  "baseline_commit": "ecefe1da3bf956dea453e1670f89b488f2b38343",
+  "behavior": {
+    "original": {
+      "passed": 54,
+      "total": 54,
+      "viewports": [
+        {
+          "name": "wide",
+          "width": 1440,
+          "height": 1000,
+          "deviceScaleFactor": 1,
+          "mobile": false
+        },
+        {
+          "name": "narrow",
+          "width": 390,
+          "height": 844,
+          "deviceScaleFactor": 1,
+          "mobile": true
+        },
+        {
+          "name": "narrow-floor",
+          "width": 320,
+          "height": 812,
+          "deviceScaleFactor": 1,
+          "mobile": true
+        }
+      ]
+    },
+    "lane-a": {
+      "passed": 54,
+      "total": 54,
+      "viewports": [
+        {
+          "name": "wide",
+          "width": 1440,
+          "height": 1000,
+          "deviceScaleFactor": 1,
+          "mobile": false
+        },
+        {
+          "name": "narrow",
+          "width": 390,
+          "height": 844,
+          "deviceScaleFactor": 1,
+          "mobile": true
+        },
+        {
+          "name": "narrow-floor",
+          "width": 320,
+          "height": 812,
+          "deviceScaleFactor": 1,
+          "mobile": true
+        }
+      ]
+    },
+    "lane-b": {
+      "passed": 54,
+      "total": 54,
+      "viewports": [
+        {
+          "name": "wide",
+          "width": 1440,
+          "height": 1000,
+          "deviceScaleFactor": 1,
+          "mobile": false
+        },
+        {
+          "name": "narrow",
+          "width": 390,
+          "height": 844,
+          "deviceScaleFactor": 1,
+          "mobile": true
+        },
+        {
+          "name": "narrow-floor",
+          "width": 320,
+          "height": 812,
+          "deviceScaleFactor": 1,
+          "mobile": true
+        }
+      ]
+    }
+  },
+  "source": [
+    {
+      "variant": "lane-a",
+      "checks": {
+        "app_bytes_unchanged": true,
+        "all_original_ids_once": true,
+        "original_data_attributes_retained": true,
+        "only_expected_product_files": true
+      },
+      "final_sha256": {
+        "index.html": "cd85f810f63c1b4401b2ce95d96f77e0c888252aacf55f8df0fda2d9694a3dc0",
+        "style.css": "c2a1b57f91d69642ede9b5c9626f77c8f98dda5d265046d8fcf023513e0ec7d2",
+        "DESIGN.md": "2a78b745b32bbec3de97cab2015a12f475197e0240e273ff46d0d4ff3c76a3d6",
+        "app.js": "fb9596379f4a641cf8669b0e644d1fc140d7566854f4525ec657f95edc086b43"
+      }
+    },
+    {
+      "variant": "lane-b",
+      "checks": {
+        "app_bytes_unchanged": true,
+        "all_original_ids_once": true,
+        "original_data_attributes_retained": true,
+        "only_expected_product_files": true
+      },
+      "final_sha256": {
+        "index.html": "088148ed624654d7d8a774a8f59a391d3fea27be4b5ed7e4cbfbf5ab0b340653",
+        "style.css": "b4b88c21812cb02467ca4b8c5507f535190c248ef1cc781ad61cc2bd5ad29123",
+        "DESIGN.md": "b32f34b3ccee52fa9e954bd77cc71ab35fe5fa52eece18dfcf366993d3c6a2f7",
+        "app.js": "fb9596379f4a641cf8669b0e644d1fc140d7566854f4525ec657f95edc086b43"
+      }
+    }
+  ],
+  "limits": [
+    "One synthetic product and one matched pair; no general superiority or human-preference claim.",
+    "24 static contracts are separate from this executed trial.",
+    "Installed-host discovery, real mobile devices and screen-reader use not run.",
+    "Initial collector Tab bound correction retained; products/agents were not rerun for that correction."
+  ],
+  "blind_review": {
+    "mapping": {
+      "version-x": "lane-b",
+      "version-y": "lane-a"
+    },
+    "brand": "tie",
+    "color_roles": "tie",
+    "task_hierarchy": "baseline",
+    "comparison": "tie",
+    "group_alignment": "baseline (slight)",
+    "narrow_access": "candidate (slight)",
+    "overall": "tradeoffs; no general superiority demonstrated"
+  }
+}

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.0 — 2026-09-08
+
+- Add practical color composition and layout composition references: semantic color pairs, neighboring surfaces, area and emphasis, content width, alignment anchors, grouping, and responsive recomposition.
+- Route palette and placement work through the visual skill and review whole-page composition alongside component states; keep brand constraints and narrow-edit boundaries.
+- Extend design records and component previews to capture color roles and spatial relationships, with source-attributed guidance instead of fixed palettes or grid presets.
+
 ## 2.3.0 — 2026-09-07
 
 - Add a project-local learning CLI for frozen candidates, submitted-evidence evaluation, explicit adoption, scoped context, and rollback. Require repeated improvement, regression/transfer checks, compatible base/policy/generation, and intact evidence. Equal passes remain `no-change`; evidence declarations do not authenticate observed UI quality.
