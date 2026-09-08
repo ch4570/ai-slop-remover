@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Respect the first `--` option terminator in npm CLI help detection, preserving installer argument errors and ordinary Python-free help.
 - Reuse strict installation-record validation in reinstall preflight; reject malformed receipt schemas before copying new skills, while preserving existing files and valid standard legacy/current receipts.
 - Share bounded Tab, Enter, Escape and Space browser inputs; validate modifier/text events and exercise actual focus, form submission and checkbox defaults in Chrome.
 - Wait for valid two-line Chrome startup endpoint data within the existing retry budget; cover partially written files without launching a browser in unit tests.

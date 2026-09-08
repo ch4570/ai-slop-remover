@@ -9,7 +9,9 @@ const { version } = JSON.parse(readFileSync(new URL('package.json', packageRoot)
 const args = process.argv.slice(2);
 if (args[0] === 'install') args.shift();
 
-if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
+const optionTerminator = args.indexOf('--');
+const helpArgs = optionTerminator < 0 ? args : args.slice(0, optionTerminator);
+if (args.length === 0 || helpArgs.includes('--help') || helpArgs.includes('-h')) {
   console.log(`Lutriva ${version}
 
 Install product UI/UX skills for Codex or Claude Code.
