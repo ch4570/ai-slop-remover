@@ -41,7 +41,7 @@ async function observe(id, callback) {
 try {
   const productType = await lstat(fixture);
   if (productType.isSymbolicLink() || !productType.isDirectory()) throw new Error('Product root must be an ordinary directory; no browser traversal was attempted.');
-  await withBrowser(fixture, path.join(output, 'images'), async ({ origin, page, evaluate, call, screenshot, pause, exceptions }) => {
+  await withBrowser(fixture, path.join(output, 'images'), async ({ origin, page, pressKey, evaluate, call, screenshot, pause, exceptions }) => {
     environment = { browser: (await call('Browser.getVersion')).product, node: process.version, origin };
     const navigate = async (relative = '') => {
       const previous = await evaluate('performance.timeOrigin');
@@ -61,8 +61,7 @@ try {
     };
     const setQuery = async (id, value) => evaluate(`(() => { const input = document.getElementById(${JSON.stringify(id)}); input.value = ${JSON.stringify(value)}; input.dispatchEvent(new Event('input', { bubbles: true })); })()`);
     const tab = async () => {
-      await page('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9 });
-      await page('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9 });
+      await pressKey('Tab');
       return evaluate(`(() => { const element = document.activeElement; const style = getComputedStyle(element); return { id: element.id, tag: element.tagName, text: element.textContent.trim().slice(0, 80), outline: style.outline, boxShadow: style.boxShadow, focusVisible: element.matches(':focus-visible') }; })()`);
     };
     const rows = `Array.from(document.querySelectorAll('tbody tr')).map(row => Array.from(row.cells).slice(0,4).map(cell => cell.textContent))`;

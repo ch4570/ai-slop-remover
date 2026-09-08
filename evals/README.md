@@ -245,6 +245,28 @@ Scope outputs may already contain `prepare` metadata and `product/`; only their
 `browser.json`, `images/`, and collection marker are reserved. Choose a new output
 path when repeating collection, including after an unavailable-browser result.
 
+For small keyboard sequences, `withBrowser` supplies
+`pressKey('Tab', {shift: true})` (options are optional). The shared helper accepts
+only `Tab`, `Enter`, `Escape` and `Space`, with an optional boolean `shift`; it
+rejects unsupported keys/options before dispatch. It sends paired key-down/up
+events, uses Shift's modifier bit 8 and includes Enter/Space text only on key-down.
+Windows and native virtual key codes are distinct protocol fields, so this
+bounded helper leaves the platform-native code unset. See the official
+[CDP Input contract](https://chromedevtools.github.io/devtools-protocol/tot/Input/#method-dispatchKeyEvent).
+Search/scope drivers reuse it without changing their check criteria. Unit tests
+verify exact event payloads and ordering; an opt-in Chrome control checks trusted
+events, forward/reverse focus, implicit form submission, checkbox activation and
+unchanged page/target identity. Initial control focus is explicit test setup.
+This is not an arbitrary shortcut or text-entry API, an OS keyboard/IME/native
+select-menu test, or a guarantee of network/update isolation. An isolated Chrome
+profile does not establish those guarantees either.
+
+Startup waits for the two-line `DevToolsActivePort` file to contain a valid TCP
+port and browser endpoint path, within the existing 100-attempt/100ms retry
+budget. A readable empty or port-only file is not readiness. Dependency-free
+startup tests inject file reads, process/socket behavior and accelerated timers;
+they verify the retry budget and cleanup, not real Chrome startup latency.
+
 To verify the checker itself, opt in to the dependency-free Chrome regression
 tests (ordinary Python discovery skips them):
 

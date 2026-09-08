@@ -17,7 +17,7 @@ const suite = JSON.parse(await readFile(new URL('../evals/checks/suite.json', im
 const required = Object.entries(suite.cases['search-editor']).filter(([, kind]) => kind === 'behavior').map(([id]) => id);
 const checks = [], collectionErrors = [], focusOrder = [];
 let browser = null, origin = null, layout = null, narrowState = null, exceptions = [];
-const observe = async ({ origin: browserOrigin, page, evaluate, call, addBinding, screenshot, pause, exceptions: browserExceptions }) => {
+const observe = async ({ origin: browserOrigin, page, pressKey, evaluate, call, addBinding, screenshot, pause, exceptions: browserExceptions }) => {
   origin = browserOrigin;
   exceptions = browserExceptions;
   browser = (await call('Browser.getVersion')).product;
@@ -91,8 +91,7 @@ const observe = async ({ origin: browserOrigin, page, evaluate, call, addBinding
   snapshot = await resetFixture();
   const enter = await evaluate(`prepareOrdinaryEnter(${JSON.stringify(snapshot)})`);
   if (enter.selectionFound) {
-    await page('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Enter', code: 'Enter', text: '\r', windowsVirtualKeyCode: 13 });
-    await page('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13 });
+    await pressKey('Enter');
     await pause(150);
   }
   checks.push(await evaluate(`observeOrdinaryEnter(${JSON.stringify(enter)})`));
@@ -159,8 +158,7 @@ const observe = async ({ origin: browserOrigin, page, evaluate, call, addBinding
   layout = await evaluate(`({ width: innerWidth, documentWidth: document.documentElement.scrollWidth, active: document.activeElement?.id, motionReduced: matchMedia('(prefers-reduced-motion: reduce)').matches })`);
   await page('Runtime.evaluate', { expression: 'document.activeElement?.blur()' });
   for (let step = 0; step < 9; step += 1) {
-    await page('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9 });
-    await page('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9 });
+    await pressKey('Tab');
     const focused = await evaluate(`({id:document.activeElement?.id,tag:document.activeElement?.tagName,text:document.activeElement?.textContent?.slice(0,70)})`);
     focusOrder.push(focused);
     if (focused.id === 'save') await screenshot('keyboard.png', { captureBeyondViewport: false });

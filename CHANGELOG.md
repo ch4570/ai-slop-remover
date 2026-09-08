@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Share bounded Tab, Enter, Escape and Space browser inputs; validate modifier/text events and exercise actual focus, form submission and checkbox defaults in Chrome.
+- Wait for valid two-line Chrome startup endpoint data within the existing retry budget; cover partially written files without launching a browser in unit tests.
 - Verify preserved evidence archives against exact file inventories without extraction; reject unexpected metadata, changed bytes and invalid archive members.
 - Aggregate interrupted navigation and scope observations without erasing concrete failures; make search collection errors return 1 while preserving scope's documented record-only exit contract.
 - Capture keyboard-focus evidence in viewport mode; keep full-page overviews separate after a scoped trial exposed hidden focus clipping in full-page captures.

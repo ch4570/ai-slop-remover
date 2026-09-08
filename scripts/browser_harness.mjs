@@ -5,6 +5,30 @@ import { access, lstat, mkdir, mkdtemp, readFile, realpath, rm, writeFile } from
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
+const keys = {
+  Tab: { key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9 },
+  Enter: { key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13, text: '\r' },
+  Escape: { key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 },
+  Space: { key: ' ', code: 'Space', windowsVirtualKeyCode: 32, text: ' ' },
+};
+
+// Bounded DOM key presses. CDP uses Shift=8; native key codes are platform-specific.
+export async function pressKey(page, key, options = {}) {
+  if (typeof key !== 'string' || !Object.hasOwn(keys, key)) {
+    throw new TypeError('pressKey supports only Tab, Enter, Escape, and Space.');
+  }
+  if (options === null || typeof options !== 'object' ||
+      ![Object.prototype, null].includes(Object.getPrototypeOf(options)) ||
+      Reflect.ownKeys(options).some(name => name !== 'shift') ||
+      (Object.hasOwn(options, 'shift') && typeof options.shift !== 'boolean')) {
+    throw new TypeError('pressKey options support only a boolean shift.');
+  }
+  const { text, ...identity } = keys[key];
+  const event = { ...identity, modifiers: options.shift ? 8 : 0 };
+  await page('Input.dispatchKeyEvent', { type: 'keyDown', ...event, ...(text === undefined ? {} : { text }) });
+  await page('Input.dispatchKeyEvent', { type: 'keyUp', ...event });
+}
+
 export async function claimBrowserEvidence(outputArg, imagePaths) {
   const output = path.resolve(outputArg);
   const marker = '.browser-evidence-started';
@@ -67,7 +91,17 @@ export async function withBrowser(fixtureArg, outputArg, observe) {
     for (let attempt = 0; attempt < 100; attempt += 1) {
       if (launchError) throw launchError;
       if (chrome.exitCode !== null) throw new Error('Chrome exited before the debugging endpoint was ready');
-      try { debug = (await readFile(path.join(profile, 'DevToolsActivePort'), 'utf8')).trim().split('\n'); break; } catch { await pause(100); }
+      try {
+        // Chrome can create this file before both endpoint lines are written.
+        const candidate = (await readFile(path.join(profile, 'DevToolsActivePort'), 'utf8')).trim().split(/\r?\n/);
+        const [port, browserPath] = candidate;
+        if (candidate.length === 2 && /^\d+$/.test(port) && Number(port) >= 1 && Number(port) <= 65535 &&
+            /^\/devtools\/browser\/[^/?#\s]+$/.test(browserPath)) {
+          debug = candidate;
+          break;
+        }
+      } catch { /* Wait for Chrome to publish the endpoint file. */ }
+      await pause(100);
     }
     if (!debug) throw new Error('Chrome debugging endpoint did not become ready');
     socket = new WebSocket(`ws://127.0.0.1:${debug[0]}${debug[1]}`);
@@ -116,7 +150,8 @@ export async function withBrowser(fixtureArg, outputArg, observe) {
       const result = await page('Page.captureScreenshot', { format: 'png', captureBeyondViewport });
       await writeFile(path.join(output, name), Buffer.from(result.data, 'base64'));
     };
-    return await observe({ origin, page, evaluate, call, addBinding, screenshot, pause, exceptions });
+    return await observe({ origin, page, pressKey: (key, options) => pressKey(page, key, options),
+      evaluate, call, addBinding, screenshot, pause, exceptions });
   } finally {
     for (const entry of pending.values()) clearTimeout(entry.timer);
     socket?.close();

@@ -95,6 +95,137 @@ class BrowserCheckTests(unittest.TestCase):
         checks = self.run_fixture("repaired", repaired_source())
         self.assertEqual(set(checks.values()), {"pass"}, checks)
 
+    def test_bounded_keyboard_helper_uses_trusted_browser_defaults(self):
+        fixture = self.root / 'bounded-keyboard'
+        fixture.mkdir()
+        (fixture / 'index.html').write_text('''<!doctype html><meta charset="utf-8">
+<title>Bounded keyboard control</title>
+<form id="form"><input id="query" aria-label="Query"><button id="submit">Submit</button></form>
+<label><input id="check" type="checkbox">Check</label><button id="last">Last</button>
+<script>
+window.observed = { keys: [], submissions: [], changes: [] };
+for (const type of ['keydown', 'keyup']) document.addEventListener(type, event => {
+  observed.keys.push({ type, key: event.key, code: event.code, shift: event.shiftKey,
+    trusted: event.isTrusted, target: event.target.id });
+});
+document.getElementById('form').addEventListener('submit', event => {
+  event.preventDefault();
+  observed.submissions.push({ trusted: event.isTrusted, submitter: event.submitter?.id });
+});
+document.getElementById('check').addEventListener('change', event => {
+  observed.changes.push({ trusted: event.isTrusted, checked: event.target.checked });
+});
+</script>''', encoding='utf-8')
+        output = self.evidence / 'bounded-keyboard'
+        script = f"import {{ withBrowser }} from {json.dumps((ROOT / 'scripts/browser_harness.mjs').as_uri())};\n"
+        script += r'''
+import assert from 'node:assert/strict';
+import { writeFile } from 'node:fs/promises';
+import path from 'node:path';
+// Observe raw protocol events only in this control; the harness API stays bounded.
+const NativeWebSocket = globalThis.WebSocket;
+let observeMessage = () => {};
+globalThis.WebSocket = class extends NativeWebSocket {
+  constructor(...args) {
+    super(...args);
+    this.addEventListener('message', event => observeMessage(JSON.parse(event.data)));
+  }
+};
+const result = await withBrowser(process.argv[1], process.argv[2], async ({
+  origin, page, pressKey, evaluate, call, pause, exceptions,
+}) => {
+  const browser = await call('Browser.getVersion');
+  const url = origin + '/';
+  await page('Page.navigate', { url });
+  let ready = false;
+  for (let attempt = 0; attempt < 100; attempt += 1) {
+    try { ready = await evaluate(`location.href === ${JSON.stringify(url)} && document.readyState === 'complete' && !!window.observed`); }
+    catch { /* Navigation replaces the execution context. */ }
+    if (ready) break;
+    await pause(50);
+  }
+  assert.ok(ready, 'Keyboard control did not load');
+  await call('Target.setDiscoverTargets', { discover: true });
+  const pageTargets = async () => (await call('Target.getTargets')).targetInfos
+    .filter(target => target.type === 'page').map(({ targetId, url }) => ({ targetId, url }))
+    .sort((a, b) => a.targetId.localeCompare(b.targetId));
+  const beforeTargets = await pageTargets();
+  assert.equal(beforeTargets.filter(target => target.url === url).length, 1);
+  assert.ok(beforeTargets.every(target => target.url === url || target.url === 'about:blank'),
+    'Unexpected page target before keyboard control');
+  const expectedTargets = new Map(beforeTargets.map(target => [target.targetId, target.url]));
+  const unexpected = [];
+  const targetEvents = [];
+  observeMessage = ({ method, params }) => {
+    if (['Target.targetCreated', 'Target.targetInfoChanged', 'Target.targetDestroyed'].includes(method)) {
+      targetEvents.push({ method, params });
+      const target = params.targetInfo;
+      if ((target?.type === 'page' && expectedTargets.get(target.targetId) !== target.url) ||
+          (method === 'Target.targetDestroyed' && expectedTargets.has(params.targetId))) {
+        unexpected.push({ method, params });
+      }
+    }
+    if (['Page.frameNavigated', 'Page.navigatedWithinDocument', 'Page.frameRequestedNavigation'].includes(method)) {
+      unexpected.push({ method, params });
+    }
+  };
+  const assertSafe = () => assert.deepEqual(unexpected, [], 'Stop: unexpected target or navigation event');
+  const press = async (key, options) => {
+    assertSafe();
+    await pressKey(key, options);
+    assertSafe(); // Stop before any further key if the completed pair caused navigation.
+  };
+  const timeOrigin = await evaluate('performance.timeOrigin');
+  await evaluate("document.getElementById('query').focus()");
+  const focusOrder = [];
+  for (const shift of [false, false, true, true]) {
+    await press('Tab', { shift });
+    focusOrder.push(await evaluate('document.activeElement.id'));
+  }
+  assert.deepEqual(focusOrder, ['submit', 'check', 'submit', 'query']);
+  await press('Enter');
+  assert.deepEqual(await evaluate('observed.submissions'), [{ trusted: true, submitter: 'submit' }]);
+  await press('Tab');
+  await press('Tab');
+  assert.equal(await evaluate('document.activeElement.id'), 'check');
+  assert.equal(await evaluate("document.getElementById('check').checked"), false);
+  await press('Space');
+  assert.equal(await evaluate("document.getElementById('check').checked"), true);
+  await press('Escape');
+  await pause(100);
+  assertSafe();
+  const observed = await evaluate('observed');
+  assert.deepEqual(observed.changes, [{ trusted: true, checked: true }]);
+  assert.equal(observed.keys.length, 18);
+  assert.ok(observed.keys.every(event => event.trusted));
+  assert.deepEqual(observed.keys.filter(event => event.key === 'Escape').map(event => [event.type, event.code]),
+    [['keydown', 'Escape'], ['keyup', 'Escape']]);
+  assert.deepEqual(observed.keys.filter(event => event.shift).map(event => [event.type, event.key]),
+    [['keydown', 'Tab'], ['keyup', 'Tab'], ['keydown', 'Tab'], ['keyup', 'Tab']]);
+  assert.equal(await evaluate('location.href'), url);
+  assert.equal(await evaluate('performance.timeOrigin'), timeOrigin);
+  const afterTargets = await pageTargets();
+  assertSafe();
+  assert.deepEqual(afterTargets, beforeTargets);
+  assert.deepEqual(exceptions, []);
+  observeMessage = () => {};
+  return { browser, node: process.version, focusOrder, observed, beforeTargets, afterTargets, targetEvents, unexpected };
+});
+await writeFile(path.join(process.argv[2], 'keyboard-control.json'), JSON.stringify(result, null, 2) + '\n');
+console.log(JSON.stringify(result));
+'''
+        run = subprocess.run(['node', '--input-type=module', '--eval', script, str(fixture), str(output)],
+                             capture_output=True, text=True, timeout=45)
+        self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
+        result = json.loads(run.stdout)
+        self.assertEqual(result['focusOrder'], ['submit', 'check', 'submit', 'query'])
+        self.assertEqual(result['beforeTargets'], result['afterTargets'])
+        self.assertEqual(result['unexpected'], [])
+        self.assertEqual(result['observed']['submissions'], [{'trusted': True, 'submitter': 'submit'}])
+        self.assertEqual(result['observed']['changes'], [{'trusted': True, 'checked': True}])
+        print(f"Keyboard control: {result['browser']['product']}; Node {result['node']}; "
+              f"evidence: {output / 'keyboard-control.json'}")
+
     def test_keyboard_capture_preserves_viewport_on_tall_page(self):
         source = repaired_source() + "\ndocument.body.style.minHeight = '1100px';\n"
         checks = self.run_fixture('tall-keyboard-viewport', source)

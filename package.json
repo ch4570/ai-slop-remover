@@ -32,9 +32,9 @@
     "skills/**/assets/LICENSE"
   ],
   "scripts": {
-    "test": "node --test tests/npm-cli.test.mjs",
+    "test": "node --test tests/npm-cli.test.mjs tests/browser-input.test.mjs tests/browser-startup.test.mjs",
     "check": "python3 scripts/update_manifest.py --check && python3 scripts/check_package.py",
-    "check:js": "node --check bin/ai-slop-remover.js && node --check tests/npm-cli.test.mjs && node --check scripts/run_browser_checks.mjs && node --check evals/checks/search-editor.js && node --check evals/fixtures/search-editor/app.js && node --check scripts/browser_harness.mjs && node --check scripts/run_scope_checks.mjs && node --check evals/fixtures/narrow-spacing/product/app.js && node --check evals/fixtures/audit-read-only/product/app.js && node --check evals/fixtures/empty-state-copy-only/product/app.js && node --check evals/fixtures/master-page-consistency/product/app.js",
+    "check:js": "node --check bin/ai-slop-remover.js && node --check tests/npm-cli.test.mjs && node --check tests/browser-input.test.mjs && node --check tests/browser-startup.test.mjs && node --check scripts/run_browser_checks.mjs && node --check evals/checks/search-editor.js && node --check evals/fixtures/search-editor/app.js && node --check scripts/browser_harness.mjs && node --check scripts/run_scope_checks.mjs && node --check evals/fixtures/narrow-spacing/product/app.js && node --check evals/fixtures/audit-read-only/product/app.js && node --check evals/fixtures/empty-state-copy-only/product/app.js && node --check evals/fixtures/master-page-consistency/product/app.js",
     "prepack": "npm run check",
     "prepublishOnly": "npm test && python3 -m unittest discover -s tests -q"
   },
