@@ -19,7 +19,10 @@ def main():
         check()
         manifest = install.read_json(ROOT / "manifest.json")
         args.output.parent.mkdir(parents=True, exist_ok=True)
-        with zipfile.ZipFile(args.output, "x", compression=zipfile.ZIP_DEFLATED) as archive:
+        # Source timestamps are not release content. Clamp them to ZIP's range
+        # without changing validated source bytes or filesystem metadata.
+        with zipfile.ZipFile(args.output, "x", compression=zipfile.ZIP_DEFLATED,
+                             strict_timestamps=False) as archive:
             for name in ["manifest.json", *sorted(manifest["files"])]:
                 archive.write(ROOT / name, arcname=name)
         print("Exported " + str(args.output))

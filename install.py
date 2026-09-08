@@ -91,9 +91,13 @@ def tree_files(root, ignore_metadata=False, empty_directories=None):
 
 
 def load_bundle(root):
-    if (root / "manifest.json").is_symlink():
+    manifest_path = root / "manifest.json"
+    manifest_mode = manifest_path.lstat().st_mode
+    if stat.S_ISLNK(manifest_mode):
         raise BundleError("Manifest cannot be a symlink")
-    manifest = read_json(root / "manifest.json")
+    if not stat.S_ISREG(manifest_mode):
+        raise BundleError("Manifest must be a regular file")
+    manifest = read_json(manifest_path)
     if isinstance(manifest, dict) and manifest.get("schema") == 2:
         return load_skill_set(root, manifest)
     if not isinstance(manifest, dict) or manifest.get("schema") != 1 or manifest.get("name") != NAME:

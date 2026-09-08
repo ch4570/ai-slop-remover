@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Reject non-regular bundle manifests before reading JSON, preventing FIFO inputs from blocking listing, status, dry-run, and installation.
+- Clamp offline ZIP metadata timestamps to the format's supported range while preserving verified release bytes, source timestamps, and existing-output refusal.
 - Respect the first `--` option terminator in npm CLI help detection, preserving installer argument errors and ordinary Python-free help.
 - Reuse strict installation-record validation in reinstall preflight; reject malformed receipt schemas before copying new skills, while preserving existing files and valid standard legacy/current receipts.
 - Share bounded Tab, Enter, Escape and Space browser inputs; validate modifier/text events and exercise actual focus, form submission and checkbox defaults in Chrome.

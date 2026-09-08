@@ -34,8 +34,10 @@ def snapshot(root):
             result[name] = ("link", str(path.readlink()), modified)
         elif path.is_dir():
             result[name] = ("directory", modified)
-        else:
+        elif path.is_file():
             result[name] = ("file", path.read_bytes(), modified)
+        else:
+            result[name] = ("special", path.lstat().st_mode, modified)
     return result
 
 
@@ -52,13 +54,13 @@ class InstallerTestCase(unittest.TestCase):
         self.repo = self.workspace / "project"
         self.repo.mkdir()
 
-    def run_installer(self, *args):
+    def run_installer(self, *args, timeout=15):
         return subprocess.run(
             [sys.executable, str(self.bundle / "install.py"), *map(str, args)],
             cwd=self.workspace,
             capture_output=True,
             text=True,
-            timeout=15,
+            timeout=timeout,
             check=False,
         )
 
@@ -920,6 +922,38 @@ class SkillSetInstallerTests(InstallerTestCase):
         data = manifest.read_text(encoding="utf-8").replace('"schema": 2,', '"schema": 2, "schema": 2,', 1)
         manifest.write_text(data, encoding="utf-8")
         self.assert_repo_refused()
+
+    def test_directory_manifest_is_refused_before_reading(self):
+        manifest = self.bundle / "manifest.json"
+        manifest.unlink()
+        manifest.mkdir()
+        for mode in (("--list",), ("--dest", self.dest, "--status"),
+                     ("--dest", self.dest, "--dry-run"), ("--dest", self.dest)):
+            with self.subTest(mode=mode):
+                result = self.assert_refused_without_changes(*mode)
+                self.assertIn("Manifest must be a regular file", result.stderr)
+                self.assertNotIn("Traceback", result.stderr)
+
+    @unittest.skipUnless(hasattr(os, "mkfifo"), "Named pipes require os.mkfifo")
+    def test_fifo_manifest_is_refused_without_waiting_for_a_writer(self):
+        manifest = self.bundle / "manifest.json"
+        manifest.unlink()
+        os.mkfifo(manifest)
+        before = snapshot(self.workspace)
+        for mode in (("--list",), ("--dest", self.dest, "--status"),
+                     ("--dest", self.dest, "--dry-run"), ("--dest", self.dest)):
+            with self.subTest(mode=mode):
+                try:
+                    # subprocess.run kills and waits for a timed-out child, so
+                    # this regression cannot leave a blocked installer behind.
+                    result = self.run_installer(*mode, timeout=2)
+                except subprocess.TimeoutExpired:
+                    self.fail("Installer waited for a writer to the FIFO manifest")
+                finally:
+                    self.assertEqual(snapshot(self.workspace), before)
+                self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertIn("Manifest must be a regular file", result.stderr)
+                self.assertNotIn("Traceback", result.stderr)
 
     def test_payload_symlink_is_rejected_even_when_hash_matches(self):
         source = self.bundle / "skills/ui-copy/SKILL.md"
