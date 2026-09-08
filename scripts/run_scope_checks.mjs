@@ -54,8 +54,8 @@ try {
       }
       throw new Error('Fixture did not finish loading');
     };
-    const capture = async name => {
-      try { await screenshot(name); observations.images.push('images/' + name); }
+    const capture = async (name, options) => {
+      try { await screenshot(name, options); observations.images.push('images/' + name); }
       catch (error) { observations.collectionErrors.push('Screenshot ' + name + ': ' + String(error)); }
     };
     const setQuery = async (id, value) => evaluate(`(() => { const input = document.getElementById(${JSON.stringify(id)}); input.value = ${JSON.stringify(value)}; input.dispatchEvent(new Event('input', { bubbles: true })); })()`);
@@ -152,7 +152,7 @@ try {
           (caseId === 'audit-read-only' && focused.id === 'order-search') ||
           (caseId === 'empty-state-copy-only' && focused.id === 'query') ||
           (caseId === 'master-page-consistency' && focused.tag === 'BUTTON')) {
-        await capture('keyboard.png');
+        await capture('keyboard.png', { captureBeyondViewport: false });
         break;
       }
     }

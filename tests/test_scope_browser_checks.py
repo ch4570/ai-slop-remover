@@ -9,7 +9,7 @@ import tempfile
 import unittest
 
 from test_scope_checks import ROOT, good_product, scope
-from test_browser_checks import evidence_snapshot
+from test_browser_checks import evidence_snapshot, png_dimensions
 
 
 @unittest.skipUnless(os.environ.get('AI_SLOP_BROWSER_TESTS') == '1',
@@ -69,6 +69,17 @@ class ScopeBrowserTests(unittest.TestCase):
                     self.assertGreater((self.output / 'images' / name).stat().st_size, 0)
                 self.assertEqual(self.browser['observations']['layout']['width'], 375)
                 self.assertTrue(self.browser['observations']['focus'])
+
+    def test_keyboard_capture_preserves_viewport_on_tall_page(self):
+        # The unchanged audit page already extends below both viewport heights.
+        checks = self.run_product('tall-keyboard-viewport', 'audit-read-only')
+        self.assertEqual(set(checks.values()), {'pass'}, self.browser)
+        self.assertEqual(set(self.source.values()), {'pass'})
+        self.assertEqual(self.browser['observations']['focus'][-1]['id'], 'order-search')
+        for name, height in (('wide.png', 900), ('narrow.png', 844)):
+            with self.subTest(overview=name):
+                self.assertGreater(png_dimensions(self.output / 'images' / name)[1], height)
+        self.assertEqual(png_dimensions(self.output / 'images/keyboard.png'), (375, 844))
 
     def test_existing_browser_artifacts_are_preserved(self):
         env = {**os.environ, 'AI_SLOP_CHROME': str(self.root / 'absent-chrome')}

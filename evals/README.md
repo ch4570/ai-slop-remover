@@ -209,6 +209,13 @@ direct shared-URL navigation, and page reloads, and
 records 1280px, 375px error-state, and keyboard-focus images. It seeds again before
 collecting the narrow error-state images so a broken save cannot prevent that
 separate observation. Each check's evidence retains its expected/observed records.
+Wide and narrow images are full-page overviews at the configured viewport widths;
+their pixel dimensions need not equal the viewport. Both drivers capture
+`keyboard.png` in viewport mode (375 × 844), preserving the current visible frame.
+Full-page capture can reframe scroll containers and hide focus clipping, so do not
+use an overview alone to establish viewport focus visibility. Inspect the keyboard
+image alongside the actual focused element and scroll state; capture mode alone
+does not establish accessibility conformance.
 If collection stops during a save, reload, or image observation, `browser.json`
 preserves completed checks and marks every remaining required behavior check
 `not-run` with the collection error. `collectionErrors` records the interruption

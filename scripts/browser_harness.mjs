@@ -111,8 +111,9 @@ export async function withBrowser(fixtureArg, outputArg, observe) {
     await page('Page.enable'); await page('Runtime.enable');
     await page('Emulation.setDeviceMetricsOverride', { width: 1280, height: 900, deviceScaleFactor: 1, mobile: false });
     await mkdir(output, { recursive: true });
-    const screenshot = async name => {
-      const result = await page('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true });
+    // Full-page capture can reframe scroll containers; focus evidence needs viewport mode.
+    const screenshot = async (name, { captureBeyondViewport = true } = {}) => {
+      const result = await page('Page.captureScreenshot', { format: 'png', captureBeyondViewport });
       await writeFile(path.join(output, name), Buffer.from(result.data, 'base64'));
     };
     return await observe({ origin, page, evaluate, call, addBinding, screenshot, pause, exceptions });

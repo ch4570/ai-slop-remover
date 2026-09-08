@@ -149,7 +149,7 @@ const observe = async ({ origin: browserOrigin, page, evaluate, call, addBinding
     await page('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9 });
     const focused = await evaluate(`({id:document.activeElement?.id,tag:document.activeElement?.tagName,text:document.activeElement?.textContent?.slice(0,70)})`);
     focusOrder.push(focused);
-    if (focused.id === 'save') await screenshot('keyboard.png');
+    if (focused.id === 'save') await screenshot('keyboard.png', { captureBeyondViewport: false });
   }
 };
 try {

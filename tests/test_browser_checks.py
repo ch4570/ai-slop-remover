@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import struct
 import subprocess
 import tempfile
 import unittest
@@ -19,6 +20,14 @@ def evidence_snapshot(root):
     return {str(path.relative_to(root)): (path.is_dir(), path.stat().st_mtime_ns,
                                         None if path.is_dir() else path.read_bytes())
             for path in [root, *root.rglob('*')]}
+
+
+def png_dimensions(path):
+    with path.open('rb') as image:
+        header = image.read(24)
+    if header[:16] != b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR':
+        raise AssertionError(f'Expected a PNG IHDR header: {path}')
+    return struct.unpack('>II', header[16:24])
 
 
 def replace_once(source, before, after):
@@ -85,6 +94,17 @@ class BrowserCheckTests(unittest.TestCase):
     def test_repaired_control_passes(self):
         checks = self.run_fixture("repaired", repaired_source())
         self.assertEqual(set(checks.values()), {"pass"}, checks)
+
+    def test_keyboard_capture_preserves_viewport_on_tall_page(self):
+        source = repaired_source() + "\ndocument.body.style.minHeight = '1100px';\n"
+        checks = self.run_fixture('tall-keyboard-viewport', source)
+        self.assertEqual(set(checks.values()), {'pass'}, checks)
+        self.assertTrue(any(item['id'] == 'save' for item in self.observed['focusOrder']))
+        output = self.evidence / 'tall-keyboard-viewport'
+        for name, height in (('wide.png', 900), ('narrow.png', 844)):
+            with self.subTest(overview=name):
+                self.assertGreater(png_dimensions(output / name)[1], height)
+        self.assertEqual(png_dimensions(output / 'keyboard.png'), (375, 844))
 
     def test_existing_browser_artifacts_are_preserved(self):
         env = {**os.environ, "AI_SLOP_CHROME": str(self.root / "absent-chrome")}

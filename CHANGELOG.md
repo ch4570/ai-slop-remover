@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Capture keyboard-focus evidence in viewport mode; keep full-page overviews separate after a scoped trial exposed hidden focus clipping in full-page captures.
 - Reject local proposal plans whose required baseline/candidate runs exceed the configured run budget; compare reported decimal durations without floating-point boundary drift.
 - Preserve finalized browser observations across same-batch exceptions and navigation, reject out-of-phase or duplicate streamed records, and keep unobserved checks explicit.
 - Reserve fresh browser evidence areas to prevent interrupted or concurrent collections from mixing artifacts; keep scope aggregation running with explicit errors for malformed host records.
