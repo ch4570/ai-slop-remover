@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Bind scope browser observations and independent reviews to their trial, product, evaluator and image hashes; mark changed or legacy evidence incomplete instead of reusing a stale pass.
 - Reject non-regular bundle manifests before reading JSON, preventing FIFO inputs from blocking listing, status, dry-run, and installation.
 - Clamp offline ZIP metadata timestamps to the format's supported range while preserving verified release bytes, source timestamps, and existing-output refusal.
 - Respect the first `--` option terminator in npm CLI help detection, preserving installer argument errors and ordinary Python-free help.
