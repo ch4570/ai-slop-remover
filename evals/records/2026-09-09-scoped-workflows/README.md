@@ -106,7 +106,7 @@ SHA-256 inventory를 보존했다. `inventory.json` 해시는
 
 ## 패키지·보조 평가
 
-- Python396개 통과(브라우저47개는 일반 발견에서 skip), npm24개 통과.
+- Python 396개 발견 중 349개 통과, 브라우저 47개는 일반 발견에서 skip. npm 24개 통과.
   package/manifest, JavaScript 구문, `git diff --check` 통과. 위 실제 Chrome8개 실행은
   이 단위 테스트 수에 합산하지 않았다.
 - 공식 quick validator는 기존 SkillEvaluator Python 환경에서 두 진입 스킬 모두 통과했다.
