@@ -193,6 +193,98 @@ both failures and unexecuted checks visible. Improvements are individual
 `fail → pass` checks, not a score.
 These fixtures, checks, and development tools are not installed skill payloads.
 
+## Optional usage accounting (sidecar schema 1)
+
+Keep quality `result.json` at schema 1. Usage is optional, separate evidence, not a
+replacement for the browser/review gate. The offline collector consumes only
+explicitly supplied, run-owned Codex JSONL files; it never invokes a model, scans
+personal history, reads credentials, or modifies the quality result or old records.
+Capture stdout directly while executing each trial, retain stderr separately, and
+record every parent, child, failed attempt and retry. Do not reconstruct a raw log
+from a summary or use an implementation agent's self-reported token estimate.
+Raw traces can contain prompts, source and tool output: inspect/redact sensitive
+material **before** binding/publishing a record, and disclose any redaction.
+
+```bash
+python3 scripts/collect_usage.py collect /tmp/trial/baseline/result.json /tmp/trial/baseline/attempts.json /tmp/trial/baseline/usage.json
+python3 scripts/collect_usage.py collect /tmp/trial/candidate/result.json /tmp/trial/candidate/attempts.json /tmp/trial/candidate/usage.json
+python3 scripts/collect_usage.py compare /tmp/trial/pairs.json --output /tmp/trial/usage-comparison.json
+```
+
+Copy `examples/usage-attempts.json` and `examples/usage-pairs.json` as writing
+templates, not measured evidence. Replace their metadata with the recorded runtime
+version/settings and actual relative paths. A trace must be a regular file inside
+the quality result directory. Outputs are created exclusively: existing artifacts
+are never overwritten. Exit `0` means a collection/report was written, **not** that
+quality passed or all usage was available; read the report statuses. Invalid CLI
+input or an existing output exits `2`. Use `compare_evals.py` for the quality gate.
+
+Each attempts-manifest entry declares `attempt_id`, `parent_id` (null for a root),
+`trace`, `mode` (`delta` or `cumulative`), `status` (`completed`, `failed`, or
+`incomplete`), `provider`, `runtime_version`, `requested_model` (string or null),
+`includes_children` (boolean), and `duration_seconds` (measured nonnegative time or
+null). Use distinct attempts for retries and separately captured children. The
+collector records `observed_model` only if the runtime event exposes it; a requested
+model or a fixture label is not proof of the executed model. Declare the sample mode
+from that runtime's contract: deltas sum, cumulative snapshots use the last value
+and must not decrease. Identical event IDs deduplicate; conflicting duplicates
+invalidate accounting. Do not concatenate unrelated threads into one attempt.
+
+The [Codex non-interactive documentation](https://learn.chatgpt.com/docs/non-interactive-mode)
+describes JSONL lifecycle events and terminal usage. A local `codex-cli 0.153.4`
+probe also exposed `cache_write_input_tokens`, but no executed model identity.
+This adapter normalizes `input_tokens` as total input (including cached reads and
+cache writes) and `output_tokens` as total output (including reasoning). Cached
+input, cache-write input and reasoning are subsets, **not extra total tokens**.
+Missing counters remain null, never fabricated zero. Missing input, cache-read or
+output counters or any unmeasured earlier turn makes the attempt unavailable. The
+Codex adapter conservatively marks **all detected collaboration** unavailable: it
+cannot reconcile parent inclusion from this JSONL format, even with declared child
+traces. Independently normalized telemetry needs proven parent/child inclusion
+semantics before the core can compare it. Unknown cache-write
+breakdown blocks pricing, but not a known token total; unknown reasoning does not
+block total-output pricing. Other runtimes need an explicit adapter for their own
+counter semantics, not guessed key renaming.
+
+The resulting sidecar has `schema`, `run_id`, SHA-256 of the raw result bytes, and
+normalized `attempts`. Each attempt retains execution metadata, `usage_status`, a
+reason when unavailable, `{path, sha256}` of its source, and `usage` with all five
+keys: `input_tokens`, `cached_input_tokens`, `cache_write_tokens`, `output_tokens`,
+`reasoning_output_tokens`. Source files must remain nonempty and match their hashes.
+Duplicate/missing/cyclic parent IDs are invalid. Parent totals that include children
+alongside separately listed children are unavailable rather than double-counted.
+Any missing attempt usage makes the **whole task** unavailable, not a cheap partial
+total. The caller must declare the complete attempt roster: hashes detect changes,
+not undeclared external work, and do not authenticate user-supplied counters.
+
+Optional `--prices prices.json` accepts one table or a list. Each table needs
+`schema: 1`, exact `provider` and **observed** `model`, `currency`, an HTTPS `source`,
+an ISO `as_of` date, and `rates` containing `input`, `cached_input`, `cache_write`,
+`output` as nonnegative decimal **strings per million tokens**. Supply verified,
+dated rates applicable to that model/cache mode; this repository embeds no assumed
+current prices. Estimates use uncached input = total input − cached read − cache
+write, price each input class once, and price total output once using Decimal.
+They are labeled `rate-estimate`, never subscription charges or invoices. Missing
+model, rates or required breakdown leaves money unavailable. Invoice ingestion,
+subscription allocation and cross-provider automatic normalization are not provided.
+
+Pair manifests use the same fixture, task, suite, model/settings labels as the
+quality comparator. Known execution model/provider/runtime mismatches also exclude
+a pair. Token-only comparison with both observed models unknown is explicitly
+limited to the recorded requested conditions, not proof of identical execution.
+Record cold/warm cache conditions only when controlled; otherwise label them
+uncontrolled and retain observed cache counters. Different prompt cache behavior
+must not be presented as skill-only causality.
+
+Reports retain per-pair outcomes, coverage and exclusion reasons; usage and priced
+pair coverage are separate. Failed and retried attempts count in the numerator.
+Attempted cost / quality-passing completed tasks is the completion cost; zero
+completions yields null. Summed attempt duration is not parallel wall-clock latency.
+Only complete compatible pairs enter aggregate token/cost comparisons. Report
+excluded pairs alongside the matched subset, not as zero cost. Quality regressions
+suppress an overall savings claim. Show raw values and a median for small samples,
+not an unsupported p95 or a general efficiency claim from a single pair.
+
 ## Optional installed-Chrome driver
 
 With Node 22+ and an existing Chrome installation, run:

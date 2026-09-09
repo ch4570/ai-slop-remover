@@ -169,6 +169,32 @@ Shared references keep the work coherent: [design memory](skills/ui-craft-bundle
 
 Selected ideas from UI UX Pro Max, Vercel, and getdesign.md inform the workflow. [Sources and adoption boundaries](skills/ui-craft-bundle/references/sources.md).
 
+## Spend tokens on the task
+
+Specify the outcome, allowed scope, contracts to preserve, verification and stopping
+condition. Choose the relevant specialist directly when the task is already clear:
+
+```text
+$ui-visual-refine
+Fix only the gap above the settings form's Save button using the existing spacing token.
+Preserve copy, brand and save behavior. Check the affected layout and keyboard focus.
+Stop once that scoped defect is resolved; report the files and checks actually observed.
+```
+
+Load only relevant references, reuse unchanged context and valid checks, and use
+scripts for search, hashes and test aggregation. Separate independent work only
+when its benefit justifies startup, handoff and repeated context. A lower model
+rate or faster parallel execution does not by itself prove a lower completion cost.
+
+The source checkout includes `scripts/collect_usage.py` for **offline** collection
+of explicitly supplied Codex JSONL traces and paired usage reports. It does not
+launch models, scan personal session history or change quality results. It counts
+failed attempts, retries and child usage; missing usage makes the task total
+unavailable. Optional dated model-specific rates produce estimates, not subscription
+invoices. Compare all attempted cost per quality-passing completion; never count
+unknown usage as zero or claim savings from document length alone. See `evals/README.md`
+in the source checkout for the sidecar contract and commands.
+
 ## Evaluate and improve locally
 
 The [local learning gate](skills/ui-craft-bundle/references/local-learning.md) keeps the shared installation intact while each project develops small, conditional rules. A dependency-free Python CLI is included with `ui-craft-bundle`.
