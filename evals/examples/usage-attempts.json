@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "attempts": [
+    {
+      "attempt_id": "attempt-1",
+      "parent_id": null,
+      "trace": "runtime.jsonl",
+      "mode": "cumulative",
+      "status": "completed",
+      "provider": "openai",
+      "runtime_version": "REPLACE_WITH_RECORDED_RUNTIME_VERSION",
+      "requested_model": null,
+      "duration_seconds": null,
+      "includes_children": false
+    }
+  ]
+}

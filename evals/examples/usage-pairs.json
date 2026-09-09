@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "pairs": [
+    {
+      "baseline_result": "baseline/result.json",
+      "baseline_usage": "baseline/usage.json",
+      "candidate_result": "candidate/result.json",
+      "candidate_usage": "candidate/usage.json"
+    }
+  ]
+}

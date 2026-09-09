@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Collect run-owned Codex usage traces into result-bound sidecars and compare complete paired attempt costs without discarding failures, double-counting cached/reasoning tokens, or treating missing usage as zero.
 - Add explicit `rollback --base-only` to disable all local rules without deleting their history; journal every request and invalidate candidates from earlier generations.
 - Escape path characters unavailable in the terminal encoding so install, reinstall, dry-run and status diagnostics cannot interrupt Unicode-path installations.
 - Revalidate adopted local rules against their recorded evaluation, evidence, candidate and plan before context delivery or rollback, while retaining recovery from a damaged active release.
