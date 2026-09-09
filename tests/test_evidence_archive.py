@@ -13,6 +13,7 @@ import tarfile
 import tempfile
 import unittest
 from unittest import mock
+import zlib
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -223,7 +224,26 @@ class EvidenceArchiveTests(unittest.TestCase):
         data = bytearray(gzip.compress(gzip.decompress(self.archive_path.read_bytes())))
         data[10] = 255  # Reserved DEFLATE block type, after gzip's ten-byte header.
         self.archive_path.write_bytes(data)
-        self.run_cli(1, "invalid block type")
+        # tarfile can wrap the decoder error in a generic ReadError depending
+        # on the Python version. Assert the CLI contract, not stdlib wording.
+        result = self.run_cli(1)
+        self.assertIsInstance(result["errors"], list)
+        self.assertTrue(result["errors"])
+        self.assertTrue(all(isinstance(error, str) and error.strip()
+                            for error in result["errors"]))
+
+    def test_wrapped_and_raw_decoder_errors_report_invalid_json(self):
+        for error in (tarfile.ReadError("file could not be opened successfully"),
+                      zlib.error("Error -3 while decompressing data: invalid block type")):
+            with self.subTest(error=type(error).__name__):
+                output = io.StringIO()
+                with mock.patch.object(checker, "verify_archive", side_effect=error), \
+                        mock.patch.object(sys, "argv", [str(SCRIPT), str(self.inventory_path),
+                                                       str(self.archive_path)]), \
+                        mock.patch.object(sys, "stdout", output):
+                    self.assertEqual(checker.main(), 1)
+                self.assertEqual(json.loads(output.getvalue()),
+                                 {"verdict": "invalid", "errors": [str(error)]})
 
     def test_invalid_unicode_in_inventory_path_still_reports_json(self):
         self.write_inventory(inventory({"../\ud800": b"x"}))
