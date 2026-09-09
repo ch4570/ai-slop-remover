@@ -6,7 +6,7 @@ Load this when a change affects shared appearance, several screens, or an existi
 
 Inspect the project's design instructions, `DESIGN.md`, theme variants, `MASTER.md`, page overrides, token definitions, and relevant shared components. Follow the actual repository paths and naming. Do not create a parallel system just because another tool uses different filenames.
 
-Read both the common decisions and the scoped page decisions **before each subsequent UI change**. Check referenced token symbols and components in code; a remembered path or old screenshot is not current evidence.
+Before a subsequent UI change, check the applicable common and scoped page decisions and their token/component mappings. Reuse already-read content only when its path and revision/hash are unchanged **and** the relevant content remains in the current context. A deterministic hash check can confirm unchanged bytes, not restore forgotten decisions. Re-read after file changes, a new page/theme, context loss, or a user's request. Do not repeatedly load unrelated design sections for a known local fix, and do not waive the host's full selected-skill read rule. A remembered path or old screenshot alone is not current evidence.
 
 Resolve differences in this order:
 

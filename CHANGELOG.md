@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Bound known local UI corrections to their target, existing decisions and scoped checks; load broader art direction only for composition decisions and reuse references only with unchanged identity and retained context.
+
 - Collect run-owned Codex usage traces into result-bound sidecars and compare complete paired attempt costs without discarding failures, double-counting cached/reasoning tokens, or treating missing usage as zero.
 - Add explicit `rollback --base-only` to disable all local rules without deleting their history; journal every request and invalidate candidates from earlier generations.
 - Escape path characters unavailable in the terminal encoding so install, reinstall, dry-run and status diagnostics cannot interrupt Unicode-path installations.

@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "scope": "Two actual candidate-only Codex CLI routing/reference-reuse probes; not product-quality trials or billing measurements",
+  "runtime_version": "codex-cli 0.153.4",
+  "requested_model": null,
+  "model_selection": "runtime-default-unobserved",
+  "invocation_mode": "explicit-source-snapshot",
+  "hooks_disabled_by_invocation": false,
+  "source_integrity": "Both runs retained their entire skill snapshots and evaluator helper unchanged",
+  "a-reuse": {
+    "exit_code": 0,
+    "timeout": false,
+    "terminal_event": "turn.completed",
+    "duration_seconds": 107.79801420797594,
+    "phase_1": "Read ai-slop-remover and ui-visual-refine in full plus principles, design memory, DESIGN.md and style.css; correctly proposed .failure gap:var(--gap) against the original 16px design role",
+    "phase_2": "Reused in-context references/source with zero additional helper reads or direct shell reads; correctly found #save margin-top:var(--gap) already compliant. The task explicitly stated that files were unchanged; this does not prove independently refreshed hash validation",
+    "phase_3": "Evaluator changed DESIGN.md only. Agent reread the new document, reported its new --control-gap:24px failure-group role, and proposed defining that missing token and mapping .failure to it. Agent hashed then fully reread unchanged style.css, an observed redundant read",
+    "phase_4": "After explicitly simulated unavailable reference content, agent fully reread both selected skills, principles, design memory, current DESIGN.md and style.css; retained the new 24px proposal and explicitly denied actual runtime compaction",
+    "product_integrity": "Only evaluator-owned DESIGN.md change; TASK.md, app.js, index.html and style.css unchanged",
+    "design_before_sha256": "0c79d3e8d2b3222e7912e80259ec8d01210be0b647ec9a961ca6d228380b27ac",
+    "design_after_sha256": "5a49df51906b1e176151e5ee6318ddbfebebf68b16a75f74a4c782e7ae7d5157",
+    "evidence": [
+      "a-reuse/runtime.jsonl",
+      "a-reuse/reference-reads.jsonl",
+      "a-reuse/tasks-issued.jsonl",
+      "a-reuse/phase-answers.jsonl",
+      "a-reuse/evaluator-events.jsonl",
+      "a-reuse/invocation.json",
+      "a-reuse/prompt.txt",
+      "a-reuse/stderr.txt",
+      "a-reuse/run-result.json",
+      "a-reuse/agent-output.md"
+    ]
+  },
+  "b-broad-routing": {
+    "exit_code": 0,
+    "timeout": false,
+    "terminal_event": "turn.completed",
+    "duration_seconds": 77.59161141701043,
+    "routing_observed": "Task did not name composition reference files; agent fully read art-direction.md, color-composition.md and layout-composition.md through the helper",
+    "proposal_observed": "Grounded palette, density, pane widths, selection and feedback mapping in source; preserved existing blue brand, system font and Korean vocabulary",
+    "states_observed": "Explicitly retained search URL/Back, required-title validation, Enter-to-save, empty search, pending/disabled save, focus and narrow stacking; correctly identified failed-save draft reset and false success as an unresolved separate flow handoff",
+    "product_integrity": "Every product file unchanged",
+    "evidence": [
+      "b-broad-routing/runtime.jsonl",
+      "b-broad-routing/reference-reads.jsonl",
+      "b-broad-routing/invocation.json",
+      "b-broad-routing/prompt.txt",
+      "b-broad-routing/stderr.txt",
+      "b-broad-routing/run-result.json",
+      "b-broad-routing/agent-output.md"
+    ]
+  },
+  "trace_review": "Reviewed completed command_execution records in both raw JSONL files. Ordinary direct reads were limited to product HTML/JS and a product/skills listing; reference reads went through the helper. This is an audit of these traces, not an automatic interception claim",
+  "runtime_warning": "Each raw trace recorded a nonfatal item.type:error warning that skip_host_skill_discovery is an under-development feature; both runs subsequently completed",
+  "limits": [
+    "One candidate-only run per probe, no baseline comparison or repeated-trial generalization",
+    "Explicit source-snapshot invocation does not demonstrate installed-skill auto-discovery",
+    "Helper full-emission records and raw outputs do not prove model consumption",
+    "Phase 4 simulates content unavailability; no actual compaction test was performed",
+    "No browser/rendered interaction verification or product-quality scoring",
+    "No billing or monetary saving measurement; model choice and caches uncontrolled"
+  ]
+}
