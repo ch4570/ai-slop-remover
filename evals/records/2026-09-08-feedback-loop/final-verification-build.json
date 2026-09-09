@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "note": "Verbatim UTF-8 build/check outputs retained outside the archive they validate. Repeated integrity/static checks are not additional behavioral coverage.",
+  "files": {
+    "tar-command.json": {
+      "source": "/tmp/lutriva-overnight-archive-lqiVht/tar-command.json",
+      "bytes": 716,
+      "sha256": "b5a80535af2e998af9f79ad51ff2fc66959096254d32fa9e302ef6559865206e",
+      "utf8": "{\n  \"executable\": \"/usr/bin/tar\",\n  \"args\": [\n    \"-czf\",\n    \"/Users/rex/Desktop/personal/lutriva/evals/records/2026-09-08-feedback-loop/final-verification.tar.gz\",\n    \"-C\",\n    \"/tmp\",\n    \"-s\",\n    \"|^lutriva-overnight-final-j11Dtc/|work/|\",\n    \"-s\",\n    \"|^lutriva-overnight-completion-review.IXWPfW/|review/|\",\n    \"-s\",\n    \"|^lutriva-overnight-archive-lqiVht/|archive-tools/|\",\n    \"--null\",\n    \"-T\",\n    \"/tmp/lutriva-overnight-archive-lqiVht/tar-inputs.list\"\n  ],\n  \"cwd\": \"/Users/rex/Desktop/personal/lutriva\",\n  \"environmentOverride\": {\n    \"COPYFILE_DISABLE\": \"1\"\n  },\n  \"started\": \"2026-09-08T21:09:03.203Z\",\n  \"finished\": \"2026-09-08T21:09:03.432Z\",\n  \"exit\": 0,\n  \"signal\": null,\n  \"error\": null\n}\n"
+    },
+    "tar.stdout": {
+      "source": "/tmp/lutriva-overnight-archive-lqiVht/tar.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "tar.stderr": {
+      "source": "/tmp/lutriva-overnight-archive-lqiVht/tar.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "archive-result.json": {
+      "source": "/tmp/lutriva-overnight-archive-lqiVht/archive-result.json",
+      "bytes": 579,
+      "sha256": "42a9531b94f004085be1d9d69fb5371a1c45f4dd6c66acd8671798f342014b22",
+      "utf8": "{\n  \"files\": 472,\n  \"uncompressedBytes\": 8634942,\n  \"archive\": {\n    \"path\": \"/Users/rex/Desktop/personal/lutriva/evals/records/2026-09-08-feedback-loop/final-verification.tar.gz\",\n    \"bytes\": 6750451,\n    \"sha256\": \"8c6c56b48c9f535aea631fcfc45a0b6d8633722f50c2e6e15e4cb250eaf09cde\"\n  },\n  \"inventory\": {\n    \"path\": \"/Users/rex/Desktop/personal/lutriva/evals/records/2026-09-08-feedback-loop/final-verification-inventory.json\",\n    \"sha256\": \"224102d43fe909ff16a4aa0771e71fa5c8914ae910ab0b477beb82e75f19ef01\"\n  },\n  \"allSourceBytesModesMtimesAndSelectedPathsUnchanged\": true\n}\n"
+    },
+    "repository-check-after-archive.json": {
+      "source": "/tmp/lutriva-overnight-archive-lqiVht/repository-check-after-archive.json",
+      "bytes": 308,
+      "sha256": "28554c648f728928bd383e39ac50e3e5130c85c230c01b477a9aee0b121dc281",
+      "utf8": "{\n  \"label\": \"repository-check-after-archive\",\n  \"cwd\": \"/Users/rex/Desktop/personal/lutriva\",\n  \"executable\": \"/opt/homebrew/bin/npm\",\n  \"args\": [\n    \"run\",\n    \"check\"\n  ],\n  \"started\": \"2026-09-08T21:10:43.817Z\",\n  \"finished\": \"2026-09-08T21:10:44.131Z\",\n  \"exit\": 0,\n  \"signal\": null,\n  \"error\": null\n}\n"
+    },
+    "repository-check-after-archive.stdout": {
+      "source": "/tmp/lutriva-overnight-archive-lqiVht/repository-check-after-archive.stdout",
+      "bytes": 296,
+      "sha256": "7a1cad64ea887286dbde384bae3f1a6a46991897f03f6bca9a333b4a4a5fcdb9",
+      "utf8": "\n> lutriva@2.4.0 check\n> python3 scripts/update_manifest.py --check && python3 scripts/check_package.py\n\nRelease inventory and SHA-256 hashes match.\nValidated 7 skills, release links/dependencies, 24 case contracts, and Python syntax.\nCase contracts are static checks, not executed agent trials.\n"
+    },
+    "repository-check-after-archive.stderr": {
+      "source": "/tmp/lutriva-overnight-archive-lqiVht/repository-check-after-archive.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "archive-check-final.json": {
+      "source": "/tmp/lutriva-overnight-archive-lqiVht/archive-check-final.json",
+      "bytes": 461,
+      "sha256": "853074e7e230f8c1ef38a4de127fb47bb8eede2445fc1fc2d4aff321de8dcaff",
+      "utf8": "{\n  \"label\": \"archive-check-final\",\n  \"cwd\": \"/Users/rex/Desktop/personal/lutriva\",\n  \"executable\": \"/usr/bin/python3\",\n  \"args\": [\n    \"scripts/check_evidence_archive.py\",\n    \"evals/records/2026-09-08-feedback-loop/final-verification-inventory.json\",\n    \"evals/records/2026-09-08-feedback-loop/final-verification.tar.gz\"\n  ],\n  \"started\": \"2026-09-08T21:10:43.591Z\",\n  \"finished\": \"2026-09-08T21:10:43.691Z\",\n  \"exit\": 0,\n  \"signal\": null,\n  \"error\": null\n}\n"
+    },
+    "archive-check-final.stdout": {
+      "source": "/tmp/lutriva-overnight-archive-lqiVht/archive-check-final.stdout",
+      "bytes": 182,
+      "sha256": "c3fd7c1877e2c1f184fcb68f32f4ddbccadbb00e6fe3ebdd6cbc5421badf690f",
+      "utf8": "{\n  \"verdict\": \"verified\",\n  \"inventory_format\": \"schema-1\",\n  \"files\": 472,\n  \"bytes\": 8634942,\n  \"limits\": \"Inventory/archive consistency only; evidence truth is not evaluated.\"\n}\n"
+    },
+    "archive-check-final.stderr": {
+      "source": "/tmp/lutriva-overnight-archive-lqiVht/archive-check-final.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "final-whitespace.json": {
+      "source": "/tmp/lutriva-overnight-archive-lqiVht/final-whitespace.json",
+      "bytes": 288,
+      "sha256": "4e88bec99a2b867391bb1edb0f3ded7bb97ee2d5e9187654519d17e58a198d14",
+      "utf8": "{\n  \"label\": \"final-whitespace\",\n  \"cwd\": \"/Users/rex/Desktop/personal/lutriva\",\n  \"executable\": \"/usr/bin/git\",\n  \"args\": [\n    \"diff\",\n    \"--check\"\n  ],\n  \"started\": \"2026-09-08T21:10:44.672Z\",\n  \"finished\": \"2026-09-08T21:10:44.689Z\",\n  \"exit\": 0,\n  \"signal\": null,\n  \"error\": null\n}\n"
+    },
+    "final-whitespace.stdout": {
+      "source": "/tmp/lutriva-overnight-archive-lqiVht/final-whitespace.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "final-whitespace.stderr": {
+      "source": "/tmp/lutriva-overnight-archive-lqiVht/final-whitespace.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "all-archive-shas.json": {
+      "source": "/tmp/lutriva-overnight-archive-lqiVht/all-archive-shas.json",
+      "bytes": 352,
+      "sha256": "2450e41dbcae4aa2bba4c10b3a6d5f9f84fdc07c2dbdec799f3f8aa6673fb481",
+      "utf8": "{\n  \"label\": \"all-archive-shas\",\n  \"cwd\": \"/Users/rex/Desktop/personal/lutriva/evals/records/2026-09-08-feedback-loop\",\n  \"executable\": \"/usr/bin/shasum\",\n  \"args\": [\n    \"-a\",\n    \"256\",\n    \"-c\",\n    \"SHA256SUMS\"\n  ],\n  \"started\": \"2026-09-08T21:10:44.255Z\",\n  \"finished\": \"2026-09-08T21:10:44.545Z\",\n  \"exit\": 0,\n  \"signal\": null,\n  \"error\": null\n}\n"
+    },
+    "all-archive-shas.stdout": {
+      "source": "/tmp/lutriva-overnight-archive-lqiVht/all-archive-shas.stdout",
+      "bytes": 264,
+      "sha256": "33f7358a7999c100cfa1f63ff0ed2244599e3316762142e29cc0d7b235a10101",
+      "utf8": "flow-trial.tar.gz: OK\ncycle-2.tar.gz: OK\ncycle-3.tar.gz: OK\ncycle-4.tar.gz: OK\ncycle-5.tar.gz: OK\ncycle-6.tar.gz: OK\ncycle-7.tar.gz: OK\ncycle-8.tar.gz: OK\ncycle-9.tar.gz: OK\ncycle-10.tar.gz: OK\ncycle-11.tar.gz: OK\ncycle-12.tar.gz: OK\nfinal-verification.tar.gz: OK\n"
+    },
+    "all-archive-shas.stderr": {
+      "source": "/tmp/lutriva-overnight-archive-lqiVht/all-archive-shas.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    }
+  }
+}

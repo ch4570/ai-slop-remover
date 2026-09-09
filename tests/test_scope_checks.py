@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -267,6 +268,54 @@ class ScopeSummaryTests(unittest.TestCase):
         self.assertEqual(result['verdict'], 'incomplete')
         self.assertTrue(any('fork_turns' in error for error in result['errors']))
         self.assertTrue(any('automatic-discovery' in error for error in result['errors']))
+
+    def test_malformed_host_coverage_preserves_complete_trial_pairs(self):
+        for mode in ('installed-host-explicit', 'automatic-discovery'):
+            for coverage in (None, [], 'not-run', 1, True, {}):
+                with self.subTest(mode=mode, coverage=coverage):
+                    manifest = copy.deepcopy(self.manifest)
+                    manifest['host_coverage'][mode] = coverage
+                    result = summarize(manifest, self.root)
+                    self.assertEqual(result['verdict'], 'incomplete')
+                    self.assertEqual((result['loaded_trials'], len(result['pairs'])), (16, 8))
+                    self.assertTrue(all(pair['verdict'] == 'pass' for pair in result['pairs']))
+                    self.assertTrue(any(mode in error for error in result['errors']))
+
+    def test_candidate_failure_survives_malformed_host_coverage(self):
+        entry = self.manifest['trials'][1]
+        path = self.root / entry['result']
+        run = json.loads(path.read_text())
+        run['cases'][0]['checks'][0]['status'] = 'fail'
+        scope.write_json(path, run)
+        self.manifest['host_coverage']['automatic-discovery'] = None
+        self.manifest['trials'].pop(0)
+        result = summarize(self.manifest, self.root)
+        self.assertEqual(result['verdict'], 'changes-required')
+        self.assertTrue(any('automatic-discovery' in error for error in result['errors']))
+        self.assertTrue(result['missing'])
+        pair = result['pairs'][0]
+        self.assertTrue(pair['candidate_failures'])
+        self.assertEqual(pair['comparison_verdict'], 'incomplete')
+        self.assertEqual(pair['regressions'], [])
+        self.assertEqual(pair['improvements'], [])
+
+    def test_malformed_host_coverage_cli_outputs_incomplete_json(self):
+        self.manifest['host_coverage']['installed-host-explicit'] = None
+        manifest_path = self.root / 'manifest.json'
+        output_path = self.root / 'summary.json'
+        scope.write_json(manifest_path, self.manifest)
+        completed = subprocess.run(
+            [sys.executable, '-B', str(ROOT / 'scripts/summarize_scope_trials.py'),
+             str(manifest_path), '--output', str(output_path)],
+            text=True, capture_output=True, timeout=10, check=False,
+        )
+        self.assertEqual(completed.returncode, 3, completed.stderr)
+        self.assertEqual(completed.stderr, '')
+        result = json.loads(completed.stdout)
+        self.assertEqual(result['verdict'], 'incomplete')
+        self.assertEqual(len(result['pairs']), 8)
+        self.assertTrue(any('installed-host-explicit' in error for error in result['errors']))
+        self.assertEqual(output_path.read_text(), completed.stdout)
 
 
 if __name__ == '__main__':

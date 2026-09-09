@@ -1,5 +1,21 @@
 # Changelog
 
+## Unreleased
+
+- Reject non-regular bundle manifests before reading JSON, preventing FIFO inputs from blocking listing, status, dry-run, and installation.
+- Clamp offline ZIP metadata timestamps to the format's supported range while preserving verified release bytes, source timestamps, and existing-output refusal.
+- Respect the first `--` option terminator in npm CLI help detection, preserving installer argument errors and ordinary Python-free help.
+- Reuse strict installation-record validation in reinstall preflight; reject malformed receipt schemas before copying new skills, while preserving existing files and valid standard legacy/current receipts.
+- Share bounded Tab, Enter, Escape and Space browser inputs; validate modifier/text events and exercise actual focus, form submission and checkbox defaults in Chrome.
+- Wait for valid two-line Chrome startup endpoint data within the existing retry budget; cover partially written files without launching a browser in unit tests.
+- Verify preserved evidence archives against exact file inventories without extraction; reject unexpected metadata, changed bytes and invalid archive members.
+- Aggregate interrupted navigation and scope observations without erasing concrete failures; make search collection errors return 1 while preserving scope's documented record-only exit contract.
+- Capture keyboard-focus evidence in viewport mode; keep full-page overviews separate after a scoped trial exposed hidden focus clipping in full-page captures.
+- Reject local proposal plans whose required baseline/candidate runs exceed the configured run budget; compare reported decimal durations without floating-point boundary drift.
+- Preserve finalized browser observations across same-batch exceptions and navigation, reject out-of-phase or duplicate streamed records, and keep unobserved checks explicit.
+- Reserve fresh browser evidence areas to prevent interrupted or concurrent collections from mixing artifacts; keep scope aggregation running with explicit errors for malformed host records.
+- Use platform-default virtual environments in npm checks for macOS framework Python compatibility. Retain scoped trial evidence separately from claims of general skill improvement.
+
 ## 2.4.0 — 2026-09-08
 
 - Add practical color composition and layout composition references: semantic color pairs, neighboring surfaces, area and emphasis, content width, alignment anchors, grouping, and responsive recomposition.

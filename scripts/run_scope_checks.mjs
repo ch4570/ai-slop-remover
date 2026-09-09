@@ -2,7 +2,7 @@
 // Evaluator-owned bounded browser observations. Semantic/visual verdicts stay human-owned.
 import { lstat, mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { withBrowser } from './browser_harness.mjs';
+import { claimBrowserEvidence, withBrowser } from './browser_harness.mjs';
 
 const suites = JSON.parse(await readFile(new URL('../evals/checks/scope-suites.json', import.meta.url), 'utf8'));
 const [caseId, fixture, outputArg] = process.argv.slice(2);
@@ -17,6 +17,8 @@ if (process.argv.length !== 5 || !suites[caseId + '-v1'] || !fixture || !outputA
   process.exit(2);
 }
 const output = path.resolve(outputArg);
+try { await claimBrowserEvidence(output, ['images']); }
+catch (error) { console.error(String(error)); process.exit(2); }
 await mkdir(path.join(output, 'images'), { recursive: true });
 const checks = new Map(required[caseId].map(id => [id, { id, kind: 'behavior', status: 'not-run', reason: 'Installed Chrome observation has not completed.' }]));
 const observations = { images: [], focus: [], collectionErrors: [] };
@@ -29,6 +31,7 @@ async function observe(id, callback) {
     await callback((matches, detail) => { failed ||= !matches; facts.push({ matches, detail }); });
     checks.set(id, { id, kind: 'behavior', status: failed ? 'fail' : 'pass', evidence: { path: 'browser.json', text: JSON.stringify(facts) } });
   } catch (error) {
+    observations.collectionErrors.push('Observation ' + id + ': ' + String(error));
     checks.set(id, { id, kind: 'behavior', status: failed ? 'fail' : 'not-run',
       ...(failed ? {} : { reason: 'Browser observation did not complete: ' + String(error) }),
       evidence: { path: 'browser.json', text: JSON.stringify({ facts, error: String(error) }) } });
@@ -38,7 +41,7 @@ async function observe(id, callback) {
 try {
   const productType = await lstat(fixture);
   if (productType.isSymbolicLink() || !productType.isDirectory()) throw new Error('Product root must be an ordinary directory; no browser traversal was attempted.');
-  await withBrowser(fixture, path.join(output, 'images'), async ({ origin, page, evaluate, call, screenshot, pause, exceptions }) => {
+  await withBrowser(fixture, path.join(output, 'images'), async ({ origin, page, pressKey, evaluate, call, screenshot, pause, exceptions }) => {
     environment = { browser: (await call('Browser.getVersion')).product, node: process.version, origin };
     const navigate = async (relative = '') => {
       const previous = await evaluate('performance.timeOrigin');
@@ -52,14 +55,13 @@ try {
       }
       throw new Error('Fixture did not finish loading');
     };
-    const capture = async name => {
-      try { await screenshot(name); observations.images.push('images/' + name); }
+    const capture = async (name, options) => {
+      try { await screenshot(name, options); observations.images.push('images/' + name); }
       catch (error) { observations.collectionErrors.push('Screenshot ' + name + ': ' + String(error)); }
     };
     const setQuery = async (id, value) => evaluate(`(() => { const input = document.getElementById(${JSON.stringify(id)}); input.value = ${JSON.stringify(value)}; input.dispatchEvent(new Event('input', { bubbles: true })); })()`);
     const tab = async () => {
-      await page('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9 });
-      await page('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9 });
+      await pressKey('Tab');
       return evaluate(`(() => { const element = document.activeElement; const style = getComputedStyle(element); return { id: element.id, tag: element.tagName, text: element.textContent.trim().slice(0, 80), outline: style.outline, boxShadow: style.boxShadow, focusVisible: element.matches(':focus-visible') }; })()`);
     };
     const rows = `Array.from(document.querySelectorAll('tbody tr')).map(row => Array.from(row.cells).slice(0,4).map(cell => cell.textContent))`;
@@ -150,7 +152,7 @@ try {
           (caseId === 'audit-read-only' && focused.id === 'order-search') ||
           (caseId === 'empty-state-copy-only' && focused.id === 'query') ||
           (caseId === 'master-page-consistency' && focused.tag === 'BUTTON')) {
-        await capture('keyboard.png');
+        await capture('keyboard.png', { captureBeyondViewport: false });
         break;
       }
     }

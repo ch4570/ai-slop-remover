@@ -294,6 +294,39 @@ class LearningGateTests(unittest.TestCase):
             self.rebind()
             self.assert_verdict("incomplete")
 
+    def test_decimal_durations_at_exact_budget_remain_eligible(self):
+        for duration, budget in ((0.01, 0.06), (1.07, 6.42), (100.01, 600.06)):
+            with self.subTest(duration=duration, budget=budget):
+                self.plan["budget"]["max_seconds"] = budget
+                for pair in self.report["pairs"]:
+                    for variant in ("baseline", "candidate"):
+                        pair[variant]["duration_seconds"] = duration
+                self.rebind()
+                self.assert_verdict("eligible")
+
+    def test_decimal_budget_neighbors_preserve_the_exact_boundary(self):
+        for pair in self.report["pairs"]:
+            for variant in ("baseline", "candidate"):
+                pair[variant]["duration_seconds"] = 100.01
+        for budget, verdict in ((math.nextafter(600.06, math.inf), "eligible"),
+                                (math.nextafter(600.06, -math.inf), "incomplete")):
+            with self.subTest(budget=budget):
+                self.plan["budget"]["max_seconds"] = budget
+                self.rebind()
+                result = self.assert_verdict(verdict)
+                if verdict == "incomplete":
+                    self.assertTrue(any("time budget exceeded" in item for item in result["missing"]))
+
+    def test_small_positive_duration_cannot_disappear_from_budget_total(self):
+        self.plan["budget"]["max_seconds"] = 1
+        durations = iter((1, 1e-28, 0, 0, 0, 0))
+        for pair in self.report["pairs"]:
+            for variant in ("baseline", "candidate"):
+                pair[variant]["duration_seconds"] = next(durations)
+        self.rebind()
+        result = self.assert_verdict("incomplete")
+        self.assertIn("time budget exceeded: 1.0000000000000000000000000001/1", result["missing"])
+
     def test_failure_is_preserved_when_budget_exhausted(self):
         self.plan["budget"]["max_runs"] = 2
         self.rebind()

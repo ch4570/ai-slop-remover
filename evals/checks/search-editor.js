@@ -50,18 +50,20 @@ function seedSearchEditor() {
   return snapshot;
 }
 
-async function evaluateSearchEditor(snapshot) {
+async function evaluateSearchEditor(snapshot, onCheck = () => {}) {
   const { el, input, wait, saved, record, sameNotes, select, update } = searchEditorCheck;
   const checks = [];
+  // Publish only completed records, before a later operation can throw or navigate.
+  const collect = check => { checks.push(check); onCheck(check); };
   const initialHistory = history.length;
   input('query', '배'); input('query', '배송'); input('query', '배송 확인');
   // Let this fixture's short async input work settle before checking the final URL.
   await wait(150);
-  checks.push(record('search-matches', el('notes').children.length === 1 && el('notes').textContent.includes('배송 확인'), {
+  collect(record('search-matches', el('notes').children.length === 1 && el('notes').textContent.includes('배송 확인'), {
     query: el('query').value, matches: el('notes').textContent,
   }));
   const query = observeQueryState(snapshot, '배송 확인');
-  checks.push(record('query-history', history.length === initialHistory && query.pass, {
+  collect(record('query-history', history.length === initialHistory && query.pass, {
     before: initialHistory, after: history.length, settleMs: 150, ...query.observed,
   }));
   input('query', '');
@@ -78,17 +80,17 @@ async function evaluateSearchEditor(snapshot) {
     state: el('status').dataset.state, disabled: el('save').disabled, selectionFound,
     storageUnchanged: localStorage.getItem('haneul-eval-notes') === beforeFailure,
   };
-  checks.push(record('failed-save-draft', selectionFound && failure.title === '실패해도 남아야 하는 초안' && failure.body === '저장 재시도에 사용할 내용' && failure.storageUnchanged, failure));
-  checks.push(record('failed-save-feedback', selectionFound && failure.state === 'error' && !failure.disabled && /실패|못|오류/.test(failure.feedback), failure));
+  collect(record('failed-save-draft', selectionFound && failure.title === '실패해도 남아야 하는 초안' && failure.body === '저장 재시도에 사용할 내용' && failure.storageUnchanged, failure));
+  collect(record('failed-save-feedback', selectionFound && failure.state === 'error' && !failure.disabled && /실패|못|오류/.test(failure.feedback), failure));
   const afterFailure = saved();
-  checks.push(record('failed-save-storage', selectionFound && failure.storageUnchanged && sameNotes(snapshot, afterFailure), {
+  collect(record('failed-save-storage', selectionFound && failure.storageUnchanged && sameNotes(snapshot, afterFailure), {
     expected: snapshot, persisted: afterFailure, storageUnchanged: failure.storageUnchanged, selectionFound,
   }));
   el('fail-save').checked = false;
   if (selectionFound) el('save').click();
   await wait(150);
   const persisted = saved();
-  checks.push(record('retry-persists', selectionFound && sameNotes(expected, persisted) && !el('save').disabled, {
+  collect(record('retry-persists', selectionFound && sameNotes(expected, persisted) && !el('save').disabled, {
     targetId: 1, expected, persisted, selectionFound, feedback: el('status').textContent, disabled: el('save').disabled,
   }));
   return { checks, expected };
@@ -185,9 +187,10 @@ function observeQueryRestoration(id, snapshot, query) {
   return searchEditorCheck.record(id, state.pass, state.observed);
 }
 
-async function evaluateOrdinarySave(snapshot) {
+async function evaluateOrdinarySave(snapshot, onCheck = () => {}) {
   const { el, input, wait, saved, record, sameNotes, select, update } = searchEditorCheck;
   const checks = [];
+  const collect = check => { checks.push(check); onCheck(check); };
   const selectionFound = select(snapshot.find(note => note.id === 2));
   let submissions = 0;
   const observeSubmit = () => { submissions += 1; };
@@ -198,7 +201,7 @@ async function evaluateOrdinarySave(snapshot) {
   el('title').dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', isComposing: true, bubbles: true, cancelable: true }));
   el('title').dispatchEvent(new CompositionEvent('compositionend', { data: '중', bubbles: true }));
   await wait(150);
-  checks.push(record('composition-enter', selectionFound && submissions === 0 && localStorage.getItem('haneul-eval-notes') === beforeComposition, {
+  collect(record('composition-enter', selectionFound && submissions === 0 && localStorage.getItem('haneul-eval-notes') === beforeComposition, {
     syntheticComposition: true, selectionFound, submissions, storageUnchanged: localStorage.getItem('haneul-eval-notes') === beforeComposition,
   }));
   el('editor').removeEventListener('submit', observeSubmit, true);
@@ -208,7 +211,7 @@ async function evaluateOrdinarySave(snapshot) {
   if (selectionFound) el('save').click();
   await wait(150);
   const persisted = saved();
-  checks.push(record('ordinary-save', selectionFound && sameNotes(expected, persisted) && !el('save').disabled, {
+  collect(record('ordinary-save', selectionFound && sameNotes(expected, persisted) && !el('save').disabled, {
     targetId: 2, expected, persisted, selectionFound, feedback: el('status').textContent, disabled: el('save').disabled,
   }));
   return { checks, expected };

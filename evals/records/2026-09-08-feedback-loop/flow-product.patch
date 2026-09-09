@@ -1,0 +1,191 @@
+diff --git a/tmp/lutriva-flow-trial-CEGUMD/original-product/app.js b/tmp/lutriva-flow-trial-CEGUMD/product/app.js
+index 2f90e50..00de62c 100644
+--- a/tmp/lutriva-flow-trial-CEGUMD/original-product/app.js
++++ b/tmp/lutriva-flow-trial-CEGUMD/product/app.js
+@@ -10 +10,7 @@ let selectedId = 1;
+-let pending = false;
++const drafts = new Map(notes.map(note => [note.id, {
++  value: { ...note },
++  revision: 0,
++  pending: null,
++  feedback: { state: 'idle', message: '' },
++}]));
++const composing = new Set();
+@@ -16,0 +23,23 @@ function showStatus(state, message) {
++function renderFeedback() {
++  const draft = drafts.get(selectedId);
++  el('save').disabled = Boolean(draft.pending);
++  el('save').textContent = draft.feedback.state === 'error' && !draft.pending ? '다시 저장' : '메모 저장';
++  if (draft.pending) {
++    const laterEdits = draft.revision !== draft.pending.revision;
++    showStatus('pending', laterEdits
++      ? '저장 중… 이후 변경사항은 아직 저장하지 않았습니다.'
++      : '저장 중…');
++  } else {
++    showStatus(draft.feedback.state, draft.feedback.message);
++  }
++}
++function captureDraft() {
++  const draft = drafts.get(selectedId);
++  if (draft.value.title !== el('title').value || draft.value.body !== el('body').value) {
++    draft.value = { id: selectedId, title: el('title').value, body: el('body').value };
++    draft.revision += 1;
++    if (draft.feedback.state !== 'error') {
++      draft.feedback = { state: 'dirty', message: '아직 저장하지 않은 변경사항이 있습니다.' };
++    }
++  }
++}
+@@ -17,0 +47 @@ function openNote(id) {
++  captureDraft();
+@@ -19 +49 @@ function openNote(id) {
+-  const note = notes.find(item => item.id === id);
++  const note = drafts.get(id).value;
+@@ -22 +52,2 @@ function openNote(id) {
+-  showStatus('idle', '');
++  renderFeedback();
++  renderNotes();
+@@ -27 +58,5 @@ function renderNotes() {
+-  el('notes').replaceChildren();
++  const existing = new Map([...el('notes').children].map(item => [Number(item.dataset.noteId), item]));
++  const matchingIds = new Set(matches.map(note => note.id));
++  for (const [id, item] of existing) {
++    if (!matchingIds.has(id)) item.remove();
++  }
+@@ -29,3 +64,14 @@ function renderNotes() {
+-    const item = document.createElement('li');
+-    const button = document.createElement('button');
+-    button.type = 'button';
++    let item = existing.get(note.id);
++    if (!item) {
++      item = document.createElement('li');
++      item.dataset.noteId = note.id;
++      const button = document.createElement('button');
++      button.type = 'button';
++      button.addEventListener('click', () => openNote(note.id));
++      item.append(button);
++      // Keep result order without replacing controls that may own keyboard focus.
++      const next = [...el('notes').children].find(child =>
++        matches.findIndex(match => match.id === Number(child.dataset.noteId)) > matches.indexOf(note));
++      el('notes').insertBefore(item, next || null);
++    }
++    const button = item.firstElementChild;
+@@ -33,3 +79,2 @@ function renderNotes() {
+-    button.addEventListener('click', () => openNote(note.id));
+-    item.append(button);
+-    el('notes').append(item);
++    if (note.id === selectedId) button.setAttribute('aria-current', 'true');
++    else button.removeAttribute('aria-current');
+@@ -39 +84 @@ function renderNotes() {
+-el('query').addEventListener('input', () => {
++function updateSearch() {
+@@ -43 +88 @@ el('query').addEventListener('input', () => {
+-  history.pushState({}, '', url);
++  history.replaceState(history.state, '', url);
+@@ -44,0 +90,8 @@ el('query').addEventListener('input', () => {
++}
++el('query').addEventListener('compositionstart', () => composing.add('query'));
++el('query').addEventListener('compositionend', () => {
++  composing.delete('query');
++  updateSearch();
++});
++el('query').addEventListener('input', event => {
++  if (!event.isComposing && !composing.has('query')) updateSearch();
+@@ -49,0 +103,12 @@ window.addEventListener('popstate', () => {
++for (const id of ['title', 'body']) {
++  el(id).addEventListener('compositionstart', () => composing.add(id));
++  el(id).addEventListener('compositionend', () => {
++    composing.delete(id);
++    captureDraft();
++    renderFeedback();
++  });
++  el(id).addEventListener('input', () => {
++    captureDraft();
++    renderFeedback();
++  });
++}
+@@ -51,0 +117 @@ el('title').addEventListener('keydown', event => {
++    if (event.isComposing || composing.has('title') || event.keyCode === 229) return;
+@@ -58,4 +124,7 @@ el('editor').addEventListener('submit', async event => {
+-  if (pending) return;
+-  pending = true;
+-  el('save').disabled = true;
+-  const draft = { id: selectedId, title: el('title').value, body: el('body').value };
++  if (composing.has('title') || composing.has('body')) return;
++  const owner = drafts.get(selectedId);
++  if (owner.pending) return;
++  captureDraft();
++  const snapshot = { ...owner.value };
++  const revision = owner.revision;
++  owner.pending = { revision };
+@@ -63 +132 @@ el('editor').addEventListener('submit', async event => {
+-  showStatus('pending', '저장 중…');
++  renderFeedback();
+@@ -65 +134,2 @@ el('editor').addEventListener('submit', async event => {
+-    await new Promise(resolve => setTimeout(resolve, 30));
++    // Yield to input and navigation without an artificial loading delay.
++    await new Promise(resolve => setTimeout(resolve, 0));
+@@ -67 +137 @@ el('editor').addEventListener('submit', async event => {
+-    const updated = notes.map(note => note.id === draft.id ? draft : note);
++    const updated = notes.map(note => note.id === snapshot.id ? snapshot : note);
+@@ -69,0 +140,3 @@ el('editor').addEventListener('submit', async event => {
++    owner.feedback = owner.revision === revision
++      ? { state: 'success', message: `“${snapshot.title}” 메모를 이 브라우저에 저장했습니다.` }
++      : { state: 'dirty', message: '저장을 시작할 때의 내용은 이 브라우저에 저장했습니다. 이후 변경사항은 아직 저장하지 않았습니다.' };
+@@ -72 +145,6 @@ el('editor').addEventListener('submit', async event => {
+-    openNote(selectedId);
++    owner.feedback = {
++      state: 'error',
++      message: shouldFail
++        ? '저장하지 못했습니다. 입력한 내용은 유지됩니다. 실패시키기를 해제한 뒤 다시 저장해 주세요.'
++        : '이 브라우저에 저장하지 못했습니다. 입력한 내용은 유지됩니다. 브라우저 저장 공간을 확인한 뒤 다시 저장해 주세요.',
++    };
+@@ -74,3 +152,2 @@ el('editor').addEventListener('submit', async event => {
+-    pending = false;
+-    el('save').disabled = false;
+-    showStatus('success', '메모를 저장했습니다.');
++    owner.pending = null;
++    if (selectedId === snapshot.id) renderFeedback();
+@@ -79 +156,4 @@ el('editor').addEventListener('submit', async event => {
+-openNote(selectedId);
++const firstDraft = drafts.get(selectedId).value;
++el('title').value = firstDraft.title;
++el('body').value = firstDraft.body;
++renderFeedback();
+diff --git a/tmp/lutriva-flow-trial-CEGUMD/original-product/index.html b/tmp/lutriva-flow-trial-CEGUMD/product/index.html
+index da55fd3..2167963 100644
+--- a/tmp/lutriva-flow-trial-CEGUMD/original-product/index.html
++++ b/tmp/lutriva-flow-trial-CEGUMD/product/index.html
+@@ -23 +23 @@
+-        <input id="title" required>
++        <input id="title" required aria-describedby="status">
+@@ -25 +25 @@
+-        <textarea id="body" rows="5"></textarea>
++        <textarea id="body" rows="5" aria-describedby="status"></textarea>
+diff --git a/tmp/lutriva-flow-trial-CEGUMD/original-product/style.css b/tmp/lutriva-flow-trial-CEGUMD/product/style.css
+index a581ec9..5a780f9 100644
+--- a/tmp/lutriva-flow-trial-CEGUMD/original-product/style.css
++++ b/tmp/lutriva-flow-trial-CEGUMD/product/style.css
+@@ -27,0 +28 @@ li button { width: 100%; text-align: left; background: var(--surface); color: va
++li button[aria-current="true"] { background: var(--canvas); border-inline-start: 4px solid var(--action); font-weight: 600; }
+diff --git a/tmp/lutriva-flow-trial-CEGUMD/original-product/DESIGN.md b/tmp/lutriva-flow-trial-CEGUMD/product/DESIGN.md
+index d1cd105..c41d4c2 100644
+--- a/tmp/lutriva-flow-trial-CEGUMD/original-product/DESIGN.md
++++ b/tmp/lutriva-flow-trial-CEGUMD/product/DESIGN.md
+@@ -17,0 +18,17 @@ there is no server or synchronization. Do not invent either.
++
++The current note uses `li button[aria-current="true"]` in `style.css`, with the
++existing canvas background and action-colored leading border. Labels, system
++type, visible focus, and the compact responsive layout remain the same.
++
++| Trigger | State and feedback | Recovery | Persistence boundary |
++| --- | --- | --- | --- |
++| Edit a search | Filter saved notes; replace the current URL's `q`; composition commits before filtering | Clear or revise the query; Back/Forward restores the URL query | URL only; preserve unrelated parameters |
++| Save | Capture this note's draft and revision; disable only its save action while pending | Keep editing and selecting notes available | Success follows `localStorage.setItem` using `haneul-eval-notes` |
++| Save fails | Preserve the latest draft; display an error and “다시 저장” | Turn off the practice failure checkbox when applicable, then retry the current draft | Failed data is not reported as saved |
++| Edit during save | The submitted snapshot is saved; later edits stay in the draft with explicit unsaved feedback | Save again to persist the later changes | Drafts remain in page memory until explicitly saved |
++| Select another note | Restore that note's draft and its own status; completed work belongs to the original note | Return to continue the earlier draft or retry its save | Selection does not save or discard a draft |
++
++Enter that confirms title composition is not a save command. The next deliberate
++Enter submits with native required-title validation; textarea Enter keeps its
++normal newline behavior. Drafts survive note switching within this page, but
++unsaved edits do not survive closing or reloading it. No motion was introduced.

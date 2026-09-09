@@ -9,6 +9,8 @@ import hashlib
 import json
 import math
 import os
+from decimal import Decimal, localcontext
+from fractions import Fraction
 from pathlib import Path
 import re
 import stat
@@ -334,7 +336,7 @@ def evaluate(plan, report, evidence_root):
     seen_pairs = set()
     seen_runs = set()
     runs_used = 0
-    seconds_used = 0
+    seconds_used = Fraction(0)
     improvements_by_target = {}
     for position, pair in enumerate(pairs[:MAX_PAIRS]):
         label = "report.pairs[" + str(position) + "]"
@@ -383,7 +385,9 @@ def evaluate(plan, report, evidence_root):
             if not _number(duration):
                 audit.error(run_label + ".duration_seconds must be finite and nonnegative")
             else:
-                seconds_used += duration
+                # Compare the submitted decimal values exactly: binary float
+                # sums can either invent or erase a time-budget overrun.
+                seconds_used += Fraction(str(duration))
             checks = run.get("checks")
             if not isinstance(checks, list):
                 audit.error(run_label + ".checks must be a list")
@@ -454,8 +458,13 @@ def evaluate(plan, report, evidence_root):
             audit.absent("report is missing planned pair " + pair_id)
     if max_runs is not None and runs_used > max_runs:
         audit.absent("run budget exceeded: " + str(runs_used) + "/" + str(max_runs))
-    if max_seconds is not None and seconds_used > max_seconds:
-        audit.absent("time budget exceeded: " + str(seconds_used) + "/" + str(max_seconds))
+    if max_seconds is not None and seconds_used > Fraction(str(max_seconds)):
+        # Decimal inputs leave only factors 2 and 5 in the denominator. Its
+        # bit length bounds the decimal places needed for an exact diagnostic.
+        with localcontext() as decimal_context:
+            decimal_context.prec = len(str(seconds_used.numerator)) + seconds_used.denominator.bit_length()
+            seconds_label = str(Decimal(seconds_used.numerator) / Decimal(seconds_used.denominator))
+        audit.absent("time budget exceeded: " + seconds_label + "/" + str(max_seconds))
 
     review = report.get("review")
     if audit.fields(review, REVIEW_FIELDS, "report.review"):

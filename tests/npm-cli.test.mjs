@@ -42,13 +42,31 @@ function runNpm(args, options) {
 test('help and version work without Python or filesystem changes', (t) => {
   const cwd = temporary(t);
   const env = { ...process.env, AI_SLOP_PYTHON: path.join(cwd, 'absent-python') };
-  for (const args of [[], ['--help'], ['install', '--help'], ['--version']]) {
+  for (const args of [[], ['--help'], ['install', '--help'], ['--version'], ['--help', '--', 'ignored'], ['-h', '--', 'ignored']]) {
     succeeded(run(args, { cwd, env }));
   }
   assert.equal(run(['--version'], { env }).stdout.trim(), packageInfo.version);
   assert.equal(packageInfo.version, manifest.version);
   assert.deepEqual(readdirSync(cwd), []);
 });
+
+for (const prefix of [[], ['install']]) {
+  for (const help of ['--help', '-h']) {
+    test(`${prefix.join(' ') || 'default'}: ${help} after the option terminator preserves argument errors`, (t) => {
+      const project = temporary(t);
+      const sentinel = path.join(project, 'user-note.txt');
+      writeFileSync(sentinel, 'Keep this project unchanged.');
+      const before = statSync(sentinel, { bigint: true }).mtimeNs;
+      const result = run([...prefix, '--repo', project, '--agent', 'codex', '--status', '--', help]);
+      assert.equal(result.status, 2, result.error?.message || result.stdout + result.stderr);
+      assert.equal(result.stdout, '');
+      assert.match(result.stderr, /unrecognized arguments: -- (?:--help|-h)/);
+      assert.deepEqual(readdirSync(project), ['user-note.txt']);
+      assert.equal(readFileSync(sentinel, 'utf8'), 'Keep this project unchanged.');
+      assert.equal(statSync(sentinel, { bigint: true }).mtimeNs, before);
+    });
+  }
+}
 
 test('missing Python fails clearly without creating a destination', (t) => {
   const cwd = temporary(t);
@@ -69,7 +87,9 @@ test('list exposes every skill with detected Python and an explicit executable p
 
   const environment = path.join(temporary(t), 'python environment');
   const python = process.env.AI_SLOP_PYTHON || (process.platform === 'win32' ? 'python' : 'python3');
-  succeeded(spawnSync(python, ['-m', 'venv', '--without-pip', '--copies', environment], {
+  // Use venv's platform default: Apple's framework Python requires symlinks,
+  // while Windows defaults to copies. Both exercise the configured path.
+  succeeded(spawnSync(python, ['-m', 'venv', '--without-pip', environment], {
     encoding: 'utf8', timeout: 30000,
   }));
   const executable = path.join(environment, process.platform === 'win32' ? 'Scripts/python.exe' : 'bin/python');
@@ -175,6 +195,13 @@ test('npm tarball has exactly the release payload and equivalent installed comma
       succeeded(result);
       output[argument] = { stdout: result.stdout, stderr: result.stderr };
     }
+    const invalid = spawnSync(process.platform === 'win32' ? `"${installedBin}"` : installedBin, ['--list', '--', '--help'], {
+      cwd: directory, encoding: 'utf8', timeout: 15000,
+      shell: process.platform === 'win32',
+    });
+    assert.equal(invalid.status, 2, invalid.error?.message || invalid.stdout + invalid.stderr);
+    assert.equal(invalid.stdout, '');
+    assert.match(invalid.stderr, /unrecognized arguments: -- --help/);
     assert.equal(output['--version'].stdout.trim(), packageInfo.version);
     for (const skill of Object.keys(manifest.skills)) assert.ok(output['--list'].stdout.includes(skill));
     commandOutput.set(command, output);

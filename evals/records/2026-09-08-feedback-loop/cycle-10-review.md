@@ -1,0 +1,51 @@
+# Independent review of current-skill synthetic queue trial
+
+The candidate fixes the seeded rapid-save race, failed-draft rollback, and keyboard focus loss in the observed flows. It has one concrete residual visual defect: the wide bottom-boundary focus outline is partly clipped. Frozen scenario 04 also rejects its explicit-retry recovery policy; that policy is permitted by the task, and a separately frozen post-author supplement verified the actual retry path. Do not describe the frozen run as an unqualified all-pass result.
+
+Scope: independently read TASK.md, SERVICE_CONTRACT.md, immutable service, frozen observer/criteria, and final baseline raw data before candidate review; read candidate implementation only after author handoff; inspected four baseline PNGs, candidate raw observations, and all seven candidate PNGs. Author conclusions and author checks were not used. This is one current-skill execution against one seeded product, not skill-version A/B or general skill-quality proof.
+
+## Evidence and fixed outcomes
+
+Numbers below abbreviate JOB-1041 through JOB-1046. Raw roots: [baseline05](/tmp/lutriva-queue-observer-RAcypp/baseline-attempt-05/browser.json) and [candidate01](/tmp/lutriva-cycle10-work-NpakUR/candidate-observer-01/browser.json). Both terminal reports have no collection/runtime errors and unchanged seven product source hashes. All five evaluator-file hashes and all three immutable fixture hashes matched freeze. Candidate's seven product files also match the later supplement's pre-run manifest. Navigation records change document UUIDs, and all six candidate keyboard paint waits reached two frames without timeout.
+
+| Frozen scenario | Baseline observation | Candidate observation |
+| --- | --- | --- |
+| 01 Ordinary | Pass; 132456 persists/reloads | Pass |
+| 02 Rapid | Fail; DOM 143265, final storage/reload 143256 | Pass; 143265 persists/reloads |
+| 03 Failure/retry | Fail; draft rolls back, no retry; retry-dependent completion/reload not-run | Pass; retained 132456, actual retry commits/reloads |
+| 04 Failure then newer | Fail; lost first draft, next edit/reload 124356 | Frozen fail; retains 134256 with failure notice/retry, collector reloads without retry |
+| 05 In-flight failure then newer | Fail; old failure resets DOM to 123456 after 134256 committed; reload restores 134256 | Pass; retains newest draft, actual retry commits/reloads 134256 |
+| 06 Filter | Pass; hidden-neighbor swap and full payload retained | Pass |
+| 07 Wide keyboard/layout | Fail; focus goes to BODY, later keys do not enact expected moves | Automated checks have no failure; manual visual review remains separate |
+| 08 Narrow keyboard/layout | Fail; focus goes to BODY after top-boundary move | Automated checks have no failure; manual visual review remains separate |
+
+Concrete baseline evidence: `02-rapid.jsonl` sequences 6, 13, 15 show storage 142356 → 124356 → 143256 while DOM remains 143265 and text says “이 브라우저에 순서를 저장했어요.” Sequence 101 reloads 143256. `03-failure-retry.jsonl` sequence 14 shows DOM/storage 123456 after intended 132456, explicit rollback copy, and zero retry controls. `05-inflight-failure-newer.jsonl` sequence 6 has DOM/storage 134256; sequence 13 has DOM 123456/storage 134256. These are direct observations, not merely assertion labels.
+
+Candidate `02-rapid.jsonl` sequence 13 still reports pending while storage is 124356; sequence 15 reports success with DOM/storage 143265; sequence 33 reloads 143265. In candidate `07-keyboard-wide.jsonl`, sequences 2–6 retain the acted job's expected operable control through every Enter/Space transition. Narrow sequence 2 retains JOB-1042/down; its final reload is 213456. All recorded immutable job-payload assertions pass in both fixed runs, including nested payloads.
+
+## Evaluator gaps and interpretation
+
+1. **Recovery-policy restriction:** [observer.mjs:247](/tmp/lutriva-queue-observer-RAcypp/observer.mjs:247) immediately calls `persisted()` after the newer edit; scenario 05 allows retry. TASK asks for a flow that preserves the chosen order and finishes through retry, including edits while failed; it does not require the next edit to auto-retry. Candidate [app.js:128](/tmp/lutriva-cycle10-work-NpakUR/trial/product/app.js:128) deliberately retains the failure until explicit retry. Candidate fixed scenario 04 sequence 31/126 has DOM 134256, storage 123456, clear unsaved/reload-warning copy, and enabled retry. The frozen failure and loss on its forced reload remain recorded; they do not establish that the permitted recovery path fails.
+2. **Cascading keyboard assertions:** once baseline focus is BODY, later key commands no longer mean the expected moves occurred. [observer.mjs:132](/tmp/lutriva-queue-observer-RAcypp/observer.mjs:132) evaluates feasible directions against the evaluator's expected order, not actual DOM order. Baseline wide “feasible moves stay operable” failures therefore cannot independently prove saving disabled feasible controls. The first focus loss and later non-actions are the supported findings; do not count downstream assertions as independent defects.
+3. **Viewport outline gap:** [observer.mjs:216](/tmp/lutriva-queue-observer-RAcypp/observer.mjs:216) permits a control box one pixel outside the viewport and ignores outline width/offset. Its pass does not prove the complete focus ring is visible. The explicit human-review/not-run records correctly preserve a separate manual obligation.
+4. **Filtered settling limit:** [observer.mjs:272](/tmp/lutriva-queue-observer-RAcypp/observer.mjs:272) passes a six-ID expected order to a settle predicate comparing visible DOM order, which contains only job 4 while filtered. That poll necessarily reaches its bound rather than satisfying stability. Baseline storage nevertheless becomes 124356 at sequence 16; subsequent full-list and fresh-reload checks independently support the filter outcome. Do not call the filtered poll itself a successful stable settle.
+
+The freeze documents earlier collector setup/classifier corrections. I did not rerun those attempts. Neither final run's clean runtime report erases those earlier setup failures or proves exhaustive error freedom. Existing raw assertions were not edited or rescored.
+
+## Separately frozen recovery supplement
+
+[Protocol](/tmp/lutriva-cycle10-independent-review-kjFzHR/SUPPLEMENT-PROTOCOL.md), [script](/tmp/lutriva-cycle10-independent-review-kjFzHR/recovery-supplement.mjs), [freeze](/tmp/lutriva-cycle10-independent-review-kjFzHR/supplement-freeze.json), and [exact commands/exits](/tmp/lutriva-cycle10-independent-review-kjFzHR/EXECUTIONS.md) document a POST-author, task-guided supplement. Identical script ran original first, trial second; no script changes or browser overlap. This does not retroactively preregister coverage or change fixed results.
+
+- [Original report](/tmp/lutriva-cycle10-independent-review-kjFzHR/supplement-original-01/report.json): exit 1. The first draft was lost, the next edit produced 124356 instead of 134256, and the wrong order persisted through a changed-document reload. `recovery: automatic recovery` names its branch; it does not mean successful recovery. Eleven failure assertions remain, with no collection/runtime error.
+- [Candidate report](/tmp/lutriva-cycle10-independent-review-kjFzHR/supplement-trial-01/report.json): exit 0, no fail/not-run or collection/runtime error. Sequence 34 retains DOM 134256/storage 123456 with an enabled retry and accurate failure notice. Actual retry at sequence 67 shows pending; sequence 71 commits 134256 with success; sequence 100 is a fresh-token reload of 134256. Complete visible fields, six nested payloads, and all feasible directions pass the recorded checks.
+- Recursive before/after manifests are unchanged in both supplements (original 7 regular files; trial 72, including its additional local files). All seven served product-file hashes match the fixed candidate run. No source or frozen evaluator was changed by this review.
+
+## Manual quality and remaining limits
+
+**Residual visual defect:** candidate [wide-bottom-boundary-focus.png](/tmp/lutriva-cycle10-work-NpakUR/candidate-observer-01/wide-bottom-boundary-focus.png) visibly cuts off the lower part of JOB-1045/up's focus ring. Raw wide sequence 5 records control bottom 900.453125 at viewport height 900, with a 3px outline and 3px offset. Focus remains on the correct enabled button and the next Space works; this is partial visual clipping, not focus loss. Candidate [app.js:77](/tmp/lutriva-cycle10-work-NpakUR/trial/product/app.js:77) scrolls the button into view without reserving outline space. A blanket “all focused controls/rings fully visible” claim is unsupported.
+
+Wide top-boundary and narrow viewport screenshots show clear retained rings and readable titles/buttons. The muted palette, small mark, six-job information, search, and simple queue presentation remain recognizable. This is manual inspection at the captured dimensions, not a measured contrast or usability study.
+
+Both narrow full-page artifacts are 360px wide while viewport captures are 375px. The full-page card edge/intro/footer appear clipped or reframed; raw narrow viewport snapshots have `scrollWidth === clientWidth === 360`, row x=15/right=345, and no observed horizontal overflow. [The helper](/tmp/lutriva-queue-observer-RAcypp/browser_harness.mjs:149) requests `captureBeyondViewport: true` without an explicit clip. These artifacts support a capture-framing uncertainty, not a confirmed viewport-overflow defect. The complete later full-page ring also cannot replace the earlier boundary viewport evidence.
+
+Remaining unobserved combinations include editing during an active retry, repeated armed failures, denied browser storage, title/route search variants, retry keyboard completion, and additional viewport sizes. Source serialization at [app.js:107](/tmp/lutriva-cycle10-work-NpakUR/trial/product/app.js:107) supports the intended concurrency reasoning, but source review does not establish those runtime outcomes. Finite samples, CSS geometry, screenshots, and lexical status checks do not prove exhaustive concurrency, full accessibility, screen-reader announcements, contrast compliance, or overall skill quality.

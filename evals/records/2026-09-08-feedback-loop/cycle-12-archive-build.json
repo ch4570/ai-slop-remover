@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "note": "Verbatim UTF-8 build/check outputs retained outside the archive they validate. Repeated integrity/static checks are not additional behavioral coverage.",
+  "files": {
+    "tar-command.json": {
+      "source": "/tmp/lutriva-cycle12-archive-l77IeN/tar-command.json",
+      "bytes": 773,
+      "sha256": "1ad8c67359a24b6660e00c9e4f565bcb023d832800aa94f9ec9afc0f0e10c3cd",
+      "utf8": "{\n  \"executable\": \"/usr/bin/tar\",\n  \"args\": [\n    \"-czf\",\n    \"/Users/rex/Desktop/personal/lutriva/evals/records/2026-09-08-feedback-loop/cycle-12.tar.gz\",\n    \"-C\",\n    \"/tmp\",\n    \"-s\",\n    \"|^lutriva-cycle12-work-QPTa9Q/|work/|\",\n    \"-s\",\n    \"|^lutriva-cycle12-install-audit.n5EUtc/|installer-audit/|\",\n    \"-s\",\n    \"|^lutriva-cycle12-independent-review.vw9oOJ/|review/|\",\n    \"-s\",\n    \"|^lutriva-cycle12-archive-l77IeN/|archive-tools/|\",\n    \"--null\",\n    \"-T\",\n    \"/tmp/lutriva-cycle12-archive-l77IeN/tar-inputs.list\"\n  ],\n  \"cwd\": \"/Users/rex/Desktop/personal/lutriva\",\n  \"environmentOverride\": {\n    \"COPYFILE_DISABLE\": \"1\"\n  },\n  \"started\": \"2026-09-08T20:57:33.730Z\",\n  \"finished\": \"2026-09-08T20:57:33.828Z\",\n  \"exit\": 0,\n  \"signal\": null,\n  \"error\": null\n}\n"
+    },
+    "tar.stdout": {
+      "source": "/tmp/lutriva-cycle12-archive-l77IeN/tar.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "tar.stderr": {
+      "source": "/tmp/lutriva-cycle12-archive-l77IeN/tar.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "archive-result.json": {
+      "source": "/tmp/lutriva-cycle12-archive-l77IeN/archive-result.json",
+      "bytes": 559,
+      "sha256": "93c3aa6d719ea2b6d12110d0febe2d8c95b820c7801c4af69a78866dcc1f8478",
+      "utf8": "{\n  \"files\": 137,\n  \"uncompressedBytes\": 3254056,\n  \"archive\": {\n    \"path\": \"/Users/rex/Desktop/personal/lutriva/evals/records/2026-09-08-feedback-loop/cycle-12.tar.gz\",\n    \"bytes\": 2757640,\n    \"sha256\": \"12272ef629f6a8cfa2cf6ef642360790a833e67b632ac6e16996d2fb3fcdf39b\"\n  },\n  \"inventory\": {\n    \"path\": \"/Users/rex/Desktop/personal/lutriva/evals/records/2026-09-08-feedback-loop/cycle-12-inventory.json\",\n    \"sha256\": \"e74340bd64fb2c9932328ec25e8f072a470c792acfc45eb0665b6a76283b63d1\"\n  },\n  \"allSourceBytesModesMtimesAndSelectedPathsUnchanged\": true\n}\n"
+    },
+    "repository-check-after-archive.json": {
+      "source": "/tmp/lutriva-cycle12-archive-l77IeN/repository-check-after-archive.json",
+      "bytes": 308,
+      "sha256": "b9b82d8082e0f00cfff3e5b03dd7280edfb1d6df47f1fa7480f6d04b09fa45cd",
+      "utf8": "{\n  \"label\": \"repository-check-after-archive\",\n  \"cwd\": \"/Users/rex/Desktop/personal/lutriva\",\n  \"executable\": \"/opt/homebrew/bin/npm\",\n  \"args\": [\n    \"run\",\n    \"check\"\n  ],\n  \"started\": \"2026-09-08T20:59:05.464Z\",\n  \"finished\": \"2026-09-08T20:59:05.814Z\",\n  \"exit\": 0,\n  \"signal\": null,\n  \"error\": null\n}\n"
+    },
+    "repository-check-after-archive.stdout": {
+      "source": "/tmp/lutriva-cycle12-archive-l77IeN/repository-check-after-archive.stdout",
+      "bytes": 296,
+      "sha256": "7a1cad64ea887286dbde384bae3f1a6a46991897f03f6bca9a333b4a4a5fcdb9",
+      "utf8": "\n> lutriva@2.4.0 check\n> python3 scripts/update_manifest.py --check && python3 scripts/check_package.py\n\nRelease inventory and SHA-256 hashes match.\nValidated 7 skills, release links/dependencies, 24 case contracts, and Python syntax.\nCase contracts are static checks, not executed agent trials.\n"
+    },
+    "repository-check-after-archive.stderr": {
+      "source": "/tmp/lutriva-cycle12-archive-l77IeN/repository-check-after-archive.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "archive-check-final.json": {
+      "source": "/tmp/lutriva-cycle12-archive-l77IeN/archive-check-final.json",
+      "bytes": 441,
+      "sha256": "fb334097fa2bdac412a03ecdc601f60e099d6e5ee4b0f9d8176e65352807cee1",
+      "utf8": "{\n  \"label\": \"archive-check-final\",\n  \"cwd\": \"/Users/rex/Desktop/personal/lutriva\",\n  \"executable\": \"/usr/bin/python3\",\n  \"args\": [\n    \"scripts/check_evidence_archive.py\",\n    \"evals/records/2026-09-08-feedback-loop/cycle-12-inventory.json\",\n    \"evals/records/2026-09-08-feedback-loop/cycle-12.tar.gz\"\n  ],\n  \"started\": \"2026-09-08T20:59:05.245Z\",\n  \"finished\": \"2026-09-08T20:59:05.322Z\",\n  \"exit\": 0,\n  \"signal\": null,\n  \"error\": null\n}\n"
+    },
+    "archive-check-final.stdout": {
+      "source": "/tmp/lutriva-cycle12-archive-l77IeN/archive-check-final.stdout",
+      "bytes": 182,
+      "sha256": "2cbf5e8b5048694a7c115634a9acad9081fe60f47c7c01708fe4c5602bc20929",
+      "utf8": "{\n  \"verdict\": \"verified\",\n  \"inventory_format\": \"schema-1\",\n  \"files\": 137,\n  \"bytes\": 3254056,\n  \"limits\": \"Inventory/archive consistency only; evidence truth is not evaluated.\"\n}\n"
+    },
+    "archive-check-final.stderr": {
+      "source": "/tmp/lutriva-cycle12-archive-l77IeN/archive-check-final.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "final-whitespace.json": {
+      "source": "/tmp/lutriva-cycle12-archive-l77IeN/final-whitespace.json",
+      "bytes": 288,
+      "sha256": "0d0f69cb0cb77e0c20cff14fbb82f86dc33b867abcd25f7f6b476c783de60abb",
+      "utf8": "{\n  \"label\": \"final-whitespace\",\n  \"cwd\": \"/Users/rex/Desktop/personal/lutriva\",\n  \"executable\": \"/usr/bin/git\",\n  \"args\": [\n    \"diff\",\n    \"--check\"\n  ],\n  \"started\": \"2026-09-08T20:59:06.491Z\",\n  \"finished\": \"2026-09-08T20:59:06.517Z\",\n  \"exit\": 0,\n  \"signal\": null,\n  \"error\": null\n}\n"
+    },
+    "final-whitespace.stdout": {
+      "source": "/tmp/lutriva-cycle12-archive-l77IeN/final-whitespace.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "final-whitespace.stderr": {
+      "source": "/tmp/lutriva-cycle12-archive-l77IeN/final-whitespace.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    },
+    "all-archive-shas.json": {
+      "source": "/tmp/lutriva-cycle12-archive-l77IeN/all-archive-shas.json",
+      "bytes": 352,
+      "sha256": "29c5f8b4b5d05f8d9709fd896b48cceb90c8f40b4966956f88dac90063135064",
+      "utf8": "{\n  \"label\": \"all-archive-shas\",\n  \"cwd\": \"/Users/rex/Desktop/personal/lutriva/evals/records/2026-09-08-feedback-loop\",\n  \"executable\": \"/usr/bin/shasum\",\n  \"args\": [\n    \"-a\",\n    \"256\",\n    \"-c\",\n    \"SHA256SUMS\"\n  ],\n  \"started\": \"2026-09-08T20:59:05.956Z\",\n  \"finished\": \"2026-09-08T20:59:06.346Z\",\n  \"exit\": 0,\n  \"signal\": null,\n  \"error\": null\n}\n"
+    },
+    "all-archive-shas.stdout": {
+      "source": "/tmp/lutriva-cycle12-archive-l77IeN/all-archive-shas.stdout",
+      "bytes": 234,
+      "sha256": "26b3e5762c45fe73ddd476393b6c8ee7906a35f1bf9165091a044e1d323b0e19",
+      "utf8": "flow-trial.tar.gz: OK\ncycle-2.tar.gz: OK\ncycle-3.tar.gz: OK\ncycle-4.tar.gz: OK\ncycle-5.tar.gz: OK\ncycle-6.tar.gz: OK\ncycle-7.tar.gz: OK\ncycle-8.tar.gz: OK\ncycle-9.tar.gz: OK\ncycle-10.tar.gz: OK\ncycle-11.tar.gz: OK\ncycle-12.tar.gz: OK\n"
+    },
+    "all-archive-shas.stderr": {
+      "source": "/tmp/lutriva-cycle12-archive-l77IeN/all-archive-shas.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8": ""
+    }
+  }
+}

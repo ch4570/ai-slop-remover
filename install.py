@@ -91,9 +91,13 @@ def tree_files(root, ignore_metadata=False, empty_directories=None):
 
 
 def load_bundle(root):
-    if (root / "manifest.json").is_symlink():
+    manifest_path = root / "manifest.json"
+    manifest_mode = manifest_path.lstat().st_mode
+    if stat.S_ISLNK(manifest_mode):
         raise BundleError("Manifest cannot be a symlink")
-    manifest = read_json(root / "manifest.json")
+    if not stat.S_ISREG(manifest_mode):
+        raise BundleError("Manifest must be a regular file")
+    manifest = read_json(manifest_path)
     if isinstance(manifest, dict) and manifest.get("schema") == 2:
         return load_skill_set(root, manifest)
     if not isinstance(manifest, dict) or manifest.get("schema") != 1 or manifest.get("name") != NAME:
@@ -256,7 +260,7 @@ def existing_is_identical(dest, expected, marker=MARKER):
     if not dest.is_dir() or not (dest / marker).is_file():
         raise BundleError("Destination already exists and is not an owned installation: " + str(dest))
     actual_files = tree_files(dest)
-    installed = read_json(dest / marker)
+    installed = read_installation_record(dest / marker, expected["installer"])
     if installed != expected:
         raise BundleError("Destination has a different or edited installation; no files changed: " + str(dest))
     if actual_files != set(expected["files"]) | {marker}:

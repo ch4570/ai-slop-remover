@@ -209,10 +209,63 @@ direct shared-URL navigation, and page reloads, and
 records 1280px, 375px error-state, and keyboard-focus images. It seeds again before
 collecting the narrow error-state images so a broken save cannot prevent that
 separate observation. Each check's evidence retains its expected/observed records.
+Wide and narrow images are full-page overviews at the configured viewport widths;
+their pixel dimensions need not equal the viewport. Both drivers capture
+`keyboard.png` in viewport mode (375 × 844), preserving the current visible frame.
+Full-page capture can reframe scroll containers and hide focus clipping, so do not
+use an overview alone to establish viewport focus visibility. Inspect the keyboard
+image alongside the actual focused element and scroll state; capture mode alone
+does not establish accessibility conformance.
+If collection stops during a save, reload, or image observation, `browser.json`
+preserves completed checks and marks every remaining required behavior check
+`not-run` with the collection error. `collectionErrors` records the interruption
+and the driver exits 1. A failure after all behavior checks finish does not erase
+those observations or establish that the missing image review passed.
+Independent navigation errors and history timeouts/state-read errors also enter
+`collectionErrors`, even when an earlier mismatch keeps that check `fail`; later
+independent checks still run. A trusted history event at the wrong entry is a
+behavior failure, not by itself a collection error. Previously some incomplete
+navigation runs returned zero; callers must now retain/read their JSON on exit 1.
+The batched search/save evaluators publish each finalized pass/fail before
+continuing, so a later exception or document navigation in that same batch cannot
+erase an earlier observation. This does not change the sixteen suite criteria or
+turn provisional history observations into final results. Collection validates
+record shape, active batch and duplicate IDs; it does not authenticate a hostile
+page or establish evaluator independence.
 Read `browser.json` and actually inspect the images before writing the two quality
 verdicts. Exit zero means evidence collection finished, not that every check passed;
 use the comparator as the result gate. It installs no browser or packages and does
 not connect to the user's existing browser profile.
+
+Use a new browser evidence area for each collection. Both drivers reserve it with
+`.browser-evidence-started`; existing browser JSON, image paths, or that marker
+cause exit 2 before collection, with existing artifacts preserved. This also
+prevents concurrent collectors and interrupted attempts from mixing evidence.
+Scope outputs may already contain `prepare` metadata and `product/`; only their
+`browser.json`, `images/`, and collection marker are reserved. Choose a new output
+path when repeating collection, including after an unavailable-browser result.
+
+For small keyboard sequences, `withBrowser` supplies
+`pressKey('Tab', {shift: true})` (options are optional). The shared helper accepts
+only `Tab`, `Enter`, `Escape` and `Space`, with an optional boolean `shift`; it
+rejects unsupported keys/options before dispatch. It sends paired key-down/up
+events, uses Shift's modifier bit 8 and includes Enter/Space text only on key-down.
+Windows and native virtual key codes are distinct protocol fields, so this
+bounded helper leaves the platform-native code unset. See the official
+[CDP Input contract](https://chromedevtools.github.io/devtools-protocol/tot/Input/#method-dispatchKeyEvent).
+Search/scope drivers reuse it without changing their check criteria. Unit tests
+verify exact event payloads and ordering; an opt-in Chrome control checks trusted
+events, forward/reverse focus, implicit form submission, checkbox activation and
+unchanged page/target identity. Initial control focus is explicit test setup.
+This is not an arbitrary shortcut or text-entry API, an OS keyboard/IME/native
+select-menu test, or a guarantee of network/update isolation. An isolated Chrome
+profile does not establish those guarantees either.
+
+Startup waits for the two-line `DevToolsActivePort` file to contain a valid TCP
+port and browser endpoint path, within the existing 100-attempt/100ms retry
+budget. A readable empty or port-only file is not readiness. Dependency-free
+startup tests inject file reads, process/socket behavior and accelerated timers;
+they verify the retry budget and cleanup, not real Chrome startup latency.
 
 To verify the checker itself, opt in to the dependency-free Chrome regression
 tests (ordinary Python discovery skips them):
@@ -293,7 +346,12 @@ same installed-Chrome transport as search-editor, fresh temporary profiles and
 loopback-only synthetic products, without dependencies. Unavailable Chrome or
 navigation writes required `not-run` observations. A concrete failure already
 observed stays `fail` if later collection fails. Exit zero means collection was
-recorded, not that checks passed. Ordinary Python discovery skips browser tests;
+recorded, not that checks passed or collection finished. Caught per-observation
+errors also enter `observations.collectionErrors`, including failures after a
+concrete mismatch. Unlike search-editor, scope keeps its record-only exit-zero
+contract: inspect checks, collection errors, runtime exceptions and required
+evidence instead of using process status as the result/completion gate.
+Ordinary Python discovery skips browser tests;
 CI's Chrome job executes both search-editor and scope controls.
 
 Store the actual final agent response in `agent-output.md`. A separate reviewer
@@ -360,3 +418,32 @@ and images. They remain synthetic harness tests, never part of the 16 native
 trials. Keep real repeated run evidence under a source-only `evals/records/`
 directory (or compact reproducible archive with readable patches/summaries);
 do not expand npm payload files to include evaluation fixtures or records.
+
+## Verify preserved evidence archives
+
+Before extracting a source-only evidence archive, compare it with its separately
+recorded file inventory:
+
+```bash
+python3 scripts/check_evidence_archive.py evals/records/2026-09-08-feedback-loop/cycle-3-inventory.json evals/records/2026-09-08-feedback-loop/cycle-3.tar.gz
+```
+
+This read-only Python 3.9+ tool accepts schema 1 `files` entries containing
+`bytes` and `sha256`, or the older no-schema `files` map of SHA-256 strings.
+It checks the exact regular-file set and hashes, sizes when recorded, duplicate
+and unsafe paths, unsupported member types, tar termination and detected
+compression errors. Ordinary directory headers are allowed but are not part of
+the file inventory. It does
+not extract files. Exit 0 reports verification, exit 1 an invalid/unreadable input,
+and exit 2 incorrect command usage; results are printed as JSON.
+Also verify the separately recorded SHA-256 of the whole archive. This logical
+tar-file check does not validate every physical compression-envelope byte; the
+bzip2/xz readers can ignore non-stream suffixes even when all file checks pass.
+
+Do not silently ignore unexpected AppleDouble `._*` files: macOS tar can insert
+metadata absent from the inventoried source tree. For a new archive use
+`COPYFILE_DISABLE=1 tar -czf NEW_ARCHIVE.tar.gz -C EVIDENCE_DIRECTORY .`, then run
+the verifier and record the archive hash. Choose a new output path; do not
+overwrite historical archives or replace their published hashes to hide a
+failure. Verification establishes agreement with the supplied inventory, not
+authentic provenance, accurate observations or a successful independent review.

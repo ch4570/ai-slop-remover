@@ -1,0 +1,553 @@
+{
+  "schema": 1,
+  "files": {
+    "archive-tools/ARCHIVE-README.md": {
+      "bytes": 2741,
+      "sha256": "dae031f55a7ea6b5665a9170bd019e6b246a0e4a5f34117cb462c75000d1f6a7"
+    },
+    "archive-tools/build-archive.mjs": {
+      "bytes": 4748,
+      "sha256": "e927892bc04d0e29ec74de665f20d6eeaae6779c5f8f8a20d9280a90de10a421"
+    },
+    "archive-tools/preserve-build-record.mjs": {
+      "bytes": 1204,
+      "sha256": "b3965a9fe23574e00a433d049bae792bb20b1db8612d48aa359fda2001973b13"
+    },
+    "archive-tools/run-command.mjs": {
+      "bytes": 1110,
+      "sha256": "3326c52bdf524d31a33b1eb2f25d6e572a9bba41b0da3a3869e1e4820936f283"
+    },
+    "archive-tools/source-map.json": {
+      "bytes": 59337,
+      "sha256": "cf4403e7dcb297b9e692b9f0aa20288fa3a0acf34d91e52dbb93a39bd8749afa"
+    },
+    "installer-audit/check_adjacent_boundaries.py": {
+      "bytes": 2379,
+      "sha256": "ab04432f31d29dcc03a693f8b03b954640bd54c55aaf83b7786fb9ece723885a"
+    },
+    "installer-audit/installer-green.txt": {
+      "bytes": 310,
+      "sha256": "052fb9659381e60f61b9cd4799fcf056b601242e1a87648fd767d1289ed2856b"
+    },
+    "installer-audit/installer-red.txt": {
+      "bytes": 8669,
+      "sha256": "dc4175d106e88620d617bbf0125bce74180aa5afe7e9d869cbe37e0234d2b893"
+    },
+    "installer-audit/installer-suite-completion.txt": {
+      "bytes": 1163,
+      "sha256": "5f471001ef0136f4bcb41f0bcc3024274f7f4b42e54b10704af3e0727641b6ff"
+    },
+    "installer-audit/repro_manifest_fifo.py": {
+      "bytes": 1031,
+      "sha256": "2c5be6fadf7f954bdff18077d6c5c3800e04b02e4eb1240375482be4e3897fa2"
+    },
+    "review/REVIEW.md": {
+      "bytes": 2839,
+      "sha256": "f827554ba652444b984ade2e3313f8947112635345fdef4bbaa5be4e26c28561"
+    },
+    "work/export-python312.json": {
+      "bytes": 401,
+      "sha256": "99fabc29b2726803ad178e2fb813c353d258ff068c9228cc9ffc7339424c8e71"
+    },
+    "work/export-python312.stderr": {
+      "bytes": 918,
+      "sha256": "07428fec374ed9b6898f44ac187c509377c686e4da5815ab92d27690175d58cf"
+    },
+    "work/export-python312.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "work/export-tests-after.json": {
+      "bytes": 391,
+      "sha256": "8269a9c3cc22c178d1f143faf733e7d195bf091c1a7199d540562a85e97d172f"
+    },
+    "work/export-tests-after.stderr": {
+      "bytes": 623,
+      "sha256": "976011106dbed6bf54acc5b59a6a1a20d0c2ada67bd2bd52d40ebc7a0e45c294"
+    },
+    "work/export-tests-after.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "work/export-tests-before.json": {
+      "bytes": 392,
+      "sha256": "4a62c0e536ebbe3f79d4697f08c362b9983b3e0b5c9abb77e20a5f4d1d93e558"
+    },
+    "work/export-tests-before.stderr": {
+      "bytes": 3363,
+      "sha256": "fc16d65bf14743153d5d8c20a0cbe25375f156638cd0287006b2cb101982f375"
+    },
+    "work/export-tests-before.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "work/final-source.json": {
+      "bytes": 1331,
+      "sha256": "6caa3262f0875f387f0ab83ed83e824d313c921ac018392367a4c2ea68bc2de2"
+    },
+    "work/final-source/CHANGELOG.md": {
+      "bytes": 7674,
+      "sha256": "7a168491031f8a4653a4c5726cd2db05f35885024c2a81f5b7834ea0aeb9a807"
+    },
+    "work/final-source/install.py": {
+      "bytes": 21831,
+      "sha256": "5c0a4d31bc151b8b62c8fe670b883fad30822afdbacd7f1466707197dad49f5f"
+    },
+    "work/final-source/manifest.json": {
+      "bytes": 9538,
+      "sha256": "c9e02f14a9cad826ca410630ffaae65fc4a2c82675266a034f6d38cd4ac1e1c2"
+    },
+    "work/final-source/scripts/export_bundle.py": {
+      "bytes": 1230,
+      "sha256": "8d92f92a30bc3e0d84ea0dd652a5c39442a6b23b65bcc7dc3cb9670ae94fa866"
+    },
+    "work/final-source/scripts/update_manifest.py": {
+      "bytes": 1895,
+      "sha256": "47c2f1bb4654f7f4f0589a573a3c7841dc898af80404f846fcacf85ab47a7951"
+    },
+    "work/final-source/tests/test_export_bundle.py": {
+      "bytes": 6220,
+      "sha256": "eef360929611a77c109025ac2b360b04590fa18c6634b3d25f2b40ffe5504dd7"
+    },
+    "work/final-source/tests/test_install.py": {
+      "bytes": 49675,
+      "sha256": "10cfeb1d28d6e1d2bbd727be79d89d76ab12d8c544c67c569015746d07a89e13"
+    },
+    "work/full-python39-final.json": {
+      "bytes": 353,
+      "sha256": "f456b565832e388d847d90f824ad12f62f49da553ebd8109c5bbc6deca4fe016"
+    },
+    "work/full-python39-final.stderr": {
+      "bytes": 113,
+      "sha256": "9ca5b5b6a7eeef9594c3aa31e03849a48d7552593cdd180f48903153307c5b7c"
+    },
+    "work/full-python39-final.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "work/full-python39.json": {
+      "bytes": 347,
+      "sha256": "9a2b2adddc172df3e829b662cca7f6c8d6498f370afce5df290b1e7948f3134b"
+    },
+    "work/full-python39.stderr": {
+      "bytes": 113,
+      "sha256": "bdfbc9870369bda87e4463ff63f3233b5e880e49eccf6502dbb7d3c0155e71fb"
+    },
+    "work/full-python39.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "work/javascript-syntax-final.json": {
+      "bytes": 304,
+      "sha256": "9fcd38574fd1b24c95bee15ecdbae302125692e02b00f5ec29dfc16c08408291"
+    },
+    "work/javascript-syntax-final.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "work/javascript-syntax-final.stdout": {
+      "bytes": 691,
+      "sha256": "e1ccf3c007c65df58c88474481bb66d1d05a5386c34df7fc7db01054198ebe7c"
+    },
+    "work/new-tests-python312-final.json": {
+      "bytes": 571,
+      "sha256": "7319d42399f09173d0efcc5addff5e6f0e8e69acd14564348a5cb01c0b8f3639"
+    },
+    "work/new-tests-python312-final.stderr": {
+      "bytes": 1268,
+      "sha256": "23443a7e94171483373dab9ffdf50aea75bba51f1e2e1fdb299568b15b05a060"
+    },
+    "work/new-tests-python312-final.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "work/npm-tests-final.json": {
+      "bytes": 281,
+      "sha256": "cda49bc9c4b5938455fed7571a8d744e2a548c79b9aea99c82b5e8dc8e5cc461"
+    },
+    "work/npm-tests-final.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "work/npm-tests-final.stdout": {
+      "bytes": 2833,
+      "sha256": "e8ce9aef5dfec7dec57bdf434f85673c28a055538fd73db9cec8171f04c049f1"
+    },
+    "work/OBSERVATIONS.md": {
+      "bytes": 4374,
+      "sha256": "15b7facbca8940fa83c9ef506fd242a2215d8c59d4accded0dc160647df5a0b4"
+    },
+    "work/original-early.zip": {
+      "bytes": 7929,
+      "sha256": "9cefee4e332508a23b1f909dd52148178e0806c2499b4ac28aefb7bd189f06f0"
+    },
+    "work/original-export-result.json": {
+      "bytes": 43918,
+      "sha256": "a54ca03b3905f90e2d1d7deffaab8f213a77cb7719e8517dfa3ed5805ef6d4c5"
+    },
+    "work/original-export/CHANGELOG.md": {
+      "bytes": 7373,
+      "sha256": "6fdf4a8063166fb50d17258b9df97cc2d6501a368e872163dd0036967d5fa400"
+    },
+    "work/original-export/docs/assets/lutriva-hero.png": {
+      "bytes": 2539697,
+      "sha256": "72e6ab0cd1c9f6fb3c2e0528ff29f713ed166e4dba5d0c2d75cc869800fa2942"
+    },
+    "work/original-export/docs/assets/README.md": {
+      "bytes": 2361,
+      "sha256": "97146aa13cf3e5916f3af906f81bc84411be8bb1b7ecca3967ebe920ea07ed6f"
+    },
+    "work/original-export/docs/naming.md": {
+      "bytes": 3937,
+      "sha256": "79523a26ecf2372d19c8f96609eab96b0597b79fb9a8ae2cc285820a30ddf12a"
+    },
+    "work/original-export/docs/verification.md": {
+      "bytes": 45907,
+      "sha256": "3041b33c0966e2ce7118ddf19ceb37f3d0a1bfa1bf0af2833f7748f7d153d363"
+    },
+    "work/original-export/evals/skill-cases.json": {
+      "bytes": 21822,
+      "sha256": "9f3c114775f4d72e6700a00be91b7a00374d64bc75b81a38dfc6aa19852f7183"
+    },
+    "work/original-export/install.py": {
+      "bytes": 21656,
+      "sha256": "1ff8fee6a58aff6dbc00de529b6ee7ce343e760e70111f1f6d5fe395b441b88d"
+    },
+    "work/original-export/LICENSE": {
+      "bytes": 1085,
+      "sha256": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d"
+    },
+    "work/original-export/manifest.json": {
+      "bytes": 9538,
+      "sha256": "a3db7c688c5d7f1250c41c387d7476994d61d1298a61be851cd76bc6c85a3eaf"
+    },
+    "work/original-export/README.ko.md": {
+      "bytes": 18539,
+      "sha256": "421d0af45b1aa0ca25309a3e2448750e3667ca205b02844deef50d62da28bf47"
+    },
+    "work/original-export/README.md": {
+      "bytes": 18650,
+      "sha256": "149e3d72d7e97e54190c296109a035c7b4c449b4b5a5b86867ccde697cf2c9a5"
+    },
+    "work/original-export/scripts/check_package.py": {
+      "bytes": 5047,
+      "sha256": "10bf0b0581ec1abdcbae6a6fce72f6a3378bda3f1e1362d8e0585d00a3b4ddcb"
+    },
+    "work/original-export/scripts/export_bundle.py": {
+      "bytes": 1023,
+      "sha256": "8c82b04520c31746603efb8df4be50c27e897a1efb7d37386fe7f4fb4fb2a1dc"
+    },
+    "work/original-export/skills/ai-slop-remover/agents/openai.yaml": {
+      "bytes": 316,
+      "sha256": "c0816bebb1903d69c9e754898a4f466d5e0b715ce8ae8c1734117aea6dbe1c9a"
+    },
+    "work/original-export/skills/ai-slop-remover/LICENSE": {
+      "bytes": 1085,
+      "sha256": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d"
+    },
+    "work/original-export/skills/ai-slop-remover/reference/kb/INDEX.md": {
+      "bytes": 239,
+      "sha256": "713804249440784d1ae4244ecdc8a951fa9c0ada1817369f378ab9b4700d3f16"
+    },
+    "work/original-export/skills/ai-slop-remover/reference/kb/routing-and-evidence.md": {
+      "bytes": 1889,
+      "sha256": "b1d06e945c861cdcaaa0ce7079da332f32c8b133e52d054f80d086bbb9103661"
+    },
+    "work/original-export/skills/ai-slop-remover/reference/principles.md": {
+      "bytes": 952,
+      "sha256": "3b6052f88ecab7fae1498b90f2659c625c12cd40d30d6d1fbce25fae8c753e46"
+    },
+    "work/original-export/skills/ai-slop-remover/SKILL.md": {
+      "bytes": 7932,
+      "sha256": "ebbd5f18d2989ee8883b9fae8ce410f519c8ec52fb2cf1ea9d202582db7d8e1e"
+    },
+    "work/original-export/skills/ui-craft-bundle/agents/openai.yaml": {
+      "bytes": 274,
+      "sha256": "6ee786f921f495298e4a955859fd6ea1e94252f6bdef8c054dc59c157dc2c173"
+    },
+    "work/original-export/skills/ui-craft-bundle/assets/behavior-trial.md": {
+      "bytes": 960,
+      "sha256": "2f3c3f90996c5a29cda1dc57918ca94567b1ab934e5cb734f65c28d34b9fdec6"
+    },
+    "work/original-export/skills/ui-craft-bundle/assets/bundle-guide.ko.md": {
+      "bytes": 1672,
+      "sha256": "990ef2b96dc0a41b80490294b63b2c69589d8369c367ac81da05a32455097554"
+    },
+    "work/original-export/skills/ui-craft-bundle/assets/component-specimen.md": {
+      "bytes": 3168,
+      "sha256": "cbb0b23bb633b0a4c7b5936f02f62b0eee090e134ff42907f6ad77d73ae581ac"
+    },
+    "work/original-export/skills/ui-craft-bundle/assets/design-contract.md": {
+      "bytes": 2018,
+      "sha256": "c62d13393ca52dceec8b8007fefbd781a18af1f0c3f984569c86153f672bb5d9"
+    },
+    "work/original-export/skills/ui-craft-bundle/assets/LICENSE": {
+      "bytes": 1085,
+      "sha256": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d"
+    },
+    "work/original-export/skills/ui-craft-bundle/assets/verification-note.md": {
+      "bytes": 509,
+      "sha256": "5671e40355566b80f70c960f35092c3bac1c240ff09cb20d64e1a7a724358d5a"
+    },
+    "work/original-export/skills/ui-craft-bundle/references/anti-slop-methods.md": {
+      "bytes": 9864,
+      "sha256": "11a25d914f368956bffad69821ed80a58b6ab19a9a6fe64b2b4c233097f2bdea"
+    },
+    "work/original-export/skills/ui-craft-bundle/references/art-direction.md": {
+      "bytes": 3726,
+      "sha256": "bdd4c5488aa89578c84d5fabc89d2f80370210828bfbc28c3790586810401b0c"
+    },
+    "work/original-export/skills/ui-craft-bundle/references/behavior-evaluation.md": {
+      "bytes": 4432,
+      "sha256": "7cd18ba9920bf622433a78a00443f46fe227a654b6696339019a3f71e3da75a6"
+    },
+    "work/original-export/skills/ui-craft-bundle/references/color-composition.md": {
+      "bytes": 8455,
+      "sha256": "e0c6e00d59ea8484a885a25189ccd278d88d1eafb28e0e764837abe8007f7260"
+    },
+    "work/original-export/skills/ui-craft-bundle/references/design-memory.md": {
+      "bytes": 4660,
+      "sha256": "45109b7537908e7eeae7a0fb7d005aaf139fdedb180ccbdf22bf23db277dbee5"
+    },
+    "work/original-export/skills/ui-craft-bundle/references/interaction-design.md": {
+      "bytes": 3262,
+      "sha256": "bd2193c4909870ca8c59e3fbaafbd3aef495dce8dd6b5b4d25dc798f9a462dc6"
+    },
+    "work/original-export/skills/ui-craft-bundle/references/interaction-recipes.md": {
+      "bytes": 8223,
+      "sha256": "818b59f583ef9c9aec681e8a7acea4c4da554c6c3343778831fbb516350b5d93"
+    },
+    "work/original-export/skills/ui-craft-bundle/references/layout-composition.md": {
+      "bytes": 7703,
+      "sha256": "891dfff297ab79561c7e51e487f6d89bc7762c787b2cf979d885f6e289e6e9f5"
+    },
+    "work/original-export/skills/ui-craft-bundle/references/local-learning-cli.md": {
+      "bytes": 13444,
+      "sha256": "9d15ddca2c945e671c1a4772aaee8d511c07a190a188ef199d4d4d65cab95af9"
+    },
+    "work/original-export/skills/ui-craft-bundle/references/local-learning-contract.md": {
+      "bytes": 19773,
+      "sha256": "e1c6b744a8b2943db133887a9918fb2ca195a141717d36b7b59075ec1e156e54"
+    },
+    "work/original-export/skills/ui-craft-bundle/references/local-learning.md": {
+      "bytes": 16865,
+      "sha256": "65e63fb2b25e4436cf7902826eeb336782f316958e6545afca44d29d8b022c13"
+    },
+    "work/original-export/skills/ui-craft-bundle/references/motion.md": {
+      "bytes": 1807,
+      "sha256": "43d7b49413a19d5c08bcdf848b4ab8d965a361ac8402a9d23f23c8295c9f29fa"
+    },
+    "work/original-export/skills/ui-craft-bundle/references/native.md": {
+      "bytes": 2515,
+      "sha256": "a55f8263200357fd3046bf4c527d72a2bf2906757d0b08a49700a6b8a56d128f"
+    },
+    "work/original-export/skills/ui-craft-bundle/references/pattern-selection.md": {
+      "bytes": 4770,
+      "sha256": "e1ff4c2e974505c509a6f5f78c2e0c6f2cefd0f9b781b9d5df7babb5015d24bc"
+    },
+    "work/original-export/skills/ui-craft-bundle/references/sources.md": {
+      "bytes": 9913,
+      "sha256": "ac2c4d77f248ddca808bea79597e7c8be4bb95c59de9bb1eb3dfd70b00b7e035"
+    },
+    "work/original-export/skills/ui-craft-bundle/references/toss-design.md": {
+      "bytes": 9898,
+      "sha256": "7f60fb3bcba3698a965bee3cf2525d462ca323b8409e80d53b7d24f9184fc58c"
+    },
+    "work/original-export/skills/ui-craft-bundle/references/ux-foundations.md": {
+      "bytes": 8840,
+      "sha256": "cb116b8faf294edd77d5eeb6207b71098edeef1ee499030fef04950474e45c62"
+    },
+    "work/original-export/skills/ui-craft-bundle/references/verification.md": {
+      "bytes": 3326,
+      "sha256": "f978162c6edd1cd1922d914682afc5e053680e0b95e1150ecbb736d2b0eaddd8"
+    },
+    "work/original-export/skills/ui-craft-bundle/references/web.md": {
+      "bytes": 2891,
+      "sha256": "70610ef3558b2935dde1573c138ae2f154dcf3d05f8d00a6fed63aa398da86cc"
+    },
+    "work/original-export/skills/ui-craft-bundle/scripts/learning_gate.py": {
+      "bytes": 25165,
+      "sha256": "baeca8bcbcf2df6024468812ecf65307a85cfeaec174b296829cd082e9b0c0c4"
+    },
+    "work/original-export/skills/ui-craft-bundle/scripts/local_learning.py": {
+      "bytes": 31800,
+      "sha256": "114461273303a066739f6631675104a0c4ffc14b3c1f4190f1f411ef6f2885a8"
+    },
+    "work/original-export/skills/ui-craft-bundle/SKILL.md": {
+      "bytes": 7252,
+      "sha256": "c75d67192c474cd1d2a2cc870effb65568686c67648cbbb771a97d333ae22239"
+    },
+    "work/original-export/skills/ui-quality-gate/agents/openai.yaml": {
+      "bytes": 320,
+      "sha256": "e35206901f2364bfc328c5010322060f8f417ba8830840b4da14d87ac220dd22"
+    },
+    "work/original-export/skills/ui-quality-gate/LICENSE": {
+      "bytes": 1085,
+      "sha256": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d"
+    },
+    "work/original-export/skills/ui-quality-gate/reference/kb/evidence-verdict.md": {
+      "bytes": 2426,
+      "sha256": "6684115bb5d10f602370ce91598ef4ab5e6b210dd6cdfa39e9d7333154e9b577"
+    },
+    "work/original-export/skills/ui-quality-gate/reference/kb/INDEX.md": {
+      "bytes": 160,
+      "sha256": "1a9030352f2e55d4f3f8a27fc2bb54cdd39df80cc6f3d5ad843f620d8cf36bd3"
+    },
+    "work/original-export/skills/ui-quality-gate/reference/principles.md": {
+      "bytes": 817,
+      "sha256": "f359cbdf61377a9e258833978aa0b713eb2502dc56f11cc6ddd7020ca8ee368d"
+    },
+    "work/original-export/skills/ui-quality-gate/SKILL.md": {
+      "bytes": 7549,
+      "sha256": "a2e19b9191cca4d108ec7d007d6162ea97521adbf93618e9fb2836bd57cad89d"
+    },
+    "work/original-export/skills/ui-slop-audit/agents/openai.yaml": {
+      "bytes": 302,
+      "sha256": "4648438145524fd0fe144335cd798bafe106d05b6a23515f032a77f36086dbc3"
+    },
+    "work/original-export/skills/ui-slop-audit/LICENSE": {
+      "bytes": 1085,
+      "sha256": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d"
+    },
+    "work/original-export/skills/ui-slop-audit/reference/kb/evidence-priority.md": {
+      "bytes": 1791,
+      "sha256": "af5fd8a9862aea25220d76433a702191cacae82c7f3c085f797a45a82aeed581"
+    },
+    "work/original-export/skills/ui-slop-audit/reference/kb/INDEX.md": {
+      "bytes": 153,
+      "sha256": "5192d60198c12b91a03badf602b9aab83f3041c628f1ec07e57e55aadb9b24ba"
+    },
+    "work/original-export/skills/ui-slop-audit/reference/principles.md": {
+      "bytes": 723,
+      "sha256": "a5e1d5f171b95be2a3040ca57a0c7871f8ac278756d2c4ea4aa33e40f57112b3"
+    },
+    "work/original-export/skills/ui-slop-audit/SKILL.md": {
+      "bytes": 4720,
+      "sha256": "1ff1fdc904180e745f46083e2bbc00db632633167f054be81155854969941b3c"
+    },
+    "work/original-export/skills/ui-visual-refine/agents/openai.yaml": {
+      "bytes": 335,
+      "sha256": "105c150e1882713bde0efbd943b8b12f2180fa745d5a5261dc9e5e659dedf16a"
+    },
+    "work/original-export/skills/ui-visual-refine/LICENSE": {
+      "bytes": 1085,
+      "sha256": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d"
+    },
+    "work/original-export/skills/ui-visual-refine/reference/kb/hierarchy-scope.md": {
+      "bytes": 1874,
+      "sha256": "b8f1501736984f70cc2ea4f0e47d78f13686d14429c61edc0bfdf4393a72cf55"
+    },
+    "work/original-export/skills/ui-visual-refine/reference/kb/INDEX.md": {
+      "bytes": 178,
+      "sha256": "a750375eba206195e218c4b7e18fb32dc744566a8fd4d33e118b282b9260bed9"
+    },
+    "work/original-export/skills/ui-visual-refine/reference/principles.md": {
+      "bytes": 715,
+      "sha256": "d45496c1989367c7f362c047ac3d055c87f7e81891a21074a43a992d5e859b2b"
+    },
+    "work/original-export/skills/ui-visual-refine/SKILL.md": {
+      "bytes": 6410,
+      "sha256": "d29879dee0c772a5d7e78dc49f1f15b58f79009ff235ccaf83682566ec645be4"
+    },
+    "work/original-export/skills/ux-flow-refine/agents/openai.yaml": {
+      "bytes": 326,
+      "sha256": "e2235f3946dea0496f179e8e6f8573286c403b708a16a4b651dfea5152266ed3"
+    },
+    "work/original-export/skills/ux-flow-refine/LICENSE": {
+      "bytes": 1085,
+      "sha256": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d"
+    },
+    "work/original-export/skills/ux-flow-refine/reference/kb/INDEX.md": {
+      "bytes": 175,
+      "sha256": "e528760a22e0d35ba98930727b19359ab540c8c9996e6aec5e2b1b308bf7efb1"
+    },
+    "work/original-export/skills/ux-flow-refine/reference/kb/state-recovery.md": {
+      "bytes": 1948,
+      "sha256": "59fa0df2fdc211a4296e91465319bec87ea025abbf7fa9a1ae00be7abb03106e"
+    },
+    "work/original-export/skills/ux-flow-refine/reference/principles.md": {
+      "bytes": 816,
+      "sha256": "da73a3d3f80235c4ebcd2e9a8bc8e6e03464a4094c66f4741778828c8d282a8b"
+    },
+    "work/original-export/skills/ux-flow-refine/SKILL.md": {
+      "bytes": 5716,
+      "sha256": "47a53df610b7d4522c5775d809eb718c6c44de43dc7c15d47eba4396fac6f1f9"
+    },
+    "work/original-export/skills/ux-writing/agents/openai.yaml": {
+      "bytes": 324,
+      "sha256": "9aa5a7f69b3ad25751efb83ceefac5365bbbeee010db65f1f341a106cbc717f1"
+    },
+    "work/original-export/skills/ux-writing/LICENSE": {
+      "bytes": 1085,
+      "sha256": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d"
+    },
+    "work/original-export/skills/ux-writing/reference/kb/INDEX.md": {
+      "bytes": 199,
+      "sha256": "602248a9f6d93b9fc95022961088abf93fd3017d8f2be2e1e578608e68953381"
+    },
+    "work/original-export/skills/ux-writing/reference/kb/truthful-state-copy.md": {
+      "bytes": 2489,
+      "sha256": "7b3b3fd3e03d1c8bdf7827e9d58dba743414093a03b8aab529c268f46a401797"
+    },
+    "work/original-export/skills/ux-writing/reference/principles.md": {
+      "bytes": 727,
+      "sha256": "2c5445965a1be520ae2b704a6d2d6e223bf014bff3a7843fa459345bed0e701c"
+    },
+    "work/original-export/skills/ux-writing/SKILL.md": {
+      "bytes": 5530,
+      "sha256": "2a37701c87929b12e6c58fb808c5ad14c81e24e9325f7e1a6181b5391f21436c"
+    },
+    "work/package-check-final.json": {
+      "bytes": 297,
+      "sha256": "0a17d0990ea504e50ca656cc3a759c66993c19da7c94a715e15e27d733630c58"
+    },
+    "work/package-check-final.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "work/package-check-final.stdout": {
+      "bytes": 296,
+      "sha256": "7a1cad64ea887286dbde384bae3f1a6a46991897f03f6bca9a333b4a4a5fcdb9"
+    },
+    "work/preserve-final.mjs": {
+      "bytes": 2141,
+      "sha256": "170f826f4021bcaea67a67d1c5d153aacd0e33c4497478dfea7b1e2565b19bb5"
+    },
+    "work/product.patch": {
+      "bytes": 13996,
+      "sha256": "8c15c45269b6b63b72b2a4b6e5b88da3c9b4abbf1478de68b9b2506170308ae1"
+    },
+    "work/refresh-manifest-final.json": {
+      "bytes": 315,
+      "sha256": "5c695823b57386fd1b0ac787324210b5f7948dec261abb84cd02ea80dc136798"
+    },
+    "work/refresh-manifest-final.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "work/refresh-manifest-final.stdout": {
+      "bytes": 27,
+      "sha256": "38b3335990b96d996083ed8afb90695f7dd484fcb7c2f8768cb1d253eec465a0"
+    },
+    "work/refresh-manifest.json": {
+      "bytes": 309,
+      "sha256": "6767c2cbf6eacd9392f88017a5763e34ed01ed5cd563c0b0adefecc9e87c6643"
+    },
+    "work/refresh-manifest.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "work/refresh-manifest.stdout": {
+      "bytes": 27,
+      "sha256": "38b3335990b96d996083ed8afb90695f7dd484fcb7c2f8768cb1d253eec465a0"
+    },
+    "work/reproduce-export.mjs": {
+      "bytes": 1964,
+      "sha256": "955f84aa45150aa9b5a2b6a49c6d48ed0c1ff9b3125a95c6739cd29091c98b08"
+    },
+    "work/run-command.mjs": {
+      "bytes": 1110,
+      "sha256": "3326c52bdf524d31a33b1eb2f25d6e572a9bba41b0da3a3869e1e4820936f283"
+    }
+  }
+}

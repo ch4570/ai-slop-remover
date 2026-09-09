@@ -9,6 +9,7 @@ import tempfile
 import unittest
 
 from test_scope_checks import ROOT, good_product, scope
+from test_browser_checks import evidence_snapshot, png_dimensions
 
 
 @unittest.skipUnless(os.environ.get('AI_SLOP_BROWSER_TESTS') == '1',
@@ -64,10 +65,66 @@ class ScopeBrowserTests(unittest.TestCase):
                 self.assertEqual(set(checks.values()), {'pass'}, self.browser)
                 self.assertEqual(set(self.source.values()), {'pass'})
                 self.assertEqual(self.browser['observations']['exceptions'], [])
+                self.assertEqual(self.browser['observations']['collectionErrors'], [])
                 for name in scope.IMAGES[case]:
                     self.assertGreater((self.output / 'images' / name).stat().st_size, 0)
                 self.assertEqual(self.browser['observations']['layout']['width'], 375)
                 self.assertTrue(self.browser['observations']['focus'])
+
+    def test_keyboard_capture_preserves_viewport_on_tall_page(self):
+        # The unchanged audit page already extends below both viewport heights.
+        checks = self.run_product('tall-keyboard-viewport', 'audit-read-only')
+        self.assertEqual(set(checks.values()), {'pass'}, self.browser)
+        self.assertEqual(set(self.source.values()), {'pass'})
+        self.assertEqual(self.browser['observations']['focus'][-1]['id'], 'order-search')
+        for name, height in (('wide.png', 900), ('narrow.png', 844)):
+            with self.subTest(overview=name):
+                self.assertGreater(png_dimensions(self.output / 'images' / name)[1], height)
+        self.assertEqual(png_dimensions(self.output / 'images/keyboard.png'), (375, 844))
+
+    def test_existing_browser_artifacts_are_preserved(self):
+        env = {**os.environ, 'AI_SLOP_CHROME': str(self.root / 'absent-chrome')}
+        for artifact in ('browser.json', 'images/wide.png', 'images/master-wide.png'):
+            with self.subTest(artifact=artifact):
+                output = self.evidence / ('existing-' + artifact.replace('/', '-'))
+                target = output / artifact
+                target.parent.mkdir(parents=True)
+                target.write_bytes(b'Previous collection evidence must survive unchanged.')
+                before = evidence_snapshot(output)
+                run = subprocess.run(['node', str(ROOT / 'scripts/run_scope_checks.mjs'), 'narrow-spacing',
+                                      str(scope.fixture_root('narrow-spacing') / 'product'), str(output)],
+                                     capture_output=True, text=True, timeout=30, env=env)
+                self.assertEqual(run.returncode, 2, run.stdout + run.stderr)
+                self.assertIn('new output path', run.stderr)
+                self.assertEqual(before, evidence_snapshot(output))
+
+    def test_prepared_trial_accepts_new_browser_evidence(self):
+        for unavailable in (False, True):
+            with self.subTest(unavailable=unavailable):
+                output = self.evidence / ('prepared-' + str(unavailable))
+                scope.prepare('audit-read-only', output)
+                before = {str(path.relative_to(output)): (path.read_bytes(), path.stat().st_mtime_ns)
+                          for path in output.rglob('*') if path.is_file()}
+                env = os.environ.copy()
+                if unavailable:
+                    env['AI_SLOP_CHROME'] = str(self.root / 'absent-chrome')
+                command = ['node', str(ROOT / 'scripts/run_scope_checks.mjs'), 'audit-read-only',
+                           str(output / 'product'), str(output)]
+                run = subprocess.run(command, capture_output=True, text=True, timeout=60, env=env)
+                self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
+                browser = json.loads((output / 'browser.json').read_text())
+                self.assertEqual({check['status'] for check in browser['checks']}, {'not-run' if unavailable else 'pass'})
+                self.assertEqual(before, {name: ((output / name).read_bytes(), (output / name).stat().st_mtime_ns) for name in before})
+                if unavailable:
+                    self.assertTrue(browser['observations']['collectionErrors'])
+                else:
+                    for name in scope.IMAGES['audit-read-only']:
+                        self.assertGreater((output / 'images' / name).stat().st_size, 0)
+                recorded = evidence_snapshot(output)
+                repeated = subprocess.run(command, capture_output=True, text=True, timeout=30, env=env)
+                self.assertEqual(repeated.returncode, 2, repeated.stdout + repeated.stderr)
+                self.assertIn('new output path', repeated.stderr)
+                self.assertEqual(recorded, evidence_snapshot(output))
 
     def test_local_brand_shadow_is_rejected_after_correct_spacing(self):
         def mutate(product):
@@ -83,6 +140,7 @@ class ScopeBrowserTests(unittest.TestCase):
             path.write_text(path.read_text().replace("localStorage.setItem('display-name', field.value);", "localStorage.setItem('display-name', 'unrelated replacement');"))
         checks = self.run_product('lost-setting', 'narrow-spacing', mutate)
         self.assertEqual(checks['spacing-and-state'], 'fail')
+        self.assertEqual(self.browser['observations']['collectionErrors'], [])
 
     def test_broken_aria_link_is_observed(self):
         def mutate(product):
@@ -146,6 +204,19 @@ class ScopeBrowserTests(unittest.TestCase):
         facts = json.loads(self.browser['checks'][0]['evidence']['text'])
         self.assertTrue(any(not fact['matches'] for fact in facts['facts']))
         self.assertIn('Fixture did not finish loading', facts['error'])
+        self.assertEqual(self.browser['observations']['collectionErrors'], [
+            'Observation spacing-and-state: Error: Fixture did not finish loading'])
+
+    def test_initial_navigation_failure_is_in_collection_error_summary(self):
+        def mutate(product):
+            with (product / 'app.js').open('a') as file:
+                file.write("\ndocument.querySelector('main').remove();\n")
+        checks = self.run_product('unavailable-initial-document', 'audit-read-only', mutate)
+        self.assertEqual(checks['audit-observation'], 'not-run')
+        facts = json.loads(self.browser['checks'][0]['evidence']['text'])
+        self.assertEqual(facts['facts'], [])
+        self.assertEqual(self.browser['observations']['collectionErrors'], [
+            'Observation audit-observation: Error: Fixture did not finish loading'])
 
 
 if __name__ == '__main__':
