@@ -55,11 +55,19 @@ def tree_digest(root):
     return digest.hexdigest()
 
 
+def canonical_mode(mode, platform=sys.platform):
+    """Keep POSIX mode bits; Windows exposes readonly state, not POSIX ACLs.
+
+    CPython adds directory execute bits on Windows while libuv does not.
+    """
+    return mode & (0o200 if platform == "win32" else 0o7777)
+
+
 def inventory(root):
     """Inventory content, type and mode without following product symlinks."""
     def describe(path):
         metadata = path.lstat()
-        entry = {"mode": stat.S_IMODE(metadata.st_mode)}
+        entry = {"mode": canonical_mode(metadata.st_mode)}
         if path.is_symlink():
             entry.update(type="symlink", target=os.readlink(path))
         elif stat.S_ISDIR(metadata.st_mode):

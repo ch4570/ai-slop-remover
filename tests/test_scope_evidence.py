@@ -275,6 +275,28 @@ class ScopeEvidenceTests(unittest.TestCase):
         self.assert_stale(self.checks(case, trial)['narrow-focus-review'], 'reviewer-notes.md')
 
     @unittest.skipUnless(shutil.which('node'), 'Cross-runtime parity requires the existing Node executable.')
+    def test_canonical_modes_preserve_posix_bits_and_windows_readonly_state(self):
+        cases = [
+            ('win32', 0o40777, 0o200), ('win32', 0o40666, 0o200),
+            ('win32', 0o40555, 0), ('win32', 0o40444, 0),
+            ('win32', 0o100666, 0o200), ('win32', 0o100444, 0),
+            ('linux', 0o40755, 0o755), ('linux', 0o104755, 0o4755),
+            ('darwin', 0o100644, 0o644), ('linux', 0o41777, 0o1777),
+        ]
+        for platform, mode, expected in cases:
+            with self.subTest(platform=platform, mode=oct(mode)):
+                self.assertEqual(scope.canonical_mode(mode, platform), expected)
+        node = subprocess.run([
+            'node', '--input-type=module', '-e',
+            "import { canonicalMode } from './scripts/scope_evidence.mjs'; "
+            "const cases = JSON.parse(process.argv[1]); "
+            "process.stdout.write(JSON.stringify(cases.map(([platform, mode]) => canonicalMode(mode, platform))));",
+            json.dumps(cases),
+        ], cwd=ROOT, text=True, capture_output=True, timeout=10, check=False)
+        self.assertEqual(node.returncode, 0, node.stderr)
+        self.assertEqual(json.loads(node.stdout), [expected for _, _, expected in cases])
+
+    @unittest.skipUnless(shutil.which('node'), 'Cross-runtime parity requires the existing Node executable.')
     def test_python_and_node_bindings_agree_for_inventory_edges(self):
         for edge in ('ordinary', 'unicode-and-numeric-names', 'symlink'):
             with self.subTest(edge=edge):
@@ -303,6 +325,18 @@ class ScopeEvidenceTests(unittest.TestCase):
         case = 'narrow-spacing'
         trial = self.recorded_trial(case)
         (trial / 'product/settings.css').chmod(0o755)
+        checks = self.checks(case, trial)
+        self.assertEqual(checks['allowed-scope']['status'], 'fail')
+        self.assert_stale(checks['spacing-and-state'], 'product')
+        self.assert_stale(checks['narrow-focus-review'], 'product')
+
+    def test_readonly_change_invalidates_recorded_observations(self):
+        case = 'narrow-spacing'
+        trial = self.recorded_trial(case)
+        target = trial / 'product/settings.css'
+        original_mode = target.stat().st_mode
+        self.addCleanup(target.chmod, original_mode)
+        target.chmod(0o444)
         checks = self.checks(case, trial)
         self.assertEqual(checks['allowed-scope']['status'], 'fail')
         self.assert_stale(checks['spacing-and-state'], 'product')
