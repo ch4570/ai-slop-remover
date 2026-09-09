@@ -511,6 +511,8 @@ def promote(args, root, policy, active, digest):
 
 
 def rollback(args, root, policy, active, digest):
+    if args.base_only:
+        return transition(root, policy, active, None, digest, "explicit-rollback")
     rid = args.release or active["previous_release_id"]
     if rid:
         try:
@@ -583,7 +585,9 @@ def parser():
         elif name == "promote":
             item.add_argument("--evaluation", required=True)
         elif name == "rollback":
-            item.add_argument("--release")
+            target = item.add_mutually_exclusive_group()
+            target.add_argument("--release", help="Restore a specific compatible release")
+            target.add_argument("--base-only", action="store_true", help="Disable all local rules and invalidate older candidates without deleting history")
         elif name == "context":
             item.add_argument("--skill", choices=sorted(SKILLS), required=True)
             item.add_argument("--platform", required=True)
