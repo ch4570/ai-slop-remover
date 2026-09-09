@@ -427,6 +427,11 @@ def install_package(root, dest, manifest, name, payload, dry_run=False):
 
 
 def main():
+    # A diagnostic path must not interrupt a completed copy on legacy terminals.
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is not None:
+            reconfigure(errors="backslashreplace")
     parser = argparse.ArgumentParser(description=__doc__)
     target = parser.add_mutually_exclusive_group(required=True)
     target.add_argument("--repo", help="Existing project directory")

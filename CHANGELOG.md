@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Escape path characters unavailable in the terminal encoding so install, reinstall, dry-run and status diagnostics cannot interrupt Unicode-path installations.
 - Revalidate adopted local rules against their recorded evaluation, evidence, candidate and plan before context delivery or rollback, while retaining recovery from a damaged active release.
 - Bind scope browser observations and independent reviews to their trial, product, evaluator and image hashes; mark changed or legacy evidence incomplete instead of reusing a stale pass.
 - Reject non-regular bundle manifests before reading JSON, preventing FIFO inputs from blocking listing, status, dry-run, and installation.
