@@ -326,7 +326,7 @@ python3 scripts/summarize_scope_trials.py /tmp/scope-trials/manifest.json --outp
 ```
 
 `prepare` writes `product/`, sibling `TASK.md`, `prepare.json` and
-`before-manifest.json`. The initial fixture digest includes TASK and product files
+`before-manifest.json`, and a unique `evidence-context.json` trial identity. The initial fixture digest includes TASK and product files
 using the sorted relative-path/NUL/bytes/NUL procedure above. Keep that original
 snapshot and evaluator/tool snapshots outside agent edit scope. Freeze and hash
 them before native launches; do not tune checks after reading trial outputs.
@@ -356,7 +356,14 @@ CI's Chrome job executes both search-editor and scope controls.
 
 Store the actual final agent response in `agent-output.md`. A separate reviewer
 reads source/diff/output/browser JSON and actually opens every required image,
-then writes `review.md` and `review.json`, keyed by the suite's quality check ID:
+then writes `review.md`. Capture the identities of the reviewed artifacts:
+
+```bash
+python3 scripts/check_scope.py review-context narrow-spacing /tmp/trial-a
+```
+
+Save that returned object as `review.json` and fill its `checks` field with the
+actual review, keyed by the suite's quality check ID:
 
 ```json
 {
@@ -368,7 +375,24 @@ then writes `review.md` and `review.json`, keyed by the suite's quality check ID
 }
 ```
 
-This example is a writing contract, not observed evidence. Use `fail` for actual
+The example above is the `checks` field, not a complete `review.json` or observed
+evidence. Browser and review records now use schema 2; result JSON and suite IDs
+remain unchanged. Both records bind the unique trial ID, product inventory digest,
+TASK digest and evaluator-source digest. The browser records product digests before
+and after observation, plus hashes of images when captured. Review records bind the
+raw browser JSON and each reviewed image, final agent output and review file.
+`review-context` captures identities only: it neither inspects images nor creates a
+passing judgment. Never regenerate it to reuse a review after the product or images
+changed; repeat observations and independent review in a fresh trial instead.
+
+`collect` rejects stale passing evidence as `not-run`, naming the mismatched field
+or file. A product change during observation also prevents a complete browser pass.
+Hashes establish record consistency, not observer truth or absence of transient
+changes reverted between snapshots. Historical schema 1 browser/review artifacts
+cannot establish a new collection pass; retain original archives and replay them
+with their pinned historical evaluators. Do not backfill identities into old records.
+
+Use `fail` for actual
 problems or `not-run` with a concrete `reason` for unobserved review. `collect`
 requires nonempty final output and each required image plus the review's inspected
 image list before accepting a quality pass. A concrete failure with valid review

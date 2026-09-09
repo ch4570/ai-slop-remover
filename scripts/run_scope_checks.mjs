@@ -3,6 +3,7 @@
 import { lstat, mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { claimBrowserEvidence, withBrowser } from './browser_harness.mjs';
+import { observationBinding, productDigest, fileDigest } from './scope_evidence.mjs';
 
 const suites = JSON.parse(await readFile(new URL('../evals/checks/scope-suites.json', import.meta.url), 'utf8'));
 const [caseId, fixture, outputArg] = process.argv.slice(2);
@@ -21,8 +22,10 @@ try { await claimBrowserEvidence(output, ['images']); }
 catch (error) { console.error(String(error)); process.exit(2); }
 await mkdir(path.join(output, 'images'), { recursive: true });
 const checks = new Map(required[caseId].map(id => [id, { id, kind: 'behavior', status: 'not-run', reason: 'Installed Chrome observation has not completed.' }]));
-const observations = { images: [], focus: [], collectionErrors: [] };
+const observations = { images: [], image_sha256: {}, focus: [], collectionErrors: [] };
 let environment = {};
+let binding = null;
+let productAfter = null;
 
 async function observe(id, callback) {
   const facts = [];
@@ -41,6 +44,7 @@ async function observe(id, callback) {
 try {
   const productType = await lstat(fixture);
   if (productType.isSymbolicLink() || !productType.isDirectory()) throw new Error('Product root must be an ordinary directory; no browser traversal was attempted.');
+  binding = await observationBinding(caseId, fixture, output);
   await withBrowser(fixture, path.join(output, 'images'), async ({ origin, page, pressKey, evaluate, call, screenshot, pause, exceptions }) => {
     environment = { browser: (await call('Browser.getVersion')).product, node: process.version, origin };
     const navigate = async (relative = '') => {
@@ -56,7 +60,11 @@ try {
       throw new Error('Fixture did not finish loading');
     };
     const capture = async (name, options) => {
-      try { await screenshot(name, options); observations.images.push('images/' + name); }
+      try {
+        await screenshot(name, options);
+        observations.images.push('images/' + name);
+        observations.image_sha256['images/' + name] = await fileDigest(path.join(output, 'images', name));
+      }
       catch (error) { observations.collectionErrors.push('Screenshot ' + name + ': ' + String(error)); }
     };
     const setQuery = async (id, value) => evaluate(`(() => { const input = document.getElementById(${JSON.stringify(id)}); input.value = ${JSON.stringify(value)}; input.dispatchEvent(new Event('input', { bubbles: true })); })()`);
@@ -162,7 +170,15 @@ try {
   observations.collectionErrors.push(String(error));
   for (const [id, check] of checks) if (check.status === 'not-run') checks.set(id, { ...check, reason: 'Installed Chrome collection unavailable: ' + String(error) });
 }
-const result = { schema: 1, case: caseId, environment, checks: [...checks.values()], observations,
+try { productAfter = await productDigest(fixture); }
+catch (error) { observations.collectionErrors.push('Product snapshot unavailable: ' + String(error)); }
+if (binding && binding.product_sha256 !== productAfter) {
+  const reason = 'Product changed during browser observation; repeat in a fresh trial.';
+  observations.collectionErrors.push(reason);
+  for (const [id, check] of checks) checks.set(id, check.status === 'fail' ? { ...check, reason }
+    : { id, kind: 'behavior', status: 'not-run', reason });
+}
+const result = { schema: 2, case: caseId, binding, product_after_sha256: productAfter, environment, checks: [...checks.values()], observations,
   limits: ['Source scope is checked separately.', 'Accessible names are captured, not semantically judged by string matching.', 'Images and diagnoses need independent human review.', 'An emulated viewport is not a physical device or screen reader test.'] };
 await writeFile(path.join(output, 'browser.json'), JSON.stringify(result, null, 2) + '\n');
 console.log(JSON.stringify({ case: caseId, output, checks: result.checks.map(({ id, status }) => ({ id, status })) }));

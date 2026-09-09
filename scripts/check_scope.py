@@ -14,6 +14,7 @@ import re
 import shutil
 import stat
 import sys
+import uuid
 
 from compare_evals import load_result, scope_suites, unique_object, validate
 
@@ -32,6 +33,8 @@ IMAGES = {
     "master-page-consistency": ["master-wide.png", "wide.png", "narrow.png", "keyboard.png"],
 }
 START, END = "<!-- comparison-exception:start -->", "<!-- comparison-exception:end -->"
+EVALUATOR_FILES = ("scripts/check_scope.py", "scripts/compare_evals.py", "scripts/run_scope_checks.mjs",
+                   "scripts/scope_evidence.mjs", "scripts/browser_harness.mjs", "evals/checks/scope-suites.json")
 
 
 def write_json(path, value):
@@ -81,6 +84,60 @@ def inventory(root):
     return result
 
 
+def canonical_digest(value):
+    return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=False,
+                                     separators=(",", ":")).encode()).hexdigest()
+
+
+def file_digest(path):
+    if path.is_symlink() or not path.is_file():
+        raise ValueError("Evidence must be an ordinary file: " + str(path))
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def evidence_context(case, trial):
+    path = trial / "evidence-context.json"
+    if not path.exists():
+        with path.open("x", encoding="utf-8") as stream:
+            json.dump({"schema": 1, "case": case, "trial_id": uuid.uuid4().hex}, stream)
+    context = load_result(path)
+    if (not isinstance(context, dict) or set(context) != {"schema", "case", "trial_id"}
+            or type(context["schema"]) is not int or context["schema"] != 1 or context["case"] != case
+            or not isinstance(context["trial_id"], str) or not re.fullmatch(r"[0-9a-f]{32}", context["trial_id"])):
+        raise ValueError("Invalid trial evidence context")
+    return context
+
+
+def observation_binding(case, trial):
+    context = evidence_context(case, trial)
+    return {"schema": 2, "case": case, "trial_id": context["trial_id"],
+            "product_sha256": canonical_digest(inventory(trial / "product")),
+            "task_sha256": file_digest(trial / "TASK.md"),
+            "evaluator_sha256": canonical_digest({name: file_digest(ROOT / name) for name in EVALUATOR_FILES})}
+
+
+def binding_difference(actual, expected):
+    if not isinstance(actual, dict):
+        return "binding missing"
+    return ", ".join(sorted(key for key in set(actual) | set(expected) if actual.get(key) != expected.get(key)))
+
+
+def review_context(case, trial):
+    """Capture artifact identities, never a review verdict or proof of inspection."""
+    binding = observation_binding(case, trial)
+    browser = load_result(trial / "browser.json")
+    if (browser.get("schema") != 2 or browser.get("binding") != binding
+            or browser.get("product_after_sha256") != binding["product_sha256"]):
+        raise ValueError("Browser evidence is stale; collect observations in a fresh trial before review")
+    names = ["images/" + name for name in IMAGES[case]] + ["agent-output.md", "review.md"]
+    for name, digest in browser.get("observations", {}).get("image_sha256", {}).items():
+        if name not in names or file_digest(trial / name) != digest:
+            raise ValueError("Browser image changed: " + name)
+    return {"schema": 2, "binding": binding, "browser_sha256": file_digest(trial / "browser.json"),
+            "reviewed_files": {name: file_digest(trial / name) for name in names if (trial / name).exists()},
+            "checks": {}}
+
+
 def prepare(case, trial):
     initial = fixture_root(case)
     trial.mkdir(parents=True, exist_ok=False)
@@ -90,6 +147,7 @@ def prepare(case, trial):
                 "task_sha256": hashlib.sha256((initial / "TASK.md").read_bytes()).hexdigest()}
     write_json(trial / "prepare.json", metadata)
     write_json(trial / "before-manifest.json", inventory(trial / "product"))
+    evidence_context(case, trial)
     return metadata
 
 
@@ -226,37 +284,73 @@ def collect(case, trial):
                                          fromfile="before/" + name, tofile="after/" + name))
     (trial / "diff.patch").write_text("".join(diff), encoding="utf-8")
     checks = {check["id"]: check for check in source["checks"]}
+    binding = observation_binding(case, trial)
+    browser_gap = "Browser observation was not collected for this required check."
     browser_path = trial / "browser.json"
     if browser_path.is_file():
         browser = load_result(browser_path)
         if browser.get("case") != case:
             raise ValueError("Browser evidence belongs to a different case")
+        browser_gap = ""
+        if browser.get("schema") != 2 or browser.get("binding") != binding:
+            fields = "schema" if browser.get("schema") != 2 else binding_difference(browser.get("binding"), binding)
+            browser_gap = "Browser evidence binding mismatch (" + fields + "); observe this product in a fresh trial."
+        elif browser.get("product_after_sha256") != binding["product_sha256"]:
+            browser_gap = "Product changed during browser observation; observe again in a fresh trial."
         for check in browser.get("checks", []):
             if check["id"] in checks or suite["cases"][case].get(check["id"]) != "behavior":
                 raise ValueError("Unexpected or duplicate browser check")
-            checks[check["id"]] = check
+            checks[check["id"]] = ({**check, "reason": browser_gap} if check["status"] == "fail" else
+                                   not_run(check["id"], "behavior", browser_gap)) if browser_gap else check
     review = load_result(trial / "review.json") if (trial / "review.json").is_file() else {}
+    review_gap = ""
+    if not isinstance(review, dict) or review.get("schema") != 2 or review.get("binding") != binding:
+        fields = "schema" if not isinstance(review, dict) or review.get("schema") != 2 else binding_difference(review.get("binding"), binding)
+        review_gap = "Review evidence binding mismatch (" + fields + "); review the current product and images."
+    elif browser_gap or review.get("browser_sha256") != file_digest(browser_path):
+        review_gap = "Reviewed browser evidence changed or is incomplete; repeat the observation and review."
+    reviewed_files = review.get("reviewed_files", {}) if isinstance(review, dict) else {}
+    if not isinstance(reviewed_files, dict):
+        reviewed_files = {}
+    review_checks = review.get("checks", {}) if isinstance(review, dict) and review.get("schema") == 2 else review
     required_images = ["images/" + name for name in IMAGES[case]]
+    image_hashes = browser.get("observations", {}).get("image_sha256", {}) if browser_path.is_file() else {}
     for check_id, kind in suite["cases"][case].items():
         if kind == "quality":
-            item = review.get(check_id)
+            item = review_checks.get(check_id) if isinstance(review_checks, dict) else None
             missing = [name for name in required_images if not (trial / name).is_file() or (trial / name).stat().st_size == 0]
             if not (trial / "agent-output.md").is_file() or (trial / "agent-output.md").stat().st_size == 0:
                 missing.append("agent-output.md")
             uninspected = [name for name in required_images if not item or name not in item.get("reviewed_images", [])]
             gap_reason = "Independent review, actual final output or inspected images unavailable: " + ", ".join(sorted(set(missing + uninspected)))
+            artifacts = required_images + ["agent-output.md"]
+            if item and isinstance(item.get("evidence"), dict) and "path" in item["evidence"]:
+                artifacts.append(item["evidence"]["path"])
+            drifted = []
+            for name in artifacts:
+                try:
+                    target = trial / name
+                    if (Path(name).is_absolute() or not target.resolve().is_relative_to(trial.resolve())
+                            or reviewed_files.get(name) != file_digest(target)
+                            or name in required_images and image_hashes.get(name) != reviewed_files.get(name)):
+                        drifted.append(name)
+                except (OSError, ValueError, TypeError):
+                    drifted.append(str(name))
+            binding_gap = review_gap or ("Reviewed files changed or lack hashes: " + ", ".join(drifted) if drifted else "")
+            if binding_gap:
+                gap_reason += "; " + binding_gap
             if item and item.get("status") == "fail" and "agent-output.md" not in missing:
                 # A concrete review failure is still a failure when other views are absent.
                 # validate() below still requires valid, nonempty failure evidence.
                 checks[check_id] = {"id": check_id, "kind": kind, **{key: item[key] for key in ("status", "evidence", "reason") if key in item}}
-                if missing or uninspected:
+                if missing or uninspected or binding_gap:
                     checks[check_id]["reason"] = gap_reason
-            elif not item or missing or uninspected:
+            elif not item or missing or uninspected or binding_gap:
                 checks[check_id] = not_run(check_id, kind, gap_reason)
             else:
                 checks[check_id] = {"id": check_id, "kind": kind, **{key: item[key] for key in ("status", "evidence", "reason") if key in item}}
         elif check_id not in checks:
-            checks[check_id] = not_run(check_id, kind, "Browser observation was not collected for this required check.")
+            checks[check_id] = not_run(check_id, kind, browser_gap or "Browser observation was not collected for this required check.")
     invocation = load_result(trial / "invocation.json")
     result = {"schema": 1, "suite": suite["id"],
               **{key: invocation[key] for key in ("run_id", "variant", "model", "settings", "skill_revision")},
@@ -271,12 +365,13 @@ def collect(case, trial):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("prepare", "collect"))
+    parser.add_argument("operation", choices=("prepare", "collect", "review-context"))
     parser.add_argument("case", choices=CASES)
     parser.add_argument("trial", type=Path)
     args = parser.parse_args()
     try:
-        output = prepare(args.case, args.trial) if args.operation == "prepare" else collect(args.case, args.trial)
+        operation = {"prepare": prepare, "collect": collect, "review-context": review_context}[args.operation]
+        output = operation(args.case, args.trial)
         print(json.dumps(output, ensure_ascii=False, indent=2))
     except (OSError, ValueError, KeyError, TypeError) as error:
         print("Error: " + str(error), file=sys.stderr)
