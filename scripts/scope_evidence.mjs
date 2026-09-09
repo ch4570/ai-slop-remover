@@ -18,12 +18,16 @@ function canonical(value) {
 export const canonicalDigest = value => hash(canonical(value));
 export const fileDigest = async target => hash(await readFile(target));
 
+// Windows mode bits synthesize readonly state, not ACLs; CPython and libuv
+// disagree on directory execute bits. POSIX retains every permission bit.
+export const canonicalMode = (mode, platform = process.platform) => mode & (platform === 'win32' ? 0o200 : 0o7777);
+
 export async function productDigest(product) {
   const entries = Object.create(null);
   async function visit(relative) {
     const target = path.join(product, relative);
     const metadata = await lstat(target);
-    const entry = { mode: metadata.mode & 0o7777 };
+    const entry = { mode: canonicalMode(metadata.mode) };
     if (metadata.isSymbolicLink()) Object.assign(entry, { type: 'symlink', target: await readlink(target) });
     else if (metadata.isDirectory()) entry.type = 'directory';
     else if (metadata.isFile()) Object.assign(entry, { type: 'file', sha256: hash(await readFile(target)) });
