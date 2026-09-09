@@ -116,7 +116,10 @@ def _source(source, sidecar_root, run_root):
     name = source["path"]
     if not _text(name) or not digest(source["sha256"]):
         raise ValueError("source requires a relative path and SHA-256")
-    target = (sidecar_root / name).resolve()
+    declared = sidecar_root / name
+    if declared.is_symlink():
+        raise ValueError("source must be a regular file, not a symlink")
+    target = declared.resolve()
     if Path(name).is_absolute() or not target.is_relative_to(run_root):
         raise ValueError("source path is outside the run directory")
     if not target.is_file() or target.stat().st_size == 0:

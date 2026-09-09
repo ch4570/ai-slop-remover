@@ -235,6 +235,19 @@ class RunTests(RunFixtures):
             path=link.name, sha256=hashlib.sha256(outside.read_bytes()).hexdigest()))
         self.assertEqual(self.summarize(paths)["usage_status"], "invalid")
 
+    def test_source_symlink_inside_run_is_not_regular_evidence(self):
+        paths = self.make_run(run_id="internal-symlink-source")
+        link = paths[0].parent / "inside-link.jsonl"
+        try:
+            link.symlink_to("source-0.jsonl")
+        except OSError:
+            self.skipTest("Symlink creation not available on this platform")
+        self.rewrite(paths[1], lambda document: document["attempts"][0]["source"].update(path=link.name))
+        summary = self.summarize(paths, [price()])
+        self.assertEqual(summary["usage_status"], "invalid")
+        self.assertIsNone(summary["estimated_cost"])
+        self.assertTrue(summary["quality_pass"])
+
     def test_missing_child_or_incomplete_retry_prevents_partial_totals(self):
         for index, unknown in enumerate((
                 self.attempt(attempt_id="child", parent_id="root", usage_status="unavailable",
