@@ -1,0 +1,1174 @@
+{
+  "schema": 1,
+  "experiment": "issue21-four-scope-pairs",
+  "baseline_revision": "035af3f3f8a4bea9c3529eab2c2be997a76ac219",
+  "candidate_snapshot_sha256": "d6172b390a6c2fe2d3b94c7dba884b77c242cc1b32be014a63b3ca1bc5dd928b",
+  "evaluator_sha256": "f94ef468f7ebf05569d5416604401d88892162c147c6ff9497602b8e55e0fd10",
+  "runtime_version": "codex-cli 0.153.4",
+  "settings": {
+    "invocation_mode": "snapshot-direct",
+    "runtime_version": "codex-cli 0.153.4",
+    "model_selection": "runtime-default-unobserved",
+    "reasoning": "runtime-default",
+    "sandbox": "workspace-write",
+    "approval": "never",
+    "network": false,
+    "cache": "uncontrolled",
+    "repetitions": 1,
+    "context": "fresh-ephemeral-cli",
+    "host_skill_discovery": false,
+    "apps": false,
+    "multi_agent": false,
+    "memories": false
+  },
+  "run_count": 8,
+  "pair_count": 4,
+  "usage_matched_pairs": 4,
+  "cost_matched_pairs": 0,
+  "quality": {
+    "baseline": {
+      "attempted_tasks": 4,
+      "completed_tasks": 4,
+      "failed_or_incomplete_tasks": 0,
+      "unknown_tasks": 0,
+      "completion_rate": 1.0
+    },
+    "candidate": {
+      "attempted_tasks": 4,
+      "completed_tasks": 4,
+      "failed_or_incomplete_tasks": 0,
+      "unknown_tasks": 0,
+      "completion_rate": 1.0
+    }
+  },
+  "usage": {
+    "baseline": {
+      "attempted_tasks": 4,
+      "completed_tasks": 4,
+      "tokens": {
+        "input_tokens": 767034,
+        "cached_input_tokens": 644480,
+        "cache_write_tokens": 0,
+        "output_tokens": 8298,
+        "reasoning_output_tokens": 239
+      },
+      "total_tokens": 775332,
+      "tokens_per_completed_task": "193833"
+    },
+    "candidate": {
+      "attempted_tasks": 4,
+      "completed_tasks": 4,
+      "tokens": {
+        "input_tokens": 557872,
+        "cached_input_tokens": 434560,
+        "cache_write_tokens": 0,
+        "output_tokens": 6949,
+        "reasoning_output_tokens": 170
+      },
+      "total_tokens": 564821,
+      "tokens_per_completed_task": "141205.25"
+    },
+    "median_pair_total_token_delta": "-46409"
+  },
+  "pairs": [
+    {
+      "case": "narrow-spacing",
+      "quality_verdict": "pass",
+      "regressions": [],
+      "usage_comparable": true,
+      "total_token_delta": -110859,
+      "baseline": {
+        "run_id": "issue21-narrow-spacing-baseline-1",
+        "quality_pass": true,
+        "quality_checks": [
+          {
+            "id": "allowed-scope",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "spacing-and-state",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "narrow-focus-review",
+            "kind": "quality",
+            "status": "pass"
+          }
+        ],
+        "source_changes": [
+          "settings.css"
+        ],
+        "execution_status": "completed",
+        "runtime_returncode": 0,
+        "timeout": false,
+        "recorded_integrity_violations": 0,
+        "usage_status": "observed",
+        "tokens": {
+          "input_tokens": 238376,
+          "cached_input_tokens": 207872,
+          "cache_write_tokens": 0,
+          "output_tokens": 1358,
+          "reasoning_output_tokens": 24
+        },
+        "duration_seconds": 80.43051283399109,
+        "duration_kind": "summed-attempt-time",
+        "cost_status": "unavailable",
+        "estimated_cost": null,
+        "requested_model": null,
+        "observed_models": [],
+        "references": {
+          "status": "observed-helper-emission",
+          "full_reads": 5,
+          "unique_full_read_paths": 5,
+          "repeated_full_reads": 0,
+          "emitted_bytes": 15689,
+          "unique_emitted_bytes": 15689,
+          "hash_only_checks": 0,
+          "paths": [
+            {
+              "path": "ui-craft-bundle/references/art-direction.md",
+              "sha256": "bdd4c5488aa89578c84d5fabc89d2f80370210828bfbc28c3790586810401b0c",
+              "bytes": 3726,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-craft-bundle/references/design-memory.md",
+              "sha256": "45109b7537908e7eeae7a0fb7d005aaf139fdedb180ccbdf22bf23db277dbee5",
+              "bytes": 4660,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-visual-refine/SKILL.md",
+              "sha256": "d29879dee0c772a5d7e78dc49f1f15b58f79009ff235ccaf83682566ec645be4",
+              "bytes": 6410,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-visual-refine/reference/kb/INDEX.md",
+              "sha256": "a750375eba206195e218c4b7e18fb32dc744566a8fd4d33e118b282b9260bed9",
+              "bytes": 178,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-visual-refine/reference/principles.md",
+              "sha256": "d45496c1989367c7f362c047ac3d055c87f7e81891a21074a43a992d5e859b2b",
+              "bytes": 715,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            }
+          ]
+        },
+        "sha256": {
+          "result.json": "46b968e67c014519d733347fb02d445979541672b6e3834f6085ea41c69e8d09",
+          "usage.json": "c312f8e6da177829b49f545e2350bcff28b22054be86b0fad65c84e2f4c8d6a2",
+          "runtime.jsonl": "4444596a2be8f341527efe111706c7f111f61967f5a9f8bceedace30cbb521ab",
+          "runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "prompt.txt": "fd7f83944a19707f3e97c7552e3a90b3e741a47e376e4e48983d9ccc0a95ab7d",
+          "command.json": "9f69d3d9fbb3a572f097863d5ecf1b3186787a85ef18f7ba9b2df4f48ceafaa8",
+          "agent-output.md": "7221d4aef2ab2fb5e59287c277a6c24889db5cbfa97e44725ea23d373e6a9959",
+          "reference-reads.jsonl": "b2399655bb51e4047374d6f46551aecf29a97b009f73fd4ea280ffbb27dc1bb7",
+          "run-status.json": "21faa0f27fb4e18dd82f427a4dbc2f93a95930f7aa1f74fb672dc6f8d54a9c02",
+          "review.json": "ada3f4cf7db4561f80e4aa98c8907c17c52be109691ea824c8e964bb818769ad",
+          "browser.json": "35777360bdf2c97dace2a844fab2df35219e87cdfd129beac6a1662d66780bc4",
+          "source-checks.json": "356b106cf7db2edaa3994ca4b9705bb57bfd408d405021127d376f9230ecbc67",
+          "before-manifest.json": "3b79bdf9ed6b107d4a1413066371388d7c0043b06def43e1409e6c4dd5691364",
+          "after-manifest.json": "866cf28fdfcbc734bb2820441c43c5059ef177ac11dca2180419beb87286015e"
+        },
+        "runtime": {
+          "command_count": 12,
+          "failed_command_count": 1,
+          "unfinished_command_count": 0,
+          "recorded_child_activity_items": 0,
+          "runtime_error_items": 1,
+          "runtime_warning_lines": 0,
+          "runtime_error_lines": 0,
+          "trace_parse_errors": 0,
+          "conflicting_terminal_command_events": 0,
+          "completed_full_read_helper_commands": 6,
+          "empty_captured_helper_output_commands": 1,
+          "missing_captured_helper_output_commands": 0,
+          "review_flag_counts": {}
+        }
+      },
+      "candidate": {
+        "run_id": "issue21-narrow-spacing-candidate-1",
+        "quality_pass": true,
+        "quality_checks": [
+          {
+            "id": "allowed-scope",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "spacing-and-state",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "narrow-focus-review",
+            "kind": "quality",
+            "status": "pass"
+          }
+        ],
+        "source_changes": [
+          "settings.css"
+        ],
+        "execution_status": "completed",
+        "runtime_returncode": 0,
+        "timeout": false,
+        "recorded_integrity_violations": 0,
+        "usage_status": "observed",
+        "tokens": {
+          "input_tokens": 127837,
+          "cached_input_tokens": 99968,
+          "cache_write_tokens": 0,
+          "output_tokens": 1038,
+          "reasoning_output_tokens": 26
+        },
+        "duration_seconds": 50.96004262496717,
+        "duration_kind": "summed-attempt-time",
+        "cost_status": "unavailable",
+        "estimated_cost": null,
+        "requested_model": null,
+        "observed_models": [],
+        "references": {
+          "status": "observed-helper-emission",
+          "full_reads": 2,
+          "unique_full_read_paths": 2,
+          "repeated_full_reads": 0,
+          "emitted_bytes": 8180,
+          "unique_emitted_bytes": 8180,
+          "hash_only_checks": 0,
+          "paths": [
+            {
+              "path": "ui-visual-refine/SKILL.md",
+              "sha256": "f0fc96688f9d028b638d143c9093644da8862ca280011cfd407d11fff48d77b7",
+              "bytes": 7431,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-visual-refine/reference/principles.md",
+              "sha256": "92ceb565efdc980426ba208a5874ec2a6b2a63fb6418181e4b3b9cb1729389a8",
+              "bytes": 749,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            }
+          ]
+        },
+        "sha256": {
+          "result.json": "d9d6e81b25474c16c27a210e135a107615819d5c350ed225f4b4c100117c9b2e",
+          "usage.json": "caa73db9f668d077ce8c3b02c0add95f0ab722b089cff6a6c2fe913c97894606",
+          "runtime.jsonl": "0ae8f93ce618c58a841d9ac5ec41f4ad53431d237c84b8503c58a8c8e1d66904",
+          "runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "prompt.txt": "bfdae4a5878c4f088ecaf89ed339256c26cd8ae16313ec1427f7e90e6016448e",
+          "command.json": "6bcd912da981a31d8667d904b770769526b86ec09beec25e679d45f9b7c9ab2a",
+          "agent-output.md": "fb751248d111f1c667dcb2d7caf8490121820a508c64b8f8b541c0c2b89b5579",
+          "reference-reads.jsonl": "304179523dca9164b936b7554050418a1fb4c4d94b3340dda95f8dee01cd1798",
+          "run-status.json": "3cd564a0d8767cd2ecc7608b9571a878104e4e836940706c6a374ff5d96a2758",
+          "review.json": "01985a4376f893a9c856f26e36efa529d6b47379cc9263b9b31fdba596965529",
+          "browser.json": "43d7ceaf140505f782f27ac84aba61e9ccfc32197679624b07979971f12d92e5",
+          "source-checks.json": "356b106cf7db2edaa3994ca4b9705bb57bfd408d405021127d376f9230ecbc67",
+          "before-manifest.json": "3b79bdf9ed6b107d4a1413066371388d7c0043b06def43e1409e6c4dd5691364",
+          "after-manifest.json": "866cf28fdfcbc734bb2820441c43c5059ef177ac11dca2180419beb87286015e"
+        },
+        "runtime": {
+          "command_count": 9,
+          "failed_command_count": 2,
+          "unfinished_command_count": 0,
+          "recorded_child_activity_items": 0,
+          "runtime_error_items": 1,
+          "runtime_warning_lines": 0,
+          "runtime_error_lines": 0,
+          "trace_parse_errors": 0,
+          "conflicting_terminal_command_events": 0,
+          "completed_full_read_helper_commands": 3,
+          "empty_captured_helper_output_commands": 0,
+          "missing_captured_helper_output_commands": 0,
+          "review_flag_counts": {}
+        }
+      },
+      "token_delta": {
+        "input_tokens": -110539,
+        "cached_input_tokens": -107904,
+        "cache_write_tokens": 0,
+        "output_tokens": -320,
+        "reasoning_output_tokens": 2
+      },
+      "duration_delta_seconds": -29.470470209023915
+    },
+    {
+      "case": "audit-read-only",
+      "quality_verdict": "pass",
+      "regressions": [],
+      "usage_comparable": true,
+      "total_token_delta": -61452,
+      "baseline": {
+        "run_id": "issue21-audit-read-only-baseline-1",
+        "quality_pass": true,
+        "quality_checks": [
+          {
+            "id": "product-files-unchanged",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "audit-observation",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "prioritized-diagnosis",
+            "kind": "quality",
+            "status": "pass"
+          }
+        ],
+        "source_changes": [],
+        "execution_status": "completed",
+        "runtime_returncode": 0,
+        "timeout": false,
+        "recorded_integrity_violations": 0,
+        "usage_status": "observed",
+        "tokens": {
+          "input_tokens": 194035,
+          "cached_input_tokens": 158592,
+          "cache_write_tokens": 0,
+          "output_tokens": 2707,
+          "reasoning_output_tokens": 95
+        },
+        "duration_seconds": 114.18835279205814,
+        "duration_kind": "summed-attempt-time",
+        "cost_status": "unavailable",
+        "estimated_cost": null,
+        "requested_model": null,
+        "observed_models": [],
+        "references": {
+          "status": "observed-helper-emission",
+          "full_reads": 9,
+          "unique_full_read_paths": 9,
+          "repeated_full_reads": 0,
+          "emitted_bytes": 37803,
+          "unique_emitted_bytes": 37803,
+          "hash_only_checks": 0,
+          "paths": [
+            {
+              "path": "ui-craft-bundle/references/anti-slop-methods.md",
+              "sha256": "11a25d914f368956bffad69821ed80a58b6ab19a9a6fe64b2b4c233097f2bdea",
+              "bytes": 9864,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-craft-bundle/references/art-direction.md",
+              "sha256": "bdd4c5488aa89578c84d5fabc89d2f80370210828bfbc28c3790586810401b0c",
+              "bytes": 3726,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-craft-bundle/references/design-memory.md",
+              "sha256": "45109b7537908e7eeae7a0fb7d005aaf139fdedb180ccbdf22bf23db277dbee5",
+              "bytes": 4660,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-craft-bundle/references/ux-foundations.md",
+              "sha256": "cb116b8faf294edd77d5eeb6207b71098edeef1ee499030fef04950474e45c62",
+              "bytes": 8840,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-craft-bundle/references/verification.md",
+              "sha256": "f978162c6edd1cd1922d914682afc5e053680e0b95e1150ecbb736d2b0eaddd8",
+              "bytes": 3326,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-slop-audit/SKILL.md",
+              "sha256": "1ff1fdc904180e745f46083e2bbc00db632633167f054be81155854969941b3c",
+              "bytes": 4720,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-slop-audit/reference/kb/INDEX.md",
+              "sha256": "5192d60198c12b91a03badf602b9aab83f3041c628f1ec07e57e55aadb9b24ba",
+              "bytes": 153,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-slop-audit/reference/kb/evidence-priority.md",
+              "sha256": "af5fd8a9862aea25220d76433a702191cacae82c7f3c085f797a45a82aeed581",
+              "bytes": 1791,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-slop-audit/reference/principles.md",
+              "sha256": "a5e1d5f171b95be2a3040ca57a0c7871f8ac278756d2c4ea4aa33e40f57112b3",
+              "bytes": 723,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            }
+          ]
+        },
+        "sha256": {
+          "result.json": "2ff49802a4cce42c01466536b1580f87520917aeb3bbec88d46ec239808e0f73",
+          "usage.json": "ec0d81f7a090485fc31f0d55585ec1bdb65ddf8a30fb55363711ba4ac91dae46",
+          "runtime.jsonl": "d8722706f808d7bd57e05b8dfac303ef79b0bc99d0818cc10c3ec2dd649339e0",
+          "runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "prompt.txt": "661f2f32d8c74d3427692f1f478529a87d67d61f41f1f1452b92ecd9b49081cd",
+          "command.json": "fd3e1db9c3c0c96b41a8d34e240037b907fac38be4055948cbe6f3816d88449e",
+          "agent-output.md": "c074e8b3a9ceec661fd0be2a283d145250277537f41c96f70b1d762290a71691",
+          "reference-reads.jsonl": "c09a6dbade14e3d1b519cc291c86950cf87d2fda454528f5038e9dca90ce8564",
+          "run-status.json": "9a9ba834b13f14ebfa3f467cbfd56ffc6c83fb2113b79c7ab43c4efa79142c9c",
+          "review.json": "1aca53f8cd9d4d8acd24cf9ed254e0c789b85b7ee47589166aaaea3960c3ba49",
+          "browser.json": "0a7858d2ae55258fc785a17c61bdf7bd22b7ff77107b00c66ec297b7a6df2bf0",
+          "source-checks.json": "3a03d631577f7ab6438ff6e776049751f4961161dd7a521cb363aadbdb995ed1",
+          "before-manifest.json": "ce4352e14c50c5e14fdbcc2d6836c1a7496cca73cea368c5039cb187afc7a856",
+          "after-manifest.json": "ce4352e14c50c5e14fdbcc2d6836c1a7496cca73cea368c5039cb187afc7a856"
+        },
+        "runtime": {
+          "command_count": 14,
+          "failed_command_count": 1,
+          "unfinished_command_count": 0,
+          "recorded_child_activity_items": 0,
+          "runtime_error_items": 1,
+          "runtime_warning_lines": 0,
+          "runtime_error_lines": 0,
+          "trace_parse_errors": 0,
+          "conflicting_terminal_command_events": 0,
+          "completed_full_read_helper_commands": 9,
+          "empty_captured_helper_output_commands": 0,
+          "missing_captured_helper_output_commands": 0,
+          "review_flag_counts": {}
+        }
+      },
+      "candidate": {
+        "run_id": "issue21-audit-read-only-candidate-1",
+        "quality_pass": true,
+        "quality_checks": [
+          {
+            "id": "product-files-unchanged",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "audit-observation",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "prioritized-diagnosis",
+            "kind": "quality",
+            "status": "pass"
+          }
+        ],
+        "source_changes": [],
+        "execution_status": "completed",
+        "runtime_returncode": 0,
+        "timeout": false,
+        "recorded_integrity_violations": 0,
+        "usage_status": "observed",
+        "tokens": {
+          "input_tokens": 133178,
+          "cached_input_tokens": 100736,
+          "cache_write_tokens": 0,
+          "output_tokens": 2112,
+          "reasoning_output_tokens": 59
+        },
+        "duration_seconds": 83.07640637492295,
+        "duration_kind": "summed-attempt-time",
+        "cost_status": "unavailable",
+        "estimated_cost": null,
+        "requested_model": null,
+        "observed_models": [],
+        "references": {
+          "status": "observed-helper-emission",
+          "full_reads": 8,
+          "unique_full_read_paths": 8,
+          "repeated_full_reads": 0,
+          "emitted_bytes": 29376,
+          "unique_emitted_bytes": 29376,
+          "hash_only_checks": 0,
+          "paths": [
+            {
+              "path": "ui-craft-bundle/references/anti-slop-methods.md",
+              "sha256": "11a25d914f368956bffad69821ed80a58b6ab19a9a6fe64b2b4c233097f2bdea",
+              "bytes": 9864,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-craft-bundle/references/art-direction.md",
+              "sha256": "bdd4c5488aa89578c84d5fabc89d2f80370210828bfbc28c3790586810401b0c",
+              "bytes": 3726,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-craft-bundle/references/design-memory.md",
+              "sha256": "56309e9a35e32515c55541cc80534962041159fad93784b9359e18fc0358894e",
+              "bytes": 5073,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-craft-bundle/references/verification.md",
+              "sha256": "f978162c6edd1cd1922d914682afc5e053680e0b95e1150ecbb736d2b0eaddd8",
+              "bytes": 3326,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-slop-audit/SKILL.md",
+              "sha256": "1ff1fdc904180e745f46083e2bbc00db632633167f054be81155854969941b3c",
+              "bytes": 4720,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-slop-audit/reference/kb/INDEX.md",
+              "sha256": "5192d60198c12b91a03badf602b9aab83f3041c628f1ec07e57e55aadb9b24ba",
+              "bytes": 153,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-slop-audit/reference/kb/evidence-priority.md",
+              "sha256": "af5fd8a9862aea25220d76433a702191cacae82c7f3c085f797a45a82aeed581",
+              "bytes": 1791,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-slop-audit/reference/principles.md",
+              "sha256": "a5e1d5f171b95be2a3040ca57a0c7871f8ac278756d2c4ea4aa33e40f57112b3",
+              "bytes": 723,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            }
+          ]
+        },
+        "sha256": {
+          "result.json": "b336066514b30e0ba7228841923798d198591b866b7b8f411fa8f833a1e9f228",
+          "usage.json": "132a9e1b61b73059617a6eb68b40ddb140eb02094b26af1a247597bd52235086",
+          "runtime.jsonl": "cbf0b882c99d4e97e090fa4f5e90bb9446f0d87777e0b7cafeebaff94a6b4ba1",
+          "runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "prompt.txt": "61b8a19ba08e449b0a69541ec7f04401071b95d62b3a63cd15939ba7d312f5ee",
+          "command.json": "4236a50e549ba17a9b6a7adc8c2d617956e9c0f3e39c935f2782ba73e2862240",
+          "agent-output.md": "57af0d80c6a6004c01fbf3492210a7cb2ee95cfd04306beca28d7880287e2160",
+          "reference-reads.jsonl": "31f2b2e691ffc5a0d48ee6f6f42239f1035ee859a6e481228dec042aea757fa4",
+          "run-status.json": "d644d4c0c22ebe484836c1d6ee48cdcf7cfa0679a0dc1ab261696502e5aae056",
+          "review.json": "d0386d0dcfd15089540070b48a6d7ac83e57bd995295bd02dc62e4051337db65",
+          "browser.json": "f92de79e2a2204b867d2ada5e40d3aa3e80346697fe1aa156d3ac04413d541d8",
+          "source-checks.json": "3a03d631577f7ab6438ff6e776049751f4961161dd7a521cb363aadbdb995ed1",
+          "before-manifest.json": "ce4352e14c50c5e14fdbcc2d6836c1a7496cca73cea368c5039cb187afc7a856",
+          "after-manifest.json": "ce4352e14c50c5e14fdbcc2d6836c1a7496cca73cea368c5039cb187afc7a856"
+        },
+        "runtime": {
+          "command_count": 12,
+          "failed_command_count": 0,
+          "unfinished_command_count": 0,
+          "recorded_child_activity_items": 0,
+          "runtime_error_items": 1,
+          "runtime_warning_lines": 0,
+          "runtime_error_lines": 0,
+          "trace_parse_errors": 0,
+          "conflicting_terminal_command_events": 0,
+          "completed_full_read_helper_commands": 8,
+          "empty_captured_helper_output_commands": 0,
+          "missing_captured_helper_output_commands": 0,
+          "review_flag_counts": {}
+        }
+      },
+      "token_delta": {
+        "input_tokens": -60857,
+        "cached_input_tokens": -57856,
+        "cache_write_tokens": 0,
+        "output_tokens": -595,
+        "reasoning_output_tokens": -36
+      },
+      "duration_delta_seconds": -31.111946417135186
+    },
+    {
+      "case": "empty-state-copy-only",
+      "quality_verdict": "pass",
+      "regressions": [],
+      "usage_comparable": true,
+      "total_token_delta": -31366,
+      "baseline": {
+        "run_id": "issue21-empty-state-copy-only-baseline-1",
+        "quality_pass": true,
+        "quality_checks": [
+          {
+            "id": "locale-aria-contract",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "search-and-names",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "truthful-copy-and-name",
+            "kind": "quality",
+            "status": "pass"
+          }
+        ],
+        "source_changes": [
+          "locales/ko.json"
+        ],
+        "execution_status": "completed",
+        "runtime_returncode": 0,
+        "timeout": false,
+        "recorded_integrity_violations": 0,
+        "usage_status": "observed",
+        "tokens": {
+          "input_tokens": 196735,
+          "cached_input_tokens": 163584,
+          "cache_write_tokens": 0,
+          "output_tokens": 2258,
+          "reasoning_output_tokens": 72
+        },
+        "duration_seconds": 100.81706274999306,
+        "duration_kind": "summed-attempt-time",
+        "cost_status": "unavailable",
+        "estimated_cost": null,
+        "requested_model": null,
+        "observed_models": [],
+        "references": {
+          "status": "observed-helper-emission",
+          "full_reads": 6,
+          "unique_full_read_paths": 6,
+          "repeated_full_reads": 0,
+          "emitted_bytes": 22105,
+          "unique_emitted_bytes": 22105,
+          "hash_only_checks": 0,
+          "paths": [
+            {
+              "path": "ui-craft-bundle/references/interaction-design.md",
+              "sha256": "bd2193c4909870ca8c59e3fbaafbd3aef495dce8dd6b5b4d25dc798f9a462dc6",
+              "bytes": 3262,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-craft-bundle/references/toss-design.md",
+              "sha256": "7f60fb3bcba3698a965bee3cf2525d462ca323b8409e80d53b7d24f9184fc58c",
+              "bytes": 9898,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ux-writing/SKILL.md",
+              "sha256": "2a37701c87929b12e6c58fb808c5ad14c81e24e9325f7e1a6181b5391f21436c",
+              "bytes": 5530,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ux-writing/reference/kb/INDEX.md",
+              "sha256": "602248a9f6d93b9fc95022961088abf93fd3017d8f2be2e1e578608e68953381",
+              "bytes": 199,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ux-writing/reference/kb/truthful-state-copy.md",
+              "sha256": "7b3b3fd3e03d1c8bdf7827e9d58dba743414093a03b8aab529c268f46a401797",
+              "bytes": 2489,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ux-writing/reference/principles.md",
+              "sha256": "2c5445965a1be520ae2b704a6d2d6e223bf014bff3a7843fa459345bed0e701c",
+              "bytes": 727,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            }
+          ]
+        },
+        "sha256": {
+          "result.json": "37b0baf1e2031e30d20ac36d9ce03ef779760cc5ebd3e76148fe6308101db9aa",
+          "usage.json": "800c1f7be67445ba8d45194b331bbad1af898620fb36d952e7ae99362f132410",
+          "runtime.jsonl": "4ff3e34b91ed3508db520b970789c14f3c34bcd0f5731d40a8e9f277bc3cf789",
+          "runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "prompt.txt": "891a2aa496dc445fed8611b54cdda85d344fbe3928a99ed7a69abc2b666211b7",
+          "command.json": "8b4b26b1bc92cfd972b0d7635d56fa01caa1ca85263467a1345d5dcb5441ba5a",
+          "agent-output.md": "4a824ae38144136410870d249386899c3ff7d2469a6376f85184ab699b1e8bad",
+          "reference-reads.jsonl": "00cd230bf164893598063279b9eea53e541ce50d25c27657e2d971ced2f75de9",
+          "run-status.json": "fd1f4d31c758c645c42dac056bc44d78af13439e5de2ba7f30e9ca85696ddd09",
+          "review.json": "26dce64968ccb224c22ff6aa02ca71f628e895fb616aae0e334c61b192f50da0",
+          "browser.json": "3c6906dc3929a36f4661b31bd4f7531eab235fe7c23a95a0d5f8286734f6d66f",
+          "source-checks.json": "3efb612a62ec38845136885b1304026177c6b21901dac1932ed2e3c568f2ab47",
+          "before-manifest.json": "fa7e9129015ea5bb13eb18cc5dbb69d96e9084a6455a2835363f2795986bed3e",
+          "after-manifest.json": "969492436a4afc0923f6a293f667eb39691339abac59787309d3b0def8085220"
+        },
+        "runtime": {
+          "command_count": 12,
+          "failed_command_count": 0,
+          "unfinished_command_count": 0,
+          "recorded_child_activity_items": 0,
+          "runtime_error_items": 1,
+          "runtime_warning_lines": 0,
+          "runtime_error_lines": 0,
+          "trace_parse_errors": 0,
+          "conflicting_terminal_command_events": 0,
+          "completed_full_read_helper_commands": 6,
+          "empty_captured_helper_output_commands": 0,
+          "missing_captured_helper_output_commands": 0,
+          "review_flag_counts": {
+            "outside_path_reference": 1
+          }
+        }
+      },
+      "candidate": {
+        "run_id": "issue21-empty-state-copy-only-candidate-1",
+        "quality_pass": true,
+        "quality_checks": [
+          {
+            "id": "locale-aria-contract",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "search-and-names",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "truthful-copy-and-name",
+            "kind": "quality",
+            "status": "pass"
+          }
+        ],
+        "source_changes": [
+          "locales/ko.json"
+        ],
+        "execution_status": "completed",
+        "runtime_returncode": 0,
+        "timeout": false,
+        "recorded_integrity_violations": 0,
+        "usage_status": "observed",
+        "tokens": {
+          "input_tokens": 165522,
+          "cached_input_tokens": 132608,
+          "cache_write_tokens": 0,
+          "output_tokens": 2105,
+          "reasoning_output_tokens": 65
+        },
+        "duration_seconds": 81.80229120899457,
+        "duration_kind": "summed-attempt-time",
+        "cost_status": "unavailable",
+        "estimated_cost": null,
+        "requested_model": null,
+        "observed_models": [],
+        "references": {
+          "status": "observed-helper-emission",
+          "full_reads": 6,
+          "unique_full_read_paths": 6,
+          "repeated_full_reads": 0,
+          "emitted_bytes": 22105,
+          "unique_emitted_bytes": 22105,
+          "hash_only_checks": 0,
+          "paths": [
+            {
+              "path": "ui-craft-bundle/references/interaction-design.md",
+              "sha256": "bd2193c4909870ca8c59e3fbaafbd3aef495dce8dd6b5b4d25dc798f9a462dc6",
+              "bytes": 3262,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-craft-bundle/references/toss-design.md",
+              "sha256": "7f60fb3bcba3698a965bee3cf2525d462ca323b8409e80d53b7d24f9184fc58c",
+              "bytes": 9898,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ux-writing/SKILL.md",
+              "sha256": "2a37701c87929b12e6c58fb808c5ad14c81e24e9325f7e1a6181b5391f21436c",
+              "bytes": 5530,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ux-writing/reference/kb/INDEX.md",
+              "sha256": "602248a9f6d93b9fc95022961088abf93fd3017d8f2be2e1e578608e68953381",
+              "bytes": 199,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ux-writing/reference/kb/truthful-state-copy.md",
+              "sha256": "7b3b3fd3e03d1c8bdf7827e9d58dba743414093a03b8aab529c268f46a401797",
+              "bytes": 2489,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ux-writing/reference/principles.md",
+              "sha256": "2c5445965a1be520ae2b704a6d2d6e223bf014bff3a7843fa459345bed0e701c",
+              "bytes": 727,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            }
+          ]
+        },
+        "sha256": {
+          "result.json": "e85412fb4da5f98b589fece50686cb1b2f8a8de71e75df52e46562b2657dbfb5",
+          "usage.json": "33747b2a895d15de993b23ca1770562be757bad4199f0935e7cb7e89d560c0b9",
+          "runtime.jsonl": "a6cafda832fc46756adfee736f04aadd38bc14d0f912cc35f7cf3bf813fd5923",
+          "runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "prompt.txt": "ef7bc6dcc9881e24033e5568e3dbce84021d6b99685caa4353802c01b4e3bdaf",
+          "command.json": "607f2e502b92ad9b547989bf0a6c13917aae5a5ebb30b7944147a2f774957717",
+          "agent-output.md": "623c29d7091b2632faaea1778fd5e5416b22ab3705c93910bb0de3eebecdf78d",
+          "reference-reads.jsonl": "d115756011db5e2aac3d7314651d4a70a6a63e717bc73d183f7364ceaf9a3efb",
+          "run-status.json": "90de48ed91e87ea6982fa64ba37d4d70e9f0ab080241bb17056d9b8220e47b64",
+          "review.json": "9710e32ea08787abfee1d04dd1b4a4b66c1fac2635e61f90362bae2a76ae472e",
+          "browser.json": "7c886166c55ddd35f060eab859fbb10f8ce615270f4fb6012bb5aafb92e77ef0",
+          "source-checks.json": "58cf14ad7a1c824ebaefba9a1af0c386f39b33951c04549ced171cd34fcfce37",
+          "before-manifest.json": "fa7e9129015ea5bb13eb18cc5dbb69d96e9084a6455a2835363f2795986bed3e",
+          "after-manifest.json": "98179b8077b53e7afc6cf842a6e702138735a64cb314ef1bde9b5fd3cdedefe9"
+        },
+        "runtime": {
+          "command_count": 12,
+          "failed_command_count": 0,
+          "unfinished_command_count": 0,
+          "recorded_child_activity_items": 0,
+          "runtime_error_items": 1,
+          "runtime_warning_lines": 0,
+          "runtime_error_lines": 0,
+          "trace_parse_errors": 0,
+          "conflicting_terminal_command_events": 0,
+          "completed_full_read_helper_commands": 6,
+          "empty_captured_helper_output_commands": 0,
+          "missing_captured_helper_output_commands": 0,
+          "review_flag_counts": {
+            "outside_path_reference": 1
+          }
+        }
+      },
+      "token_delta": {
+        "input_tokens": -31213,
+        "cached_input_tokens": -30976,
+        "cache_write_tokens": 0,
+        "output_tokens": -153,
+        "reasoning_output_tokens": -7
+      },
+      "duration_delta_seconds": -19.01477154099848
+    },
+    {
+      "case": "master-page-consistency",
+      "quality_verdict": "pass",
+      "regressions": [],
+      "usage_comparable": true,
+      "total_token_delta": -6834,
+      "baseline": {
+        "run_id": "issue21-master-page-consistency-baseline-1",
+        "quality_pass": true,
+        "quality_checks": [
+          {
+            "id": "allowed-scope",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "design-record-matches",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "shared-master-preserved",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "compare-density-and-actions",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "design-visual-review",
+            "kind": "quality",
+            "status": "pass"
+          }
+        ],
+        "source_changes": [
+          "DESIGN.md",
+          "compare.css"
+        ],
+        "execution_status": "completed",
+        "runtime_returncode": 0,
+        "timeout": false,
+        "recorded_integrity_violations": 0,
+        "usage_status": "observed",
+        "tokens": {
+          "input_tokens": 137888,
+          "cached_input_tokens": 114432,
+          "cache_write_tokens": 0,
+          "output_tokens": 1975,
+          "reasoning_output_tokens": 48
+        },
+        "duration_seconds": 80.8533927500248,
+        "duration_kind": "summed-attempt-time",
+        "cost_status": "unavailable",
+        "estimated_cost": null,
+        "requested_model": null,
+        "observed_models": [],
+        "references": {
+          "status": "observed-helper-emission",
+          "full_reads": 8,
+          "unique_full_read_paths": 8,
+          "repeated_full_reads": 0,
+          "emitted_bytes": 25224,
+          "unique_emitted_bytes": 25224,
+          "hash_only_checks": 0,
+          "paths": [
+            {
+              "path": "ui-craft-bundle/references/art-direction.md",
+              "sha256": "bdd4c5488aa89578c84d5fabc89d2f80370210828bfbc28c3790586810401b0c",
+              "bytes": 3726,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-craft-bundle/references/design-memory.md",
+              "sha256": "45109b7537908e7eeae7a0fb7d005aaf139fdedb180ccbdf22bf23db277dbee5",
+              "bytes": 4660,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-craft-bundle/references/pattern-selection.md",
+              "sha256": "e1ff4c2e974505c509a6f5f78c2e0c6f2cefd0f9b781b9d5df7babb5015d24bc",
+              "bytes": 4770,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-craft-bundle/references/web.md",
+              "sha256": "70610ef3558b2935dde1573c138ae2f154dcf3d05f8d00a6fed63aa398da86cc",
+              "bytes": 2891,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-visual-refine/SKILL.md",
+              "sha256": "d29879dee0c772a5d7e78dc49f1f15b58f79009ff235ccaf83682566ec645be4",
+              "bytes": 6410,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-visual-refine/reference/kb/INDEX.md",
+              "sha256": "a750375eba206195e218c4b7e18fb32dc744566a8fd4d33e118b282b9260bed9",
+              "bytes": 178,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-visual-refine/reference/kb/hierarchy-scope.md",
+              "sha256": "b8f1501736984f70cc2ea4f0e47d78f13686d14429c61edc0bfdf4393a72cf55",
+              "bytes": 1874,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-visual-refine/reference/principles.md",
+              "sha256": "d45496c1989367c7f362c047ac3d055c87f7e81891a21074a43a992d5e859b2b",
+              "bytes": 715,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            }
+          ]
+        },
+        "sha256": {
+          "result.json": "cf946f78e784c76aa27a8bc5fabb1e071cc7009c36e511682b8c2f2bcf1c5a86",
+          "usage.json": "dca67cc3fac8d8aee2a1c0d5cf3b45434671f9f3e61a927d668606d15cd1ec7f",
+          "runtime.jsonl": "6dc9f605623936e75af4e1a8d1ec0c3610570f41746f7ff0b42b15261d542386",
+          "runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "prompt.txt": "fd7f83944a19707f3e97c7552e3a90b3e741a47e376e4e48983d9ccc0a95ab7d",
+          "command.json": "b1d30839f8aba69f386ed8bac8240a8856090c162270957fa7279d57f9c7007a",
+          "agent-output.md": "3967138cbf45d04fb44b16f38c4c9e42390f30c9751d6d21d87b31eb40ab0644",
+          "reference-reads.jsonl": "464ce07a540dc6e662fb95d324765c8c12e60c04da9210da0d37a7733593b69b",
+          "run-status.json": "8c7108dc388af1496ed37664e6d5e7582526b856b5ca14d5be9f865c261c66f0",
+          "review.json": "350a5c2ba8da7b388bc934c18643b081e2c7d8021910c9c591feb7222ad3a56f",
+          "browser.json": "e711f69bafa713e97f7ec728ff67e53d087a2371c19d22f6d9f5a35ecacccaee",
+          "source-checks.json": "220ca675b3386ac5362355fa6714c3a79e58c94c6c32e6e0eaeef867f405eb19",
+          "before-manifest.json": "c8f58bd03e37b63cccc1d1012c68d6fcc004fd486f25ec2a3f6119ba45fb48f2",
+          "after-manifest.json": "dc20feb671af17ef9864ef669c1b6580daae5918ee5d324ea103c4250bebeab7"
+        },
+        "runtime": {
+          "command_count": 13,
+          "failed_command_count": 0,
+          "unfinished_command_count": 0,
+          "recorded_child_activity_items": 0,
+          "runtime_error_items": 1,
+          "runtime_warning_lines": 0,
+          "runtime_error_lines": 0,
+          "trace_parse_errors": 0,
+          "conflicting_terminal_command_events": 0,
+          "completed_full_read_helper_commands": 8,
+          "empty_captured_helper_output_commands": 0,
+          "missing_captured_helper_output_commands": 0,
+          "review_flag_counts": {}
+        }
+      },
+      "candidate": {
+        "run_id": "issue21-master-page-consistency-candidate-1",
+        "quality_pass": true,
+        "quality_checks": [
+          {
+            "id": "allowed-scope",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "design-record-matches",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "shared-master-preserved",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "compare-density-and-actions",
+            "kind": "behavior",
+            "status": "pass"
+          },
+          {
+            "id": "design-visual-review",
+            "kind": "quality",
+            "status": "pass"
+          }
+        ],
+        "source_changes": [
+          "DESIGN.md",
+          "compare.css"
+        ],
+        "execution_status": "completed",
+        "runtime_returncode": 0,
+        "timeout": false,
+        "recorded_integrity_violations": 0,
+        "usage_status": "observed",
+        "tokens": {
+          "input_tokens": 131335,
+          "cached_input_tokens": 101248,
+          "cache_write_tokens": 0,
+          "output_tokens": 1694,
+          "reasoning_output_tokens": 20
+        },
+        "duration_seconds": 69.78332962503191,
+        "duration_kind": "summed-attempt-time",
+        "cost_status": "unavailable",
+        "estimated_cost": null,
+        "requested_model": null,
+        "observed_models": [],
+        "references": {
+          "status": "observed-helper-emission",
+          "full_reads": 3,
+          "unique_full_read_paths": 3,
+          "repeated_full_reads": 0,
+          "emitted_bytes": 13253,
+          "unique_emitted_bytes": 13253,
+          "hash_only_checks": 0,
+          "paths": [
+            {
+              "path": "ui-craft-bundle/references/design-memory.md",
+              "sha256": "56309e9a35e32515c55541cc80534962041159fad93784b9359e18fc0358894e",
+              "bytes": 5073,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-visual-refine/SKILL.md",
+              "sha256": "f0fc96688f9d028b638d143c9093644da8862ca280011cfd407d11fff48d77b7",
+              "bytes": 7431,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            },
+            {
+              "path": "ui-visual-refine/reference/principles.md",
+              "sha256": "92ceb565efdc980426ba208a5874ec2a6b2a63fb6418181e4b3b9cb1729389a8",
+              "bytes": 749,
+              "full_reads": 1,
+              "hash_only_checks": 0
+            }
+          ]
+        },
+        "sha256": {
+          "result.json": "f7d54c963b91efd10b52f294bde28cd5a9a3a699e64e49057318f11dcb61f5c8",
+          "usage.json": "645c1480db0add59922d29a119fca522b204c00958811de10d3210e96eef7099",
+          "runtime.jsonl": "91bcc33bfcb1d6892c1437fe5a9f7f9ec0685d8619c1b91d1a9b35b5892ff2d1",
+          "runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "prompt.txt": "bfdae4a5878c4f088ecaf89ed339256c26cd8ae16313ec1427f7e90e6016448e",
+          "command.json": "96b0551c9e2f67a151ee02cbb750066b556e3cc7b7baeaa1a37283fc6409017e",
+          "agent-output.md": "10fbbed164b7011b9a0574384188b47638b41cff9a5a6e43d5dbce2b1c8d7894",
+          "reference-reads.jsonl": "8cdd59e82eb984a5c8a306ad15a2016541d4786c31893aea25ab29d033dbb2a5",
+          "run-status.json": "b41ca39d8cf08c6d9e9eb9fd3cc4cd27d1a017c9f3a558f2141fa9ae6d4fdc52",
+          "review.json": "0745c2262a55bce4828a5b4c60a80464b1b68e2d6697c86aa3d44306d28844c2",
+          "browser.json": "a1aede6e174df68399e790e672b257cc6403055821b55039e8325cec6c8d90ba",
+          "source-checks.json": "867a691da3b73f01320eb6259c4a24136e77b66d48b40bb186955aa55e40d692",
+          "before-manifest.json": "c8f58bd03e37b63cccc1d1012c68d6fcc004fd486f25ec2a3f6119ba45fb48f2",
+          "after-manifest.json": "53687bf468d9761a3ec04ea92a5f1f6b47e473a8124b9aba6400762890477825"
+        },
+        "runtime": {
+          "command_count": 8,
+          "failed_command_count": 0,
+          "unfinished_command_count": 0,
+          "recorded_child_activity_items": 0,
+          "runtime_error_items": 1,
+          "runtime_warning_lines": 0,
+          "runtime_error_lines": 0,
+          "trace_parse_errors": 0,
+          "conflicting_terminal_command_events": 0,
+          "completed_full_read_helper_commands": 3,
+          "empty_captured_helper_output_commands": 0,
+          "missing_captured_helper_output_commands": 0,
+          "review_flag_counts": {}
+        }
+      },
+      "token_delta": {
+        "input_tokens": -6553,
+        "cached_input_tokens": -13184,
+        "cache_write_tokens": 0,
+        "output_tokens": -281,
+        "reasoning_output_tokens": -28
+      },
+      "duration_delta_seconds": -11.070063124992885
+    }
+  ],
+  "provenance_sha256": {
+    "runner_manifest": "24a4c07b095269327978a4883d1890a8ed2cf3fbacbaca88e74f1d37a25da393",
+    "reference_helper": "0f49d1da0349626fc20ce84be2ab6ab4338e4c8bf576367b7603a959c2981b08",
+    "finalizer": "303e24abf4e07ea134ff647aa30b52a44f0d7c3b00cba6a18f89b27495b5a0dc"
+  },
+  "limits": [
+    "One paired repetition per case; descriptive observations do not establish general or causal savings.",
+    "Fresh direct implementation CLI runs only; evaluator, maintainer, preparation, and review overhead are excluded.",
+    "Cache was uncontrolled. Requested model is null and the observed model is unavailable when absent from telemetry.",
+    "No prices were supplied; token differences are not monetary savings or subscription charges.",
+    "Reference records prove helper content emission, not model consumption. Direct reads outside the helper are not comprehensively instrumented.",
+    "Empty captured helper output is an explicit telemetry gap, not evidence of no reference read.",
+    "Command-pattern flags require human review; zero flags does not prove absence of every forbidden action.",
+    "Browser and quality review were performed separately by the root evaluator after the implementation final message.",
+    "Raw JSONL, prompts, commands, final messages, and helper trajectories remain external and must not be copied into repository reports."
+  ]
+}
