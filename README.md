@@ -126,6 +126,8 @@ Local and release changes list added, deleted, and modified relative file paths 
 
 The installer leaves project code, `AGENTS.md`, `CLAUDE.md`, and global settings alone. The Python installer performs no network downloads. Hashes detect edited files; they do not authenticate the publisher. [Compatibility details](docs/naming.md#compatibility).
 
+Characters a terminal cannot encode are escaped in path messages (for example, `\ud55c`). The actual Unicode path and installed file contents are preserved; the terminal's encoding is not changed.
+
 </details>
 
 ## Give it a real task
