@@ -791,6 +791,186 @@ class LocalLearningLifecycleTests(unittest.TestCase):
                 self.assertEqual(self.active()["generation"], 0)
                 self.assertEqual(list((self.local / "releases").iterdir()), [])
 
+    def adopted_record_paths(self, proposal, evaluation):
+        candidate = self.local / "candidates" / proposal["candidate_id"]
+        evaluated = self.local / "evaluations" / evaluation["evaluation_id"]
+        return [evaluated / name for name in (
+            "record.json", "report.json", "decision.json",
+            "evidence/observations.txt", "evidence/review.txt",
+        )] + [candidate / name for name in ("candidate.json", "plan.json", "rules.md")]
+
+    def transition_snapshot(self):
+        return {path.relative_to(self.local): path.read_bytes() for path in
+                [self.local / "active.json", *sorted((self.local / "journal").glob("*.json"))]}
+
+    def test_adopted_records_changed_or_deleted_withhold_context_and_status(self):
+        self.initialize()
+        proposal = self.propose()
+        evaluation = self.evaluate(proposal)
+        self.promote(evaluation)
+        before = self.transition_snapshot()
+        for path in self.adopted_record_paths(proposal, evaluation):
+            original = path.read_bytes()
+            for deleted in (False, True):
+                with self.subTest(path=path.relative_to(self.local), deleted=deleted):
+                    try:
+                        if deleted:
+                            path.unlink()
+                        else:
+                            path.write_text("Changed adopted record.\n", encoding="utf-8")
+                        self.cli("context", "--project", self.project,
+                                 "--skill", "ui-craft-bundle", "--platform", "web",
+                                 "--task-kind", "form", code=2)
+                        self.cli("status", "--project", self.project, code=2)
+                        self.assertEqual(self.transition_snapshot(), before)
+                    finally:
+                        path.write_bytes(original)
+        self.assertEqual(len(self.context()["rules"]), 1)
+
+    def test_rehashed_adopted_evidence_cannot_replace_the_saved_evaluation(self):
+        self.initialize()
+        evaluation = self.evaluate(self.propose())
+        self.promote(evaluation)
+        evaluated = self.local / "evaluations" / evaluation["evaluation_id"]
+        evidence = evaluated / "evidence" / "observations.txt"
+        evidence.write_text("Changed observations with an updated inventory.\n", encoding="utf-8")
+        meta_path = evaluated / "record.json"
+        meta = json.loads(meta_path.read_text(encoding="utf-8"))
+        meta["files"]["evidence/observations.txt"] = hashlib.sha256(evidence.read_bytes()).hexdigest()
+        self.write_json(meta_path, meta)
+        before = self.transition_snapshot()
+        error = self.cli("status", "--project", self.project, code=2)
+        self.assertIn("Release evaluation changed", error["error"])
+        self.assertEqual(self.transition_snapshot(), before)
+
+    def test_rehashed_candidate_plan_cannot_replace_the_evaluated_candidate(self):
+        self.initialize()
+        proposal = self.propose()
+        self.promote(self.evaluate(proposal))
+        candidate_dir = self.local / "candidates" / proposal["candidate_id"]
+        plan_path = candidate_dir / "plan.json"
+        plan = json.loads(plan_path.read_text(encoding="utf-8"))
+        plan["context"]["model"] = "changed-runtime"
+        self.write_json(plan_path, plan)
+        candidate_path = candidate_dir / "candidate.json"
+        candidate = json.loads(candidate_path.read_text(encoding="utf-8"))
+        candidate["plan_sha256"] = self.canonical_digest(plan)
+        self.write_json(candidate_path, candidate)
+        before = self.transition_snapshot()
+        error = self.cli("status", "--project", self.project, code=2)
+        self.assertIn("Evaluated candidate changed", error["error"])
+        self.assertEqual(self.transition_snapshot(), before)
+
+    def test_explicit_rollback_rejects_changed_or_deleted_adopted_records_without_transition(self):
+        self.initialize()
+        proposal = self.propose()
+        evaluation = self.evaluate(proposal)
+        previous = self.promote(evaluation)["release_id"]
+        self.promote(self.evaluate(self.propose()))
+        before = self.transition_snapshot()
+        for path in self.adopted_record_paths(proposal, evaluation):
+            original = path.read_bytes()
+            for deleted in (False, True):
+                with self.subTest(path=path.relative_to(self.local), deleted=deleted):
+                    try:
+                        if deleted:
+                            path.unlink()
+                        else:
+                            path.write_text("Changed previous record.\n", encoding="utf-8")
+                        self.cli("rollback", "--project", self.project,
+                                 "--release", previous, code=2)
+                        self.assertEqual(self.transition_snapshot(), before)
+                        self.assertEqual(len(self.context()["rules"]), 2)
+                    finally:
+                        path.write_bytes(original)
+
+    def test_default_rollback_with_changed_previous_evidence_returns_to_base(self):
+        self.initialize()
+        evaluation = self.evaluate(self.propose())
+        self.promote(evaluation)
+        self.promote(self.evaluate(self.propose()))
+        path = self.local / "evaluations" / evaluation["evaluation_id"] / "evidence/observations.txt"
+        path.write_text("Changed previous evidence.\n", encoding="utf-8")
+        result = self.cli("rollback", "--project", self.project)
+        self.assertEqual(result["state"], "base-only")
+        self.assertEqual(result["generation"], 3)
+        self.assertEqual(len(list((self.local / "journal").glob("*.json"))), 3)
+        self.assertEqual(self.context()["rules"], [])
+
+    def test_default_rollback_with_missing_previous_metadata_returns_to_base(self):
+        self.initialize()
+        evaluation = self.evaluate(self.propose())
+        self.promote(evaluation)
+        self.promote(self.evaluate(self.propose()))
+        (self.local / "evaluations" / evaluation["evaluation_id"] / "record.json").unlink()
+        result = self.cli("rollback", "--project", self.project)
+        self.assertEqual(result["state"], "base-only")
+        self.assertEqual(result["generation"], 3)
+        self.assertEqual(self.context()["rules"], [])
+
+    def test_corrupt_active_evidence_allows_rollback_to_valid_older_release(self):
+        self.initialize()
+        previous = self.promote(self.evaluate(self.propose()))["release_id"]
+        evaluation = self.evaluate(self.propose())
+        self.promote(evaluation)
+        (self.local / "evaluations" / evaluation["evaluation_id"] / "record.json").unlink()
+        self.cli("status", "--project", self.project, code=2)
+        result = self.cli("rollback", "--project", self.project, "--release", previous)
+        self.assertEqual(result["release_id"], previous)
+        self.assertEqual(result["generation"], 3)
+        self.assertEqual(len(self.context()["rules"]), 1)
+
+    def test_corrupt_active_evidence_allows_rollback_to_base(self):
+        self.initialize()
+        evaluation = self.evaluate(self.propose())
+        self.promote(evaluation)
+        (self.local / "evaluations" / evaluation["evaluation_id"] / "record.json").unlink()
+        self.cli("status", "--project", self.project, code=2)
+        result = self.cli("rollback", "--project", self.project)
+        self.assertEqual(result["state"], "base-only")
+        self.assertEqual(result["generation"], 2)
+        self.assertEqual(self.context()["rules"], [])
+
+    def test_context_and_rollback_verify_saved_records_without_replaying_the_evaluator(self):
+        self.initialize()
+        previous = self.promote(self.evaluate(self.propose()))["release_id"]
+        self.promote(self.evaluate(self.propose()))
+        code = (
+            "import sys; from unittest.mock import patch; "
+            "sys.path.insert(0, sys.argv[1]); import local_learning; "
+            "patcher = patch.object(local_learning, 'evaluate', "
+            "side_effect=AssertionError('Historical reads must not replay the evaluator')); "
+            "patcher.start(); raise SystemExit(local_learning.main(sys.argv[2:]))"
+        )
+        for command in (
+            ["context", "--project", str(self.project), "--skill", "ui-craft-bundle",
+             "--platform", "web", "--task-kind", "form"],
+            ["rollback", "--project", str(self.project), "--release", previous],
+        ):
+            with self.subTest(command=command[0]):
+                completed = subprocess.run(
+                    [sys.executable, "-B", "-c", code, str(SCRIPT.parent), *command],
+                    text=True, capture_output=True, timeout=10,
+                )
+                self.assertEqual(completed.returncode, 0, completed.stderr)
+                self.assertEqual(completed.stderr, "")
+                self.assertEqual(json.loads(completed.stdout)["state"], "active")
+        self.assertEqual(self.active()["release_id"], previous)
+
+    def test_historical_release_remains_valid_after_generation_and_policy_advance(self):
+        self.initialize()
+        previous = self.promote(self.evaluate(self.propose()))["release_id"]
+        self.promote(self.evaluate(self.propose()))
+        policy_path = self.local / "policy.json"
+        policy = json.loads(policy_path.read_text(encoding="utf-8"))
+        policy["max_seconds"] += 1
+        self.write_json(policy_path, policy)
+        self.assertEqual(len(self.context()["rules"]), 2)
+        result = self.cli("rollback", "--project", self.project, "--release", previous)
+        self.assertEqual(result["release_id"], previous)
+        self.assertEqual(result["generation"], 3)
+        self.assertEqual(len(self.context()["rules"]), 1)
+
 
 if __name__ == "__main__":
     unittest.main()

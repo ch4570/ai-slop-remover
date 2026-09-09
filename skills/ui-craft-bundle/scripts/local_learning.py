@@ -253,20 +253,28 @@ def active_of(root, policy, verify_release=True):
     pointer_shape(active, policy)
     verify_history(root, policy, active)
     if verify_release and active["state"] != "base-only":
-        release = release_of(root, active["release_id"])
-        require(canonical_digest(release) == active["release_sha256"], "Active release changed")
+        release_of(root, active["release_id"], expected_sha256=active["release_sha256"])
     return active
 
 
-def release_of(root, name):
+def release_of(root, name, expected_sha256=None):
     path = record_dir(root, "releases", name)
     record = read_json(path / "manifest.json")
+    if expected_sha256 is not None:
+        require(canonical_digest(record) == expected_sha256, "Release changed since activation")
     require(set(record) == {"schema", "release_id", "project_id", "base_sha256", "parent_release_id",
                             "evaluation_id", "evaluation_sha256", "rules", "rules_sha256"}, "Invalid release fields")
     require(type(record["schema"]) is int and record["schema"] == 1, "Invalid release schema")
     require(record.get("release_id") == name, "Release ID mismatch")
     require(sha(read_bytes(path / "rules.md")) == record.get("rules_sha256"), "Release rules changed")
     require(render_rules(record.get("rules", [])) == read_bytes(path / "rules.md"), "Release rule metadata changed")
+    require(valid_digest(record["evaluation_sha256"]), "Invalid release evaluation digest")
+    _, candidate, plan = evaluation_of(root, record["evaluation_id"], record["evaluation_sha256"])
+    require(record["project_id"] == candidate["project_id"]
+            and record["base_sha256"] == plan["base_sha256"]
+            and record["parent_release_id"] == plan["parent_release"]
+            and record["rules"] == candidate["rules"]
+            and record["rules_sha256"] == plan["candidate_sha256"], "Release differs from evaluated candidate")
     return record
 
 
@@ -456,13 +464,16 @@ def evaluate_candidate(args, root, policy, active, digest):
     return {"evaluation_id": eid, "decision": decision, "path": str(path)}
 
 
-def promote(args, root, policy, active, digest):
-    path = record_dir(root, "evaluations", args.evaluation)
+def evaluation_of(root, name, expected_sha256=None):
+    """Verify immutable evaluation records without requiring the current policy or generation."""
+    path = record_dir(root, "evaluations", name)
     meta = read_json(path / "record.json")
+    if expected_sha256 is not None:
+        require(canonical_digest(meta) == expected_sha256, "Release evaluation changed")
     require(set(meta) == {"schema", "evaluation_id", "candidate_id", "candidate_record_sha256",
                           "plan_sha256", "files"}, "Invalid evaluation record fields")
     require(type(meta["schema"]) is int and meta["schema"] == 1, "Invalid evaluation record schema")
-    require(valid_id(meta["evaluation_id"]) and meta["evaluation_id"] == args.evaluation,
+    require(valid_id(meta["evaluation_id"]) and meta["evaluation_id"] == name,
             "Evaluation record ID does not match its directory")
     require(valid_id(meta["candidate_id"]), "Invalid evaluation candidate ID")
     require(valid_digest(meta["candidate_record_sha256"]) and valid_digest(meta["plan_sha256"]),
@@ -474,9 +485,15 @@ def promote(args, root, policy, active, digest):
     candidate, plan = candidate_of(root, meta["candidate_id"])
     require(meta["candidate_record_sha256"] == canonical_digest(candidate)
             and meta["plan_sha256"] == canonical_digest(plan), "Evaluated candidate changed")
+    return meta, candidate, plan
+
+
+def promote(args, root, policy, active, digest):
+    meta, candidate, plan = evaluation_of(root, args.evaluation)
     require(candidate["project_id"] == policy["project_id"], "Project mismatch")
     require(plan["base_sha256"] == digest and plan["policy_sha256"] == canonical_digest(policy), "Base or policy changed; evaluate a new candidate")
     require(plan["expected_generation"] == active["generation"] and plan["parent_release"] == active["release_id"], "Stale candidate parent or generation")
+    path = record_dir(root, "evaluations", args.evaluation)
     decision = evaluate(plan, read_json(path / "report.json"), path / "evidence")
     require(decision == read_json(path / "decision.json"), "Evaluation decision changed")
     require(decision["verdict"] == "eligible" and "manual" in decision["eligible_for"], "Only manually eligible candidates can be promoted")
@@ -497,13 +514,13 @@ def rollback(args, root, policy, active, digest):
     rid = args.release or active["previous_release_id"]
     if rid:
         try:
-            release = release_of(root, rid)
-            require(release["base_sha256"] == digest and release["project_id"] == policy["project_id"],
-                    "Requested rollback release is incompatible")
             recorded = {entry["new"]["release_sha256"]
                         for entry in (read_json(path) for path in (root / "journal").glob("*.json"))
                         if entry["new"]["release_id"] == rid}
-            require(recorded == {canonical_digest(release)}, "Rollback release changed since activation")
+            require(len(recorded) == 1, "Rollback release changed since activation")
+            release = release_of(root, rid, expected_sha256=next(iter(recorded)))
+            require(release["base_sha256"] == digest and release["project_id"] == policy["project_id"],
+                    "Requested rollback release is incompatible")
         except (LearningError, OSError, ValueError, KeyError, TypeError):
             if args.release is not None:
                 raise
