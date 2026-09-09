@@ -43,7 +43,7 @@
     }
   },
   "files": {
-    "CHANGELOG.md": "abc70cb3d0bcd41b88d00c143ffb4f7f6de53801929147c0a764656d90b81127",
+    "CHANGELOG.md": "29d27e84c493fd5f8dca517821aec672be53f64c9ef22fc60174c64fe47d920a",
     "LICENSE": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d",
     "README.ko.md": "8bab0d094481621fe8408d25c94ff858e38a183de72c30c9313ee81b2ea93101",
     "README.md": "29e27416252d244cf8454b90963056bb42f90aef8ab6cfe230517eab4a321aaf",
@@ -75,7 +75,7 @@
     "skills/ui-craft-bundle/references/interaction-design.md": "bd2193c4909870ca8c59e3fbaafbd3aef495dce8dd6b5b4d25dc798f9a462dc6",
     "skills/ui-craft-bundle/references/interaction-recipes.md": "818b59f583ef9c9aec681e8a7acea4c4da554c6c3343778831fbb516350b5d93",
     "skills/ui-craft-bundle/references/layout-composition.md": "891dfff297ab79561c7e51e487f6d89bc7762c787b2cf979d885f6e289e6e9f5",
-    "skills/ui-craft-bundle/references/local-learning-cli.md": "0d4fc762f777d11edea76b4a477b3b3985f380b8fa4aac3790921551c9c2d2eb",
+    "skills/ui-craft-bundle/references/local-learning-cli.md": "7510dc063940dff9ecc0f6b5c164f0a12bbcd205f8e17890f6a227d2e9c834c4",
     "skills/ui-craft-bundle/references/local-learning-contract.md": "e1c6b744a8b2943db133887a9918fb2ca195a141717d36b7b59075ec1e156e54",
     "skills/ui-craft-bundle/references/local-learning.md": "65e63fb2b25e4436cf7902826eeb336782f316958e6545afca44d29d8b022c13",
     "skills/ui-craft-bundle/references/motion.md": "43d7b49413a19d5c08bcdf848b4ab8d965a361ac8402a9d23f23c8295c9f29fa",
@@ -87,7 +87,7 @@
     "skills/ui-craft-bundle/references/verification.md": "f978162c6edd1cd1922d914682afc5e053680e0b95e1150ecbb736d2b0eaddd8",
     "skills/ui-craft-bundle/references/web.md": "70610ef3558b2935dde1573c138ae2f154dcf3d05f8d00a6fed63aa398da86cc",
     "skills/ui-craft-bundle/scripts/learning_gate.py": "baeca8bcbcf2df6024468812ecf65307a85cfeaec174b296829cd082e9b0c0c4",
-    "skills/ui-craft-bundle/scripts/local_learning.py": "1e7e8cab690bbaadf676c7c5c02a02407333f82a76403f8f4ddc1642aff67436",
+    "skills/ui-craft-bundle/scripts/local_learning.py": "5f82139ba4206fc6de6cb649d5b48513b9fede95c255f93b860a0bb413a74607",
     "skills/ui-quality-gate/LICENSE": "c9377423f1cd60177231b43593bdc405fe2cec50b232fc78917e316bfb166e0d",
     "skills/ui-quality-gate/SKILL.md": "a2e19b9191cca4d108ec7d007d6162ea97521adbf93618e9fb2836bd57cad89d",
     "skills/ui-quality-gate/agents/openai.yaml": "e35206901f2364bfc328c5010322060f8f417ba8830840b4da14d87ac220dd22",

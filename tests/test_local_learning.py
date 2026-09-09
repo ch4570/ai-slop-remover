@@ -971,6 +971,114 @@ class LocalLearningLifecycleTests(unittest.TestCase):
         self.assertEqual(result["generation"], 3)
         self.assertEqual(len(self.context()["rules"]), 1)
 
+    def learning_records_snapshot(self):
+        return {path.relative_to(self.local): path.read_bytes()
+                for category in ("candidates", "evaluations", "releases")
+                for path in (self.local / category).rglob("*") if path.is_file()}
+
+    def test_explicit_base_only_disables_two_releases_and_preserves_records_for_reactivation(self):
+        self.initialize()
+        first = self.promote(self.evaluate(self.propose()))["release_id"]
+        second = self.promote(self.evaluate(self.propose()))["release_id"]
+        stale = self.propose()
+        evaluation = self.evaluate(stale)
+        records_before = self.learning_records_snapshot()
+        old = self.active()
+        result = self.cli("rollback", "--project", self.project, "--base-only")
+        self.assertEqual(result["generation"], 3)
+        self.assertEqual(result["state"], "base-only")
+        self.assertIsNone(result["release_id"])
+        self.assertIsNone(result["release_sha256"])
+        self.assertEqual(result["previous_release_id"], second)
+        self.assertEqual(result["base_sha256"], old["base_sha256"])
+        self.assertEqual(self.context()["rules"], [])
+        self.assertEqual(self.learning_records_snapshot(), records_before)
+        journals = list((self.local / "journal").glob("*.json"))
+        self.assertEqual(len(journals), 3)
+        journal = json.loads((self.local / "journal" / (result["journal_id"] + ".json")).read_text())
+        self.assertEqual(journal, {"schema": 1, "phase": "committed", "reason": "explicit-rollback",
+                                   "old": old, "new": result})
+        transition_before = self.transition_snapshot()
+        error = self.cli("context", "--project", self.project,
+                         "--skill", "ui-craft-bundle", "--platform", "web", "--task-kind", "form",
+                         "--candidate", stale["candidate_id"], code=2)
+        self.assertIn("Stale candidate", error["error"])
+        self.assertIn("Stale candidate", self.promote(evaluation, code=2)["error"])
+        self.assertEqual(self.transition_snapshot(), transition_before)
+        self.assertEqual(self.learning_records_snapshot(), records_before)
+        restored = self.cli("rollback", "--project", self.project, "--release", first)
+        self.assertEqual(restored["release_id"], first)
+        self.assertEqual(restored["generation"], 4)
+        self.assertEqual(len(self.context()["rules"]), 1)
+        self.assertEqual(self.learning_records_snapshot(), records_before)
+
+    def test_explicit_base_only_always_advances_generation_and_invalidates_pending_candidates(self):
+        self.initialize()
+        for generation in (1, 2):
+            with self.subTest(generation=generation):
+                evaluation = self.evaluate(self.propose())
+                records_before = self.learning_records_snapshot()
+                journals_before = {path.name: path.read_bytes()
+                                   for path in (self.local / "journal").glob("*.json")}
+                result = self.cli("rollback", "--project", self.project, "--base-only")
+                self.assertEqual(result["state"], "base-only")
+                self.assertEqual(result["generation"], generation)
+                self.assertIsNone(result["release_id"])
+                self.assertEqual(self.context()["rules"], [])
+                journals_after = {path.name: path.read_bytes()
+                                  for path in (self.local / "journal").glob("*.json")}
+                self.assertEqual(len(journals_after), generation)
+                self.assertEqual({name: journals_after[name] for name in journals_before}, journals_before)
+                self.assertIn("Stale candidate", self.promote(evaluation, code=2)["error"])
+                self.assertEqual(self.learning_records_snapshot(), records_before)
+
+    def test_explicit_base_only_and_release_are_mutually_exclusive_without_writes(self):
+        self.initialize()
+        release = self.promote(self.evaluate(self.propose()))["release_id"]
+        before = {path.relative_to(self.local): path.read_bytes()
+                  for path in self.local.rglob("*") if path.is_file()}
+        error = self.cli("rollback", "--project", self.project,
+                         "--base-only", "--release", release, code=2)
+        self.assertIn("not allowed with argument", error["error"])
+        after = {path.relative_to(self.local): path.read_bytes()
+                 for path in self.local.rglob("*") if path.is_file()}
+        self.assertEqual(after, before)
+
+    def test_explicit_base_only_escapes_corrupt_active_rules_and_evidence(self):
+        self.initialize()
+        self.promote(self.evaluate(self.propose()))
+        evaluation = self.evaluate(self.propose())
+        release = self.promote(evaluation)["release_id"]
+        paths = [self.local / "releases" / release / "rules.md",
+                 self.local / "evaluations" / evaluation["evaluation_id"] / "evidence/observations.txt"]
+        for path in paths:
+            with self.subTest(path=path.relative_to(self.local)):
+                original = path.read_bytes()
+                path.write_text("Corrupted active record.\n", encoding="utf-8")
+                self.cli("status", "--project", self.project, code=2)
+                records_before = self.learning_records_snapshot()
+                generation = self.active()["generation"]
+                result = self.cli("rollback", "--project", self.project, "--base-only")
+                self.assertEqual(result["state"], "base-only")
+                self.assertIsNone(result["release_id"])
+                self.assertEqual(result["generation"], generation + 1)
+                self.assertEqual(self.context()["rules"], [])
+                self.assertEqual(self.learning_records_snapshot(), records_before)
+                path.write_bytes(original)
+                self.cli("rollback", "--project", self.project, "--release", release)
+
+    def test_explicit_base_only_cannot_bypass_corrupt_history(self):
+        self.initialize()
+        self.promote(self.evaluate(self.propose()))
+        journal_path = next((self.local / "journal").glob("*.json"))
+        journal = json.loads(journal_path.read_text())
+        journal["new"]["generation"] += 1
+        self.write_json(journal_path, journal)
+        before = self.transition_snapshot()
+        error = self.cli("rollback", "--project", self.project, "--base-only", code=2)
+        self.assertIn("Invalid journal transition", error["error"])
+        self.assertEqual(self.transition_snapshot(), before)
+
 
 if __name__ == "__main__":
     unittest.main()
